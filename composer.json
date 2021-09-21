@@ -1,5 +1,5 @@
 {
-    "name": "henrotaym/app-accounts-sync",
+    "name": "henrotaym/account-synchronizer",
     "description": "Responsible to sync account details between applications.",
     "type": "library",
     "license": "MIT",

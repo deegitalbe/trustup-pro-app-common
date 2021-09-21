@@ -2,10 +2,12 @@
 namespace Henrotaym\AccountSynchronizer\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Henrotaym\AccountSynchronizer\Synchronizer;
 use Henrotaym\AccountSynchronizer\ClientCredential;
 use Henrotaym\AccountSynchronizer\SynchronizerClient;
-use Henrotaym\AccountSynchronizer\Observers\AccountObserver;
 use Henrotaym\LaravelApiClient\Contracts\ClientContract;
+use Henrotaym\AccountSynchronizer\Observers\AccountObserver;
+use Henrotaym\AccountSynchronizer\Contracts\SynchronizerContract;
 use Henrotaym\AccountSynchronizer\Contracts\SynchronizerClientContract;
 
 class AppAccountServiceProvider extends ServiceProvider
@@ -15,6 +17,7 @@ class AppAccountServiceProvider extends ServiceProvider
         $this->app->bind(SynchronizerClientContract::class, function($app) {
             return new SynchronizerClient(new ClientCredential);
         });
+        $this->app->bind(SynchronizerContract::class, Synchronizer::class);
 
         $this->registerConfig();
     }
