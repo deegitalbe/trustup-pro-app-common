@@ -18,18 +18,18 @@
     },
     "autoload": {
         "psr-4": {
-            "Henrotaym\\AppAccountsSync\\": "src"
+            "Henrotaym\\AccountSynchronizer\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Henrotaym\\AppAccountsSync\\Tests\\": "tests"
+            "Henrotaym\\AccountSynchronizer\\Tests\\": "tests"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Henrotaym\\AppAccountsSync\\Providers\\AppAccountServiceProvider"
+                "Henrotaym\\AccountSynchronizer\\Providers\\AppAccountServiceProvider"
             ]
         }
     }

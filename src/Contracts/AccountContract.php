@@ -1,5 +1,5 @@
 <?php
-namespace Henrotaym\AppAccountsSync\Contracts;
+namespace Henrotaym\AccountSynchronizer\Contracts;
 
 /**
  * Representing an account that's storable.
