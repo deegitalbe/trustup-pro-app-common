@@ -1,0 +1,36 @@
+{
+    "name": "henrotaym/app-accounts-sync",
+    "description": "Responsible to sync account details between applications.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mathieu Henrotay",
+            "email": "mathieu.henrotay@gmail.com"
+        }
+    ],
+    "require": {
+        "henrotaym/laravel-api-client": "^1.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.0",
+        "phpunit/phpunit": "^9.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Henrotaym\\AppAccountsSync\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Henrotaym\\AppAccountsSync\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Henrotaym\\AppAccountsSync\\Providers\\AppAccountServiceProvider"
+            ]
+        }
+    }
+}
