@@ -1,7 +1,6 @@
 <?php
 namespace Henrotaym\AccountSynchronizer\Models;
 
-use Henrotaym\AccountSynchronizer\Contracts\AccountContract;
 use Henrotaym\AccountSynchronizer\Models\SynchronizeWhenSaved;
 
 /**
