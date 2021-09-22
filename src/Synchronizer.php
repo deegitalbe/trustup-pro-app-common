@@ -1,9 +1,10 @@
 <?php
 namespace Henrotaym\AccountSynchronizer;
 
-use Henrotaym\AccountSynchronizer\Contracts\AccountContract;
+use Illuminate\Support\Facades\Log;
 use Henrotaym\LaravelApiClient\Contracts\ClientContract;
 use Henrotaym\LaravelApiClient\Contracts\RequestContract;
+use Henrotaym\AccountSynchronizer\Contracts\AccountContract;
 use Henrotaym\AccountSynchronizer\Contracts\SynchronizerContract;
 use Henrotaym\AccountSynchronizer\Contracts\SynchronizerClientContract;
 
@@ -27,7 +28,7 @@ class Synchronizer implements SynchronizerContract
     /**
      * Creating account in database.
      * 
-     * @param AccountContract $account Account that should be created?
+     * @param AccountContract $account Account that should be created.
      */
     public function create(AccountContract $account): self
     {
@@ -40,7 +41,7 @@ class Synchronizer implements SynchronizerContract
         
         $response = $this->client->start($request);
         if (!$response->ok()):
-            dd(json_decode($this->response()->body(), true));
+            Log::error(config('account_synchronizer.admin_url') . " could not create account [{$account->getUuid()}]");
         endif;
 
         return $this;
@@ -49,7 +50,7 @@ class Synchronizer implements SynchronizerContract
     /**
      * Updating account in database.
      * 
-     * @param AccountContract $account Account that should be created?
+     * @param AccountContract $account Account that should be updated.
      */
     public function update(AccountContract $account): self
     {
@@ -59,7 +60,7 @@ class Synchronizer implements SynchronizerContract
         
         $response = $this->client->start($request);
         if (!$response->ok()):
-            dd(json_decode($this->response()->body(), true));
+            Log::error(config('account_synchronizer.admin_url') . " could not update account [{$account->getUuid()}]");
         endif;
 
         return $this;
@@ -68,7 +69,7 @@ class Synchronizer implements SynchronizerContract
     /**
      * Deleting account from database.
      * 
-     * @param AccountContract $account Account that should be created?
+     * @param AccountContract $account Account that should be deleted.
      */
     public function delete(AccountContract $account): self
     {
@@ -78,7 +79,7 @@ class Synchronizer implements SynchronizerContract
         
         $response = $this->client->start($request);
         if (!$response->ok()):
-            dd(json_decode($this->response()->body(), true));
+            Log::error(config('account_synchronizer.admin_url') . " could not delete account [{$account->getUuid()}]");
         endif;
 
         return $this;

@@ -11,8 +11,16 @@ trait SynchronizeWhenSaved
 {
     protected static function bootSynchronizeWhenSaved()
     {
-        static::saved(function (AccountContract $account) {
+        static::created(function (AccountContract $account) {
+            app()->make(SynchronizerContract::class)->create($account);
+        });
+
+        static::updated(function (AccountContract $account) {
             app()->make(SynchronizerContract::class)->update($account);
+        });
+
+        static::deleted(function (AccountContract $account) {
+            app()->make(SynchronizerContract::class)->delete($account);
         });
     }
 }
