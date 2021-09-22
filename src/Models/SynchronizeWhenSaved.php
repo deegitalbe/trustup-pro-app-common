@@ -2,6 +2,7 @@
 namespace Henrotaym\AccountSynchronizer\Models;
 
 use Henrotaym\AccountSynchronizer\Contracts\AccountContract;
+use Henrotaym\AccountSynchronizer\Contracts\SynchronizerContract;
 
 /**
  * Synchronizing account when saved event occurs.
