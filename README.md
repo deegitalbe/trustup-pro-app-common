@@ -9,7 +9,7 @@
 
 ## Environment
 
-Package expect you to have those lines in your .env
+Package expects you to have those lines in your .env
 
     TRUSTUP_ADMIN_URL=
     TRUSTUP_APP_KEY=
