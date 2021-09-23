@@ -13,28 +13,31 @@ Package expect you to have those lines in your .env
 
     TRUSTUP_ADMIN_URL=
     TRUSTUP_APP_KEY=
- App key should be unique identifier for current app. ("tasks" for application taches.trustup.pro)
+ 
+
+ - `TRUSTUP_APP_KEY` key should be unique identifier for current app. (e.g: "tasks" for application taches.trustup.pro)
+ - `TRUSTUP_ADMIN_URL` should be defined in development mode only. (since package already has correct value for production)
  
 ## Publish configuration
 
 If you prefer not using .env values and define config yourself use this command to publish configuration used by package
 
     php artisan vendor:publish --provider="Henrotaym\AccountSynchronizer\Providers\AppAccountServiceProvider" --tag="config"
-You will then have access to **config/account_synchronizer.php**
+You will then have access to `config/account_synchronizer.php`
 
 # Preparing your model
-Your model should be in charge of application professionals accounts. Typically it is **App\Models\System\Account.php**
+Your model should be in charge of application professionals accounts. Typically it is `App\Models\System\Account.php`
 
 ## Default configuration
 
 ### Implements interface
-Your model should implements this interface: 
+Your model should implements this interface
 
     Henrotaym\AccountSynchronizer\Contracts\AccountContract;
 
 ### Use default trait
 
-You can use this trait in your model to synchronize automatically:
+You can use this trait in your model to synchronize automatically
 
     Henrotaym\AccountSynchronizer\Models\Synchronizable
 
@@ -79,6 +82,6 @@ Same step as default configuration step
 
 ### Watch model events using package trait
 
-You can use this trait in your model to watch its event and react to it when needed:
+You can use this trait in your model to watch its event and react to it when needed
 
     Henrotaym\AccountSynchronizer\Models\SynchronizeWhenSaved;
