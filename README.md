@@ -2,7 +2,7 @@
 
 ## Via composer
 
-    composer install deegitalbe/trustup-pro-app-common
+    composer require deegitalbe/trustup-pro-app-common
 
 
 # Configuration
