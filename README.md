@@ -33,7 +33,7 @@ Your model should be in charge of application professionals accounts. Typically 
 ### Implements interface
 Your model should implements this interface
 
-    Henrotaym\AccountSynchronizer\Contracts\AccountContract;
+    Henrotaym\AccountSynchronizer\Contracts\AccountContract
 
 ### Use default trait
 
@@ -84,4 +84,4 @@ Same step as default configuration step
 
 You can use this trait in your model to watch its event and react to it when needed
 
-    Henrotaym\AccountSynchronizer\Models\SynchronizeWhenSaved;
+    Henrotaym\AccountSynchronizer\Models\SynchronizeWhenSaved
