@@ -41,7 +41,7 @@ class Synchronizer implements SynchronizerContract
         
         $response = $this->client->start($request);
         if (!$response->ok()):
-            Log::error(config('account_synchronizer.admin_url') . " could not create account [{$account->getUuid()}]");
+            Log::error(config('account_synchronizer.admin_url') . " could not create account [{$account->getUuid()}]", $request->toArray());
         endif;
 
         return $this;
@@ -60,7 +60,7 @@ class Synchronizer implements SynchronizerContract
         
         $response = $this->client->start($request);
         if (!$response->ok()):
-            Log::error(config('account_synchronizer.admin_url') . " could not update account [{$account->getUuid()}]");
+            Log::error(config('account_synchronizer.admin_url') . " could not update account [{$account->getUuid()}]", $request->toArray());
         endif;
 
         return $this;
@@ -79,7 +79,7 @@ class Synchronizer implements SynchronizerContract
         
         $response = $this->client->start($request);
         if (!$response->ok()):
-            Log::error(config('account_synchronizer.admin_url') . " could not delete account [{$account->getUuid()}]");
+            Log::error(config('account_synchronizer.admin_url') . " could not delete account [{$account->getUuid()}]", $request->toArray());
         endif;
 
         return $this;
