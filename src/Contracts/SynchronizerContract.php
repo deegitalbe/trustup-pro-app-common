@@ -1,8 +1,8 @@
 <?php
-namespace Henrotaym\AccountSynchronizer\Contracts;
+namespace Deegitalbe\TrustupProAppCommon\Contracts;
 
-use Henrotaym\AccountSynchronizer\Contracts\AppContract;
-use Henrotaym\AccountSynchronizer\Contracts\AccountContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\AppContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\AccountContract;
 
 /**
  * Responsible to update/delete/create synchronized accounts.

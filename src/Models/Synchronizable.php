@@ -1,7 +1,7 @@
 <?php
-namespace Henrotaym\AccountSynchronizer\Models;
+namespace Deegitalbe\TrustupProAppCommon\Models;
 
-use Henrotaym\AccountSynchronizer\Models\SynchronizeWhenSaved;
+use Deegitalbe\TrustupProAppCommon\Models\SynchronizeWhenSaved;
 
 /**
  * AccountContract implementation + account saved event watcher (SynchronizeWhenSaved).

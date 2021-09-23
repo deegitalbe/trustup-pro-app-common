@@ -2,7 +2,7 @@
 
 ## Via composer
 
-    composer install henrotaym/account-synchronizer
+    composer install deegitalbe/trustup-pro-app-common
 
 
 # Configuration
@@ -22,7 +22,7 @@ Package expects you to have those lines in your .env
 
 If you prefer not using .env values and define config yourself use this command to publish configuration used by package
 
-    php artisan vendor:publish --provider="Henrotaym\AccountSynchronizer\Providers\AppAccountServiceProvider" --tag="config"
+    php artisan vendor:publish --provider="Deegitalbe\TrustupProAppCommon\Providers\AppAccountServiceProvider" --tag="config"
 You will then have access to `config/account_synchronizer.php`
 
 # Preparing your model
@@ -33,13 +33,13 @@ Your model should be in charge of application professionals accounts. Typically 
 ### Implements interface
 Your model should implements this interface
 
-    Henrotaym\AccountSynchronizer\Contracts\AccountContract
+    Deegitalbe\TrustupProAppCommon\Contracts\AccountContract
 
 ### Use default trait
 
 You can use this trait in your model to synchronize automatically
 
-    Henrotaym\AccountSynchronizer\Models\Synchronizable
+    Deegitalbe\TrustupProAppCommon\Models\Synchronizable
 
 ## Custom configuration
 
@@ -84,4 +84,4 @@ Same step as default configuration step
 
 You can use this trait in your model to watch its event and react to it when needed
 
-    Henrotaym\AccountSynchronizer\Models\SynchronizeWhenSaved
+    Deegitalbe\TrustupProAppCommon\Models\SynchronizeWhenSaved

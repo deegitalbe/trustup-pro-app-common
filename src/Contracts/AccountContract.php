@@ -1,5 +1,5 @@
 <?php
-namespace Henrotaym\AccountSynchronizer\Contracts;
+namespace Deegitalbe\TrustupProAppCommon\Contracts;
 
 /**
  * Representing an account that's storable.

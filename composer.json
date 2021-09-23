@@ -1,6 +1,6 @@
 {
-    "name": "henrotaym/account-synchronizer",
-    "description": "Responsible to sync account details between applications.",
+    "name": "deegitalbe/trustup-pro-app-common",
+    "description": "This package contains pieces of code that are shared between our applications.",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -18,18 +18,18 @@
     },
     "autoload": {
         "psr-4": {
-            "Henrotaym\\AccountSynchronizer\\": "src"
+            "Deegitalbe\\TrustupProAppCommon\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Henrotaym\\AccountSynchronizer\\Tests\\": "tests"
+            "Deegitalbe\\TrustupProAppCommon\\Tests\\": "tests"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Henrotaym\\AccountSynchronizer\\Providers\\AppAccountServiceProvider"
+                "Deegitalbe\\TrustupProAppCommon\\Providers\\AppAccountServiceProvider"
             ]
         }
     }

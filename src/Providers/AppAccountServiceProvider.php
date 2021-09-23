@@ -1,14 +1,14 @@
 <?php
-namespace Henrotaym\AccountSynchronizer\Providers;
+namespace Deegitalbe\TrustupProAppCommon\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Henrotaym\AccountSynchronizer\Synchronizer;
-use Henrotaym\AccountSynchronizer\ClientCredential;
-use Henrotaym\AccountSynchronizer\SynchronizerClient;
+use Deegitalbe\TrustupProAppCommon\Synchronizer;
+use Deegitalbe\TrustupProAppCommon\ClientCredential;
+use Deegitalbe\TrustupProAppCommon\SynchronizerClient;
 use Henrotaym\LaravelApiClient\Contracts\ClientContract;
-use Henrotaym\AccountSynchronizer\Observers\AccountObserver;
-use Henrotaym\AccountSynchronizer\Contracts\SynchronizerContract;
-use Henrotaym\AccountSynchronizer\Contracts\SynchronizerClientContract;
+use Deegitalbe\TrustupProAppCommon\Observers\AccountObserver;
+use Deegitalbe\TrustupProAppCommon\Contracts\SynchronizerContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\SynchronizerClientContract;
 
 class AppAccountServiceProvider extends ServiceProvider
 {

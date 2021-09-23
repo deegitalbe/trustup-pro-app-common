@@ -1,12 +1,12 @@
 <?php
-namespace Henrotaym\AccountSynchronizer;
+namespace Deegitalbe\TrustupProAppCommon;
 
 use Illuminate\Support\Facades\Log;
 use Henrotaym\LaravelApiClient\Contracts\ClientContract;
 use Henrotaym\LaravelApiClient\Contracts\RequestContract;
-use Henrotaym\AccountSynchronizer\Contracts\AccountContract;
-use Henrotaym\AccountSynchronizer\Contracts\SynchronizerContract;
-use Henrotaym\AccountSynchronizer\Contracts\SynchronizerClientContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\AccountContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\SynchronizerContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\SynchronizerClientContract;
 
 /**
  * Responsible to update/delete/create synchronized accounts.

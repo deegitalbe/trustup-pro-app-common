@@ -1,5 +1,5 @@
 <?php
-namespace Henrotaym\AccountSynchronizer;
+namespace Deegitalbe\TrustupProAppCommon;
 
 use Henrotaym\LaravelApiClient\Contracts\RequestContract;
 use Henrotaym\LaravelApiClient\Contracts\CredentialContract;

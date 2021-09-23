@@ -1,8 +1,8 @@
 <?php
-namespace Henrotaym\AccountSynchronizer;
+namespace Deegitalbe\TrustupProAppCommon;
 
 use Henrotaym\LaravelApiClient\Client;
 use Henrotaym\LaravelApiClient\Contracts\ClientContract;
-use Henrotaym\AccountSynchronizer\Contracts\SynchronizerClientContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\SynchronizerClientContract;
 
 class SynchronizerClient extends Client implements SynchronizerClientContract {}

@@ -1,9 +1,9 @@
 <?php
-namespace Henrotaym\AccountSynchronizer\Tests\Unit;
+namespace Deegitalbe\TrustupProAppCommon\Tests\Unit;
 
 use Henrotaym\LaravelApiClient\Client;
-use Henrotaym\AccountSynchronizer\Synchronizer;
-use Henrotaym\AccountSynchronizer\Tests\TestCase;
+use Deegitalbe\TrustupProAppCommon\Synchronizer;
+use Deegitalbe\TrustupProAppCommon\Tests\TestCase;
 use Henrotaym\LaravelApiClient\Contracts\ClientContract;
 use Henrotaym\LaravelApiClient\Contracts\RequestContract;
 

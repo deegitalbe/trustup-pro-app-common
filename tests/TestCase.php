@@ -1,9 +1,9 @@
 <?php
-namespace Henrotaym\AccountSynchronizer\Tests;
+namespace Deegitalbe\TrustupProAppCommon\Tests;
 
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Henrotaym\LaravelApiClient\Providers\ClientServiceProvider;
-use Henrotaym\AccountSynchronizer\Providers\AppAccountServiceProvider;
+use Deegitalbe\TrustupProAppCommon\Providers\AppAccountServiceProvider;
 
 class TestCase extends BaseTestCase
 {
