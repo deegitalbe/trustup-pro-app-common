@@ -7,6 +7,7 @@ use Henrotaym\LaravelApiClient\Contracts\RequestContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\AccountContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\SynchronizerContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\SynchronizerClientContract;
+use Deegitalbe\TrustupProAppCommon\Exceptions\Synchronizer\FailedRequest;
 
 /**
  * Responsible to update/delete/create synchronized accounts.
@@ -41,7 +42,12 @@ class Synchronizer implements SynchronizerContract
         
         $response = $this->client->start($request);
         if (!$response->ok()):
-            Log::error(config('account_synchronizer.admin_url') . " could not create account [{$account->getUuid()}]", $request->toArray());
+            report(
+                app()->make(FailedRequest::class)
+                    ->setAccount($account)
+                    ->setRequest($request)
+                    ->setErrorMessage($response->error->message)
+            );
         endif;
 
         return $this;
@@ -60,7 +66,12 @@ class Synchronizer implements SynchronizerContract
         
         $response = $this->client->start($request);
         if (!$response->ok()):
-            Log::error(config('account_synchronizer.admin_url') . " could not update account [{$account->getUuid()}]", $request->toArray());
+            report(
+                app()->make(FailedRequest::class)
+                    ->setAccount($account)
+                    ->setRequest($request)
+                    ->setErrorMessage($response->error->message)
+            );
         endif;
 
         return $this;
@@ -79,7 +90,12 @@ class Synchronizer implements SynchronizerContract
         
         $response = $this->client->start($request);
         if (!$response->ok()):
-            Log::error(config('account_synchronizer.admin_url') . " could not delete account [{$account->getUuid()}]", $request->toArray());
+            report(
+                app()->make(FailedRequest::class)
+                    ->setAccount($account)
+                    ->setRequest($request)
+                    ->setErrorMessage($response->error->message)
+            );
         endif;
 
         return $this;
