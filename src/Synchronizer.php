@@ -43,10 +43,10 @@ class Synchronizer implements SynchronizerContract
         $response = $this->client->start($request);
         if (!$response->ok()):
             report(
-                app()->make(FailedRequest::class)
+                (new FailedRequest)
                     ->setAccount($account)
                     ->setRequest($request)
-                    ->setErrorMessage($response->error->message)
+                    ->setErrorMessage($response->get()->message)
             );
         endif;
 
@@ -67,10 +67,10 @@ class Synchronizer implements SynchronizerContract
         $response = $this->client->start($request);
         if (!$response->ok()):
             report(
-                app()->make(FailedRequest::class)
+                (new FailedRequest)
                     ->setAccount($account)
                     ->setRequest($request)
-                    ->setErrorMessage($response->error->message)
+                    ->setErrorMessage($response->get()->message)
             );
         endif;
 
@@ -91,10 +91,10 @@ class Synchronizer implements SynchronizerContract
         $response = $this->client->start($request);
         if (!$response->ok()):
             report(
-                app()->make(FailedRequest::class)
+                (new FailedRequest)
                     ->setAccount($account)
                     ->setRequest($request)
-                    ->setErrorMessage($response->error->message)
+                    ->setErrorMessage($response->get()->message)
             );
         endif;
 
