@@ -246,20 +246,21 @@
         },
         {
             "name": "henrotaym/laravel-api-client",
-            "version": "v1.0.3",
+            "version": "v1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/henrotaym/laravel-api-client.git",
-                "reference": "4e089b6d1f202c3ac02ff3c729ca4f689db11fa4"
+                "reference": "71e5ac67f85af4ee4ccd613f0a99071e406f6ae5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/henrotaym/laravel-api-client/zipball/4e089b6d1f202c3ac02ff3c729ca4f689db11fa4",
-                "reference": "4e089b6d1f202c3ac02ff3c729ca4f689db11fa4",
+                "url": "https://api.github.com/repos/henrotaym/laravel-api-client/zipball/71e5ac67f85af4ee4ccd613f0a99071e406f6ae5",
+                "reference": "71e5ac67f85af4ee4ccd613f0a99071e406f6ae5",
                 "shasum": ""
             },
             "require": {
-                "guzzlehttp/guzzle": "^7.0"
+                "guzzlehttp/guzzle": "^7.0",
+                "henrotaym/laravel-helpers": "^1.0"
             },
             "require-dev": {
                 "orchestra/testbench": "^6.0",
@@ -291,9 +292,57 @@
             "description": "Fluent api client using laravel Http facade.",
             "support": {
                 "issues": "https://github.com/henrotaym/laravel-api-client/issues",
-                "source": "https://github.com/henrotaym/laravel-api-client/tree/v1.0.3"
+                "source": "https://github.com/henrotaym/laravel-api-client/tree/v1.0.4"
             },
-            "time": "2021-09-23T09:26:37+00:00"
+            "time": "2021-09-28T14:48:29+00:00"
+        },
+        {
+            "name": "henrotaym/laravel-helpers",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/henrotaym/laravel-helpers.git",
+                "reference": "657077a092f889a471eccfa7acf04abffd5d37f8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/henrotaym/laravel-helpers/zipball/657077a092f889a471eccfa7acf04abffd5d37f8",
+                "reference": "657077a092f889a471eccfa7acf04abffd5d37f8",
+                "shasum": ""
+            },
+            "require-dev": {
+                "orchestra/testbench": "^6.0",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Henrotaym\\LaravelHelpers\\Providers\\HelperServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Henrotaym\\LaravelHelpers\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mathieu Henrotay",
+                    "email": "mathieu.henrotay@gmail.com"
+                }
+            ],
+            "description": "A kit of laravel helpers.",
+            "support": {
+                "issues": "https://github.com/henrotaym/laravel-helpers/issues",
+                "source": "https://github.com/henrotaym/laravel-helpers/tree/v1.0.0"
+            },
+            "time": "2021-09-28T11:22:21+00:00"
         },
         {
             "name": "psr/http-client",
