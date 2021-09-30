@@ -1,6 +1,7 @@
 <?php
 namespace Deegitalbe\TrustupProAppCommon\Providers;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Deegitalbe\TrustupProAppCommon\Synchronizer;
 use Deegitalbe\TrustupProAppCommon\ClientCredential;
@@ -24,7 +25,20 @@ class AppAccountServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        $this->makeConfigPublishable();
+        $this->makeConfigPublishable()
+            ->loadRoutes();
+    }
+
+    protected function loadRoutes(): self
+    {
+        Route::group([
+            'prefix' => 'common-package',
+            'name' => "common-package."
+        ], function () {
+            $this->loadRoutesFrom(__DIR__.'/../routes/routes.php');
+        });
+
+        return $this;
     }
 
     protected function registerConfig(): self
