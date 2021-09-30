@@ -4,7 +4,6 @@
 
     composer require deegitalbe/trustup-pro-app-common
 
-
 # Configuration
 
 ## Environment
@@ -13,17 +12,19 @@ Package expects you to have those lines in your .env
 
     TRUSTUP_ADMIN_URL=
     TRUSTUP_APP_KEY=
+    TRUSTUP_ACCOUNT_MODEL=
  
 
  - `TRUSTUP_APP_KEY` key should be unique identifier for current app. (e.g: "tasks" for application taches.trustup.pro)
  - `TRUSTUP_ADMIN_URL` should be defined in development mode only. (since package already has correct value for production)
- 
+ - `TRUSTUP_ACCOUNT_MODEL` is your account model class (Default is "\App\Models\System\Account::class")
+
 ## Publish configuration
 
 If you prefer not using .env values and define config yourself use this command to publish configuration used by package
 
     php artisan vendor:publish --provider="Deegitalbe\TrustupProAppCommon\Providers\AppAccountServiceProvider" --tag="config"
-You will then have access to `config/account_synchronizer.php`
+You will then have access to `config/trustup_pro_app_common.php` that you can configure as you wish.
 
 # Preparing your model
 Your model should be in charge of application professionals accounts. Typically it is `App\Models\System\Account.php`

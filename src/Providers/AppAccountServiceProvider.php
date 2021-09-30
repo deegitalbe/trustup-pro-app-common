@@ -1,6 +1,7 @@
 <?php
 namespace Deegitalbe\TrustupProAppCommon\Providers;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Deegitalbe\TrustupProAppCommon\Synchronizer;
 use Deegitalbe\TrustupProAppCommon\ClientCredential;
@@ -14,22 +15,35 @@ class AppAccountServiceProvider extends ServiceProvider
 {
     public function register()
     {
+        $this->registerConfig();
+
         $this->app->bind(SynchronizerClientContract::class, function($app) {
             return new SynchronizerClient(new ClientCredential);
         });
         $this->app->bind(SynchronizerContract::class, Synchronizer::class);
-
-        $this->registerConfig();
     }
 
     public function boot()
     {
-        $this->makeConfigPublishable();
+        $this->makeConfigPublishable()
+            ->loadRoutes();
+    }
+
+    protected function loadRoutes(): self
+    {
+        Route::group([
+            'prefix' => 'common-package',
+            'name' => "common-package."
+        ], function () {
+            $this->loadRoutesFrom(__DIR__.'/../routes/routes.php');
+        });
+
+        return $this;
     }
 
     protected function registerConfig(): self
     {
-        $this->mergeConfigFrom($this->getConfigPath(), 'account_synchronizer');
+        $this->mergeConfigFrom($this->getConfigPath(), 'trustup_pro_app_common');
 
         return $this;
     }
@@ -38,7 +52,7 @@ class AppAccountServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()):
             $this->publishes([
-              $this->getConfigPath() => config_path('account_synchronizer.php'),
+              $this->getConfigPath() => config_path('trustup_pro_app_common.php'),
             ], 'config');
         endif;
 
