@@ -14,12 +14,12 @@ class AppAccountServiceProvider extends ServiceProvider
 {
     public function register()
     {
+        $this->registerConfig();
+
         $this->app->bind(SynchronizerClientContract::class, function($app) {
             return new SynchronizerClient(new ClientCredential);
         });
         $this->app->bind(SynchronizerContract::class, Synchronizer::class);
-
-        $this->registerConfig();
     }
 
     public function boot()
@@ -29,7 +29,7 @@ class AppAccountServiceProvider extends ServiceProvider
 
     protected function registerConfig(): self
     {
-        $this->mergeConfigFrom($this->getConfigPath(), 'account_synchronizer');
+        $this->mergeConfigFrom($this->getConfigPath(), 'trustup_pro_app_common');
 
         return $this;
     }
@@ -38,7 +38,7 @@ class AppAccountServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()):
             $this->publishes([
-              $this->getConfigPath() => config_path('account_synchronizer.php'),
+              $this->getConfigPath() => config_path('trustup_pro_app_common.php'),
             ], 'config');
         endif;
 

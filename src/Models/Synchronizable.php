@@ -25,7 +25,7 @@ trait Synchronizable
      */
     public function getAppKey(): string
     {
-        return config('account_synchronizer.app_key');
+        return config('trustup_pro_app_common.app_key');
     }
 
     /**

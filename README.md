@@ -23,7 +23,7 @@ Package expects you to have those lines in your .env
 If you prefer not using .env values and define config yourself use this command to publish configuration used by package
 
     php artisan vendor:publish --provider="Deegitalbe\TrustupProAppCommon\Providers\AppAccountServiceProvider" --tag="config"
-You will then have access to `config/account_synchronizer.php`
+You will then have access to `config/trustup_pro_app_common.php` that you can configure as you wish.
 
 # Preparing your model
 Your model should be in charge of application professionals accounts. Typically it is `App\Models\System\Account.php`

@@ -8,6 +8,6 @@ class ClientCredential implements CredentialContract
 {
     public function prepare(RequestContract &$request)
     {
-        $request->setBaseUrl(config('account_synchronizer.admin_url'));
+        $request->setBaseUrl(config('trustup_pro_app_common.admin_url'));
     }
 }
