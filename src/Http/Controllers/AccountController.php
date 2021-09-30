@@ -9,7 +9,7 @@ class AccountController extends Controller
 {
     public function update(Request $request)
     {
-        $request->account->fill($request->all());
+        $request->account->fill($request->except(['account']));
         
         if(!$request->account->saveQuietly()):
             $error = new AccountUpdateFailed();
