@@ -21,7 +21,7 @@ class AccountController extends Controller
         endif;
 
         return response([
-            'data' => $account
+            'data' => $request->account
         ]);
     }
 }
