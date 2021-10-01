@@ -14,7 +14,7 @@ class AccountController extends Controller
         if(!$request->account->saveQuietly()):
             $error = new AccountUpdateFailed();
             report($error
-                ->setAttributes($request->all())
+                ->setAttributes($request->except(['account']))
                 ->setAccount($request->account)
             );
             return response(['message' => "Account update failed."], 500);

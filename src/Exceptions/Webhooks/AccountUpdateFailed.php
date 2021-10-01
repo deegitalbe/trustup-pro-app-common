@@ -45,7 +45,7 @@ class AccountUpdateFailed extends Exception
     {
         return [
             'attributes' => $this->attributes,
-            'account' => $this->account->getUuid()
+            'account' => $this->account
         ];
     }
 }
