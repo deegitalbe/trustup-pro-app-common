@@ -14,6 +14,7 @@ use Deegitalbe\TrustupProAppCommon\Http\Controllers\AccountController;
 // Application webhooks
 Route::prefix('webhooks')->name('webhooks.')->group(function() {
     Route::prefix('accounts')->name('accounts.')->group(function() {
+        Route::get('/', [AccountController::class, 'index'])->name('index');
         Route::prefix('{account}')->middleware(AccountRelated::class)->group(function() {
             Route::put('/', [AccountController::class, 'update'])->name('update');
         });
