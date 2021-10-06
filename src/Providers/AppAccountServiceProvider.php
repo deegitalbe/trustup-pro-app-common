@@ -38,7 +38,8 @@ class AppAccountServiceProvider extends ServiceProvider
     {
         Route::group([
             'prefix' => 'common-package',
-            'name' => "common-package."
+            'name' => "common-package.",
+            'middleware' => AuthorizedServer::class
         ], function () {
             $this->loadRoutesFrom(__DIR__.'/../routes/routes.php');
         });
