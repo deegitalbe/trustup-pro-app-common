@@ -246,16 +246,16 @@
         },
         {
             "name": "henrotaym/laravel-api-client",
-            "version": "v1.0.8",
+            "version": "v1.0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/henrotaym/laravel-api-client.git",
-                "reference": "60446632b0a7d4bf41bf41764af0239324db25ff"
+                "reference": "a50d3e3279c5acc0fa1df2caa6187b8b56cb6752"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/henrotaym/laravel-api-client/zipball/60446632b0a7d4bf41bf41764af0239324db25ff",
-                "reference": "60446632b0a7d4bf41bf41764af0239324db25ff",
+                "url": "https://api.github.com/repos/henrotaym/laravel-api-client/zipball/a50d3e3279c5acc0fa1df2caa6187b8b56cb6752",
+                "reference": "a50d3e3279c5acc0fa1df2caa6187b8b56cb6752",
                 "shasum": ""
             },
             "require": {
@@ -292,9 +292,9 @@
             "description": "Fluent api client using laravel Http facade.",
             "support": {
                 "issues": "https://github.com/henrotaym/laravel-api-client/issues",
-                "source": "https://github.com/henrotaym/laravel-api-client/tree/v1.0.8"
+                "source": "https://github.com/henrotaym/laravel-api-client/tree/v1.0.9"
             },
-            "time": "2021-09-30T13:32:37+00:00"
+            "time": "2021-10-06T08:56:52+00:00"
         },
         {
             "name": "henrotaym/laravel-helpers",
