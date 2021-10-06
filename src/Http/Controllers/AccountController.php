@@ -3,10 +3,16 @@ namespace Deegitalbe\TrustupProAppCommon\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Deegitalbe\TrustupProAppCommon\Facades\Package;
+use Deegitalbe\TrustupProAppCommon\Http\Resources\Account as AccountResource;
 use Deegitalbe\TrustupProAppCommon\Exceptions\Webhooks\AccountUpdateFailed;
 
 class AccountController extends Controller
 {
+    /**
+     * Updating account.
+     * 
+     */
     public function update(Request $request)
     {
         $request->account->fill($request->except(['account']));
@@ -23,5 +29,14 @@ class AccountController extends Controller
         return response([
             'data' => $request->account
         ]);
+    }
+
+    /**
+     * Getting list of accounts.
+     * 
+     */
+    public function index()
+    {
+        return AccountResource::collection(Package::account()::all());
     }
 }

@@ -4,7 +4,10 @@ namespace Deegitalbe\TrustupProAppCommon\Http\Middleware;
 use Closure;
 use Deegitalbe\TrustupProAppCommon\Facades\Package;
 
-class AccountRelated
+/**
+ * Restricting request to authorized servers only.
+ */
+class AuthorizedServer
 {
     /**
      * Handle an incoming request.
@@ -15,9 +18,11 @@ class AccountRelated
      */
     public function handle($request, Closure $next)
     {
-        $account = Package::account()::where('uuid', $request->route()->parameter('account'))
-            ->firstOrFail();
+        $authorization_key = $request->header('X-SERVER-AUTHORIZATION');
+        if (!$authorization_key || $authorization_key !== Package::serverAuthorizationKey()):
+            return response(['message' => "Forbidden."], 401);
+        endif;
 
-        return $next($request->merge(['account' => $account]));
+        return $next($request);
     }
 }
