@@ -3,12 +3,14 @@ namespace Deegitalbe\TrustupProAppCommon\Providers;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Deegitalbe\TrustupProAppCommon\Package;
 use Deegitalbe\TrustupProAppCommon\Synchronizer;
 use Deegitalbe\TrustupProAppCommon\ClientCredential;
 use Deegitalbe\TrustupProAppCommon\SynchronizerClient;
 use Henrotaym\LaravelApiClient\Contracts\ClientContract;
 use Deegitalbe\TrustupProAppCommon\Observers\AccountObserver;
 use Deegitalbe\TrustupProAppCommon\Contracts\SynchronizerContract;
+use Deegitalbe\TrustupProAppCommon\Http\Middleware\AuthorizedServer;
 use Deegitalbe\TrustupProAppCommon\Contracts\SynchronizerClientContract;
 
 class AppAccountServiceProvider extends ServiceProvider
@@ -21,6 +23,9 @@ class AppAccountServiceProvider extends ServiceProvider
             return new SynchronizerClient(new ClientCredential);
         });
         $this->app->bind(SynchronizerContract::class, Synchronizer::class);
+        $this->app->bind('trustup_pro_app_common', function($app) {
+            return $app->make(Package::class);
+        });
     }
 
     public function boot()
