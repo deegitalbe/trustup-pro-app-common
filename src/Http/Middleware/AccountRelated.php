@@ -2,6 +2,7 @@
 namespace Deegitalbe\TrustupProAppCommon\Http\Middleware;
 
 use Closure;
+use Deegitalbe\TrustupProAppCommon\Facades\Package;
 
 class AccountRelated
 {
@@ -14,7 +15,7 @@ class AccountRelated
      */
     public function handle($request, Closure $next)
     {
-        $account = config('trustup_pro_app_common.account_model')::where('uuid', $request->route()->parameter('account'))
+        $account = Package::account()::where('uuid', $request->route()->parameter('account'))
             ->firstOrFail();
 
         return $next($request->merge(['account' => $account]));
