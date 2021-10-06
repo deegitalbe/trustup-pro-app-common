@@ -4,8 +4,9 @@ namespace Deegitalbe\TrustupProAppCommon\Exceptions\Synchronizer;
 use Exception;
 use Henrotaym\LaravelApiClient\Contracts\RequestContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\AccountContract;
+use Henrotaym\LaravelApiClient\Exceptions\RequestRelatedException;
 
-class FailedRequest extends Exception
+class FailedRequest extends RequestRelatedException
 {
     /**
      * Exception message.
@@ -15,12 +16,6 @@ class FailedRequest extends Exception
     protected $message = "Synchronization failed.";
 
     /**
-     * Error message that administration sent back.
-     * 
-     * @var string
-     */
-    protected $error_message;
-    /**
      * Account concerned by failure.
      * 
      * @var AccountContract
@@ -28,26 +23,11 @@ class FailedRequest extends Exception
     protected $account;
 
     /**
-     * Request that failed.
+     * Setting account concerned by failure.
      * 
-     * @var RequestContract
+     * @param AccountContract $account
+     * @return self
      */
-    protected $request;
-
-    public function setRequest(RequestContract $request): self
-    {
-        $this->request = $request;
-
-        return $this;
-    }
-
-    public function setErrorMessage($error_message): self
-    {
-        $this->error_message = $error_message;
-
-        return $this;
-    }
-
     public function setAccount(AccountContract $account): self
     {
         $this->account = $account;
@@ -55,12 +35,13 @@ class FailedRequest extends Exception
         return $this;
     }
 
-    public function context()
+    /**
+     * Exception additional context.
+     * 
+     * @return array
+     */
+    public function additionalContext(): array
     {
-        return [
-            'request' => $this->request->toArray(),
-            'error_message' => $this->error_message,
-            'account' => $this->account->getUuid()
-        ];
+        return ['account' => $this->account->getUuid()];
     }
 }

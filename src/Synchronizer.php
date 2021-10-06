@@ -46,7 +46,7 @@ class Synchronizer implements SynchronizerContract
                 (new FailedRequest)
                     ->setAccount($account)
                     ->setRequest($request)
-                    ->setErrorMessage($response->get()->message)
+                    ->setResponse($response)
             );
         endif;
 
@@ -70,7 +70,7 @@ class Synchronizer implements SynchronizerContract
                 (new FailedRequest)
                     ->setAccount($account)
                     ->setRequest($request)
-                    ->setErrorMessage($response->get()->message)
+                    ->setResponse($response)
             );
         endif;
 
@@ -94,7 +94,7 @@ class Synchronizer implements SynchronizerContract
                 (new FailedRequest)
                     ->setAccount($account)
                     ->setRequest($request)
-                    ->setErrorMessage($response->get()->message)
+                    ->setResponse($response)
             );
         endif;
 
