@@ -19,7 +19,10 @@ class AuthorizedServer
     public function handle($request, Closure $next)
     {
         $authorization_key = $request->header('X-SERVER-AUTHORIZATION');
-        if (!$authorization_key || $authorization_key !== Package::serverAuthorizationKey()):
+        if (!$authorization_key
+            || !Package::serverAuthorizationKey()
+            || $authorization_key !==  Package::serverAuthorizationKey()
+        ):
             return response(['message' => "Unauthenticated."], 401);
         endif;
 

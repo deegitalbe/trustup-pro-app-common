@@ -1,6 +1,8 @@
 <?php
 namespace Deegitalbe\TrustupProAppCommon;
 
+use Deegitalbe\TrustupProAppCommon\Exceptions\Config\NoAuthorizationKeyException;
+
 class Package
 {
     /**
@@ -20,6 +22,10 @@ class Package
      */
     public function serverAuthorizationKey(): string
     {
-        return config('trustup_pro_app_common.server_authorization_key');
+        if (!$key = config('trustup_pro_app_common.server_authorization_key')):
+            report(new NoAuthorizationKeyException);
+        endif;
+        
+        return $key ?? '';
     }
 }
