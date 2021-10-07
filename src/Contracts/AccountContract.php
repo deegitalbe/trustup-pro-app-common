@@ -23,4 +23,22 @@ interface AccountContract
      * @return string
      */
     public function getAuthorizationKey(): string;
+
+    /**
+     * Subscription id linked to account.
+     * @return string|null
+     */
+    public function getSubscriptionId(): ?string;
+
+    /**
+     * Subscription status linked to account.
+     * @return string|null
+     */
+    public function getSubscriptionStatus(): ?string;
+
+    /**
+     * Account creation date.
+     * @return Carbon
+     */
+    public function getCreatedAt(): Carbon;
 }
