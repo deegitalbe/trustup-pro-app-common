@@ -13,11 +13,13 @@ Package expects you to have those lines in your .env
     TRUSTUP_ADMIN_URL=
     TRUSTUP_APP_KEY=
     TRUSTUP_ACCOUNT_MODEL=
+    TRUSTUP_SERVER_AUTHORIZATION=
  
 
  - `TRUSTUP_APP_KEY` key should be unique identifier for current app. (e.g: "tasks" for application taches.trustup.pro)
  - `TRUSTUP_ADMIN_URL` should be defined in development mode only. (since package already has correct value for production)
  - `TRUSTUP_ACCOUNT_MODEL` is your account model class (Default is "\App\Models\System\Account::class")
+ - `TRUSTUP_SERVER_AUTHORIZATION` is your client secret to allow access to package routes. It should be exactly the same than the one defined in admin
 
 ## Publish configuration
 
