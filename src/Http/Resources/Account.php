@@ -16,7 +16,10 @@ class Account extends JsonResource
         return [
             'uuid' => $this->getUuid(),
             'authorization_key' => $this->getAuthorizationKey(),
-            'app_key' => $this->getAppKey()
+            'app_key' => $this->getAppKey(),
+            'chargebee_subscription_id' => $this->getSubscriptionId(),
+            'chargebee_subscription_status' => $this->getSubscriptionStatus(),
+            'created_at' => $this->getCreatedAt(),
         ];
     }
 }
