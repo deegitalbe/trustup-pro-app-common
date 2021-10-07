@@ -1,6 +1,7 @@
 <?php
 namespace Deegitalbe\TrustupProAppCommon\Models;
 
+use Illuminate\Support\Carbon;
 use Deegitalbe\TrustupProAppCommon\Models\SynchronizeWhenSaved;
 
 /**
@@ -35,5 +36,32 @@ trait Synchronizable
     public function getAuthorizationKey(): string
     {
         return $this->authorization_key;
+    }
+
+    /**
+     * Subscription id linked to account.
+     * @return string|null
+     */
+    public function getSubscriptionId(): ?string
+    {
+        return $this->chargebee_subscription_id;
+    }
+
+    /**
+     * Subscription status linked to account.
+     * @return string|null
+     */
+    public function getSubscriptionStatus(): ?string
+    {
+        return $this->chargebee_subscription_status;
+    }
+
+    /**
+     * Account creation date.
+     * @return Carbon
+     */
+    public function getCreatedAt(): Carbon
+    {
+        return $this->created_at ?? now();
     }
 }
