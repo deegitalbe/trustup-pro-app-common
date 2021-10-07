@@ -1,6 +1,8 @@
 <?php
 namespace Deegitalbe\TrustupProAppCommon\Contracts;
 
+use Illuminate\Support\Carbon;
+
 /**
  * Representing an account that's storable.
  */
