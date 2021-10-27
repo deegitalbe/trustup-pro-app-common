@@ -6,7 +6,7 @@ use Henrotaym\LaravelApiClient\Contracts\ClientContract;
 use Henrotaym\LaravelApiClient\Contracts\RequestContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\AccountContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\SynchronizerContract;
-use Deegitalbe\TrustupProAppCommon\Contracts\SynchronizerClientContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\AdminClientContract;
 use Deegitalbe\TrustupProAppCommon\Exceptions\Synchronizer\FailedRequest;
 
 /**
@@ -21,7 +21,7 @@ class Synchronizer implements SynchronizerContract
      */
     protected $client;
 
-    public function __construct(SynchronizerClientContract $client)
+    public function __construct(AdminClientContract $client)
     {
         $this->client = $client;
     }

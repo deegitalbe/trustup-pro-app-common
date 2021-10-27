@@ -4,14 +4,14 @@ namespace Deegitalbe\TrustupProAppCommon\Providers;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Deegitalbe\TrustupProAppCommon\Package;
+use Deegitalbe\TrustupProAppCommon\AdminClient;
 use Deegitalbe\TrustupProAppCommon\Synchronizer;
-use Deegitalbe\TrustupProAppCommon\ClientCredential;
-use Deegitalbe\TrustupProAppCommon\SynchronizerClient;
 use Henrotaym\LaravelApiClient\Contracts\ClientContract;
+use Deegitalbe\TrustupProAppCommon\AdminClientCredential;
 use Deegitalbe\TrustupProAppCommon\Observers\AccountObserver;
+use Deegitalbe\TrustupProAppCommon\Contracts\AdminClientContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\SynchronizerContract;
 use Deegitalbe\TrustupProAppCommon\Http\Middleware\AuthorizedServer;
-use Deegitalbe\TrustupProAppCommon\Contracts\SynchronizerClientContract;
 
 class AppAccountServiceProvider extends ServiceProvider
 {
@@ -19,8 +19,8 @@ class AppAccountServiceProvider extends ServiceProvider
     {
         $this->registerConfig();
 
-        $this->app->bind(SynchronizerClientContract::class, function($app) {
-            return new SynchronizerClient(new ClientCredential);
+        $this->app->bind(AdminClientContract::class, function($app) {
+            return new AdminClient(new AdminClientCredential);
         });
         $this->app->bind(SynchronizerContract::class, Synchronizer::class);
         $this->app->bind('trustup_pro_app_common', function($app) {
