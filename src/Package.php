@@ -37,7 +37,7 @@ class Package implements VersionedPackageContract
     public function getProjects(): Collection
     {
         $apps = app()->make(AdminAppApiContract::class)
-            ->getApps() ?? collect();
+            ->getAppsExceptDashboard() ?? collect();
 
         return $apps
                 ->filter(function($app) {
@@ -55,7 +55,7 @@ class Package implements VersionedPackageContract
      */
     public function getVersion(): string
     {
-        return "1.2.0";
+        return "1.2.1";
     }
 
     /**

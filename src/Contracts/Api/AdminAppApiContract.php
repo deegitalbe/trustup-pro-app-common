@@ -14,4 +14,11 @@ interface AdminAppApiContract
      * @return Collection|null null if any error.
      */
     public function getApps(): ?Collection;
+
+    /**
+     * Getting apps available in administration that are not dashboard.
+     * 
+     * @return Collection|null null if any error.
+     */
+    public function getAppsExceptDashboard(): ?Collection
 }

@@ -55,4 +55,33 @@ class AdminAppApi implements AdminAppApiContract
 
         return collect($response->get()->data);
     }
+
+    /**
+     * Getting apps available in administration.
+     * 
+     * @return Collection|null null if any error.
+     */
+    public function getAppsExceptDashboard(): ?Collection
+    {
+        $request = app()->make(RequestContract::class)
+            ->setVerb('GET')
+            ->setUrl("api/apps")
+            ->addQuery([
+                'available' => true,
+                'not' => "dashboard"
+            ]);
+        
+        $response = $this->client->start($request);
+
+        if (!$response->ok()):
+            report(
+                (new GetAppsException)
+                    ->setResponse($response)
+                    ->setRequest($request)    
+            );
+            return null;
+        endif;
+
+        return collect($response->get()->data);
+    }
 }
