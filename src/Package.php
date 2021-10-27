@@ -16,16 +16,12 @@ class Package
     }
 
     /**
-     * Server authorization_key.
+     * Admin url.
      * 
      * @return string
      */
-    public function serverAuthorizationKey(): string
+    public function adminUrl(): string
     {
-        if (!$key = config('trustup_pro_app_common.server_authorization_key')):
-            report(new NoAuthorizationKeyException);
-        endif;
-        
-        return $key ?? '';
+        return config('trustup_pro_app_common.admin_url');
     }
 }

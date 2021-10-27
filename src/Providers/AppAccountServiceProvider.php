@@ -12,6 +12,7 @@ use Deegitalbe\TrustupProAppCommon\Observers\AccountObserver;
 use Deegitalbe\TrustupProAppCommon\Contracts\AdminClientContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\SynchronizerContract;
 use Deegitalbe\ServerAuthorization\Http\Middleware\AuthorizedServer;
+use Deegitalbe\TrustupProAppCommon\Facades\Package as PackageFacade;
 
 class AppAccountServiceProvider extends ServiceProvider
 {
