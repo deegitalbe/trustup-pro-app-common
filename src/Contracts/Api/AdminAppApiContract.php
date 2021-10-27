@@ -20,5 +20,5 @@ interface AdminAppApiContract
      * 
      * @return Collection|null null if any error.
      */
-    public function getAppsExceptDashboard(): ?Collection
+    public function getAppsExceptDashboard(): ?Collection;
 }
