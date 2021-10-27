@@ -15,6 +15,7 @@ use Deegitalbe\TrustupProAppCommon\Contracts\SynchronizerContract;
 use Deegitalbe\ServerAuthorization\Http\Middleware\AuthorizedServer;
 use Deegitalbe\TrustupProAppCommon\Facades\Package as PackageFacade;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\AdminAppApiContract;
+use Deegitalbe\TrustupVersionedPackage\Contracts\VersionedPackageCheckerContract;
 
 class AppAccountServiceProvider extends ServiceProvider
 {
@@ -35,7 +36,16 @@ class AppAccountServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->makeConfigPublishable()
-            ->loadRoutes();
+            ->loadRoutes()
+            ->registerPackage();
+    }
+
+    protected function registerPackage(): self
+    {
+        app()->make(VersionedPackageCheckerContract::class)
+            ->addPackage(PackageFacade::getFacadeRoot());
+        
+        return $this;
     }
 
     protected function loadRoutes(): self
