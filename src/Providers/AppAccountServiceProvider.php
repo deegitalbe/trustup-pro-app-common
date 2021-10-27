@@ -11,7 +11,7 @@ use Deegitalbe\TrustupProAppCommon\AdminClientCredential;
 use Deegitalbe\TrustupProAppCommon\Observers\AccountObserver;
 use Deegitalbe\TrustupProAppCommon\Contracts\AdminClientContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\SynchronizerContract;
-use Deegitalbe\TrustupProAppCommon\Http\Middleware\AuthorizedServer;
+use Deegitalbe\ServerAuthorization\Http\Middleware\AuthorizedServer;
 
 class AppAccountServiceProvider extends ServiceProvider
 {
