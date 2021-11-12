@@ -4,17 +4,26 @@ namespace Deegitalbe\TrustupProAppCommon\Providers;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Deegitalbe\TrustupProAppCommon\Package;
+use Deegitalbe\TrustupProAppCommon\Models\User;
 use Deegitalbe\TrustupProAppCommon\Synchronizer;
 use Deegitalbe\TrustupProAppCommon\Api\AdminAppApi;
+use Deegitalbe\TrustupProAppCommon\Api\TrustupProApi;
+use Deegitalbe\TrustupProAppCommon\Models\Professional;
 use Henrotaym\LaravelApiClient\Contracts\ClientContract;
 use Deegitalbe\TrustupProAppCommon\Api\Client\AdminClient;
+use Deegitalbe\TrustupProAppCommon\Contracts\UserContract;
 use Deegitalbe\TrustupProAppCommon\Observers\AccountObserver;
+use Deegitalbe\TrustupProAppCommon\Api\Client\TrustupProClient;
+use Deegitalbe\TrustupProAppCommon\Contracts\ProfessionalContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\SynchronizerContract;
 use Deegitalbe\ServerAuthorization\Http\Middleware\AuthorizedServer;
 use Deegitalbe\TrustupProAppCommon\Facades\Package as PackageFacade;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\AdminAppApiContract;
+use Deegitalbe\TrustupProAppCommon\Api\Credential\TrustupProCredential;
+use Deegitalbe\TrustupProAppCommon\Contracts\Api\TrustupProApiContract;
 use Deegitalbe\TrustupProAppCommon\Api\Credential\AdminClientCredential;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\Client\AdminClientContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\Api\Client\TrustupProClientContract;
 use Deegitalbe\TrustupVersionedPackage\Contracts\VersionedPackageCheckerContract;
 
 class AppAccountServiceProvider extends ServiceProvider
@@ -28,8 +37,11 @@ class AppAccountServiceProvider extends ServiceProvider
     {
         $this->registerPackageFacade()
             ->registerConfig()
+            ->registerTrustupProApi()
             ->registerAdminAppApi()
             ->registerSynchronizer()
+            ->registerModels();
+    }
 
     /**
      * Registering package facade.
@@ -57,6 +69,21 @@ class AppAccountServiceProvider extends ServiceProvider
         return $this;
     }
 
+    /**
+     * Registering trustup pro API.
+     * 
+     * @return self
+     */
+    protected function registerTrustupProApi(): self
+    {
+        $this->app->bind(TrustupProClientContract::class, function($app) {
+            return new TrustupProClient(new TrustupProCredential);
+        });
+
+        $this->app->bind(TrustupProApiContract::class, TrustupProApi::class);
+
+        return $this;
+    }
 
     /**
      * Registering admin.trustup.pro app API.
@@ -86,6 +113,19 @@ class AppAccountServiceProvider extends ServiceProvider
         return $this;
     }
 
+    /**
+     * Registering models.
+     * 
+     * @return self
+     */
+    protected function registerModels(): self
+    {
+        $this->app->bind(UserContract::class, User::class);
+        $this->app->bind(ProfessionalContract::class, Professional::class);
+
+        return $this;
+    }
+    
     /**
      * Booting provider.
      * 
