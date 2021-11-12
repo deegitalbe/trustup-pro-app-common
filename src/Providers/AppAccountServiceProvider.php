@@ -64,7 +64,7 @@ class AppAccountServiceProvider extends ServiceProvider
      */
     protected function registerConfig(): self
     {
-        $this->mergeConfigFrom($this->getConfigPath(), Package::getPrefix());
+        $this->mergeConfigFrom($this->getConfigPath(), PackageFacade::getPrefix());
 
         return $this;
     }
@@ -147,7 +147,7 @@ class AppAccountServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()):
             $this->publishes([
-              $this->getConfigPath() => config_path(Package::getPrefix().'.php'),
+              $this->getConfigPath() => config_path(PackageFacade::getPrefix().'.php'),
             ], 'config');
         endif;
 
