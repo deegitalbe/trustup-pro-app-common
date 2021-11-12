@@ -4,50 +4,121 @@ namespace Deegitalbe\TrustupProAppCommon\Providers;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Deegitalbe\TrustupProAppCommon\Package;
-use Deegitalbe\TrustupProAppCommon\AdminClient;
 use Deegitalbe\TrustupProAppCommon\Synchronizer;
 use Deegitalbe\TrustupProAppCommon\Api\AdminAppApi;
 use Henrotaym\LaravelApiClient\Contracts\ClientContract;
-use Deegitalbe\TrustupProAppCommon\AdminClientCredential;
+use Deegitalbe\TrustupProAppCommon\Api\Client\AdminClient;
 use Deegitalbe\TrustupProAppCommon\Observers\AccountObserver;
-use Deegitalbe\TrustupProAppCommon\Contracts\AdminClientContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\SynchronizerContract;
 use Deegitalbe\ServerAuthorization\Http\Middleware\AuthorizedServer;
 use Deegitalbe\TrustupProAppCommon\Facades\Package as PackageFacade;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\AdminAppApiContract;
+use Deegitalbe\TrustupProAppCommon\Api\Credential\AdminClientCredential;
+use Deegitalbe\TrustupProAppCommon\Contracts\Api\Client\AdminClientContract;
 use Deegitalbe\TrustupVersionedPackage\Contracts\VersionedPackageCheckerContract;
 
 class AppAccountServiceProvider extends ServiceProvider
 {
+    /**
+     * Provider register method
+     * 
+     * @return void
+     */
     public function register()
     {
-        $this->registerConfig();
+        $this->registerPackageFacade()
+            ->registerConfig()
+            ->registerAdminAppApi()
+            ->registerSynchronizer()
 
+    /**
+     * Registering package facade.
+     * 
+     * @return self
+     */
+    protected function registerPackageFacade(): self
+    {
+        $this->app->bind(Package::$prefix, function($app) {
+            return $app->make(Package::class);
+        });
+
+        return $this;
+    }
+
+    /**
+     * Registering package configuration.
+     * 
+     * @return self
+     */
+    protected function registerConfig(): self
+    {
+        $this->mergeConfigFrom($this->getConfigPath(), Package::getPrefix());
+
+        return $this;
+    }
+
+
+    /**
+     * Registering admin.trustup.pro app API.
+     * 
+     * @return self
+     */
+    protected function registerAdminAppApi(): self
+    {
         $this->app->bind(AdminClientContract::class, function($app) {
             return new AdminClient(new AdminClientCredential);
         });
-        $this->app->bind(SynchronizerContract::class, Synchronizer::class);
+
         $this->app->bind(AdminAppApiContract::class, AdminAppApi::class);
-        $this->app->bind('trustup_pro_app_common', function($app) {
-            return $app->make(Package::class);
-        });
+
+        return $this;
     }
 
+    /**
+     * Registering account synchronizer.
+     * 
+     * @return self
+     */
+    protected function registerSynchronizer(): self
+    {
+        $this->app->bind(SynchronizerContract::class, Synchronizer::class);
+
+        return $this;
+    }
+
+    /**
+     * Booting provider.
+     * 
+     * @return void
+     */
     public function boot()
     {
         $this->makeConfigPublishable()
             ->loadRoutes()
-            ->registerPackage();
+            ->registerPackageAsVersioned();
     }
 
-    protected function registerPackage(): self
+    /**
+     * Making config publishable.
+     * 
+     * @return self
+     */
+    protected function makeConfigPublishable(): self
     {
-        app()->make(VersionedPackageCheckerContract::class)
-            ->addPackage(PackageFacade::getFacadeRoot());
-        
+        if ($this->app->runningInConsole()):
+            $this->publishes([
+              $this->getConfigPath() => config_path(Package::getPrefix().'.php'),
+            ], 'config');
+        endif;
+
         return $this;
     }
 
+    /**
+     * Loading routes.
+     * 
+     * @return self
+     */
     protected function loadRoutes(): self
     {
         Route::group([
@@ -61,24 +132,24 @@ class AppAccountServiceProvider extends ServiceProvider
         return $this;
     }
 
-    protected function registerConfig(): self
+    /**
+     * Registering package to versioned package checker.
+     * 
+     * @return self
+     */
+    protected function registerPackageAsVersioned(): self
     {
-        $this->mergeConfigFrom($this->getConfigPath(), 'trustup_pro_app_common');
-
+        app()->make(VersionedPackageCheckerContract::class)
+            ->addPackage(PackageFacade::getFacadeRoot());
+        
         return $this;
     }
 
-    protected function makeConfigPublishable(): self
-    {
-        if ($this->app->runningInConsole()):
-            $this->publishes([
-              $this->getConfigPath() => config_path('trustup_pro_app_common.php'),
-            ], 'config');
-        endif;
-
-        return $this;
-    }
-
+    /**
+     * Getting path to config.
+     * 
+     * @return string
+     */
     protected function getConfigPath(): string
     {
         return __DIR__.'/../config/config.php';
