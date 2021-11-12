@@ -104,15 +104,15 @@ class Package implements VersionedPackageContract
      */
     public function getVersion(): string
     {
-        return "1.4.2";
+        return "1.4.3";
     }
 
     /**
      * Getting tenancy environment.
      * 
-     * @return Hyn\Tenancy\Environment
+     * @return \Hyn\Tenancy\Environment
      */
-    public function environment(): Hyn\Tenancy\Environment
+    public function environment(): \Hyn\Tenancy\Environment
     {
         return app()->make(\Hyn\Tenancy\Environment::class);
     }
