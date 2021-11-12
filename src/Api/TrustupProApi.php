@@ -104,7 +104,7 @@ class TrustupProApi implements TrustupProApiContract
      */
     protected function getExpectedAccount(?string $account_uuid): ?AccountContract
     {
-        $account_uuid = $account_uuid || request()->header(Package::requestedAccountHeader());
+        $account_uuid = $account_uuid ?? request()->header(Package::requestedAccountHeader());
         
         if (!$account_uuid):
             return $this->expectedAccountNotFound($account_uuid);
