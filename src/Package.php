@@ -9,6 +9,8 @@ use Deegitalbe\TrustupProAppCommon\Exceptions\Config\NoAuthorizationKeyException
 
 class Package implements VersionedPackageContract
 {
+    public static $prefix = "trustup_pro_app_common";
+
     /**
      * Account model className.
      * 
@@ -16,7 +18,12 @@ class Package implements VersionedPackageContract
      */
     public function account(): string
     {
-        return config('trustup_pro_app_common.account_model');
+        return $this->config('account_model');
+    }
+
+    public function appKey(): string
+    {
+        return $this->config('app_key');
     }
 
     /**
@@ -26,7 +33,18 @@ class Package implements VersionedPackageContract
      */
     public function adminUrl(): string
     {
-        return config('trustup_pro_app_common.admin_url');
+        return $this->config('admin_url');
+    }
+
+    /**
+     * Admin url.
+     * 
+     * @return string
+     */
+    public function trustupProUrl(): string
+    {
+        return $this->config('trustup_pro_url');
+    }
     }
 
     /**
@@ -65,6 +83,27 @@ class Package implements VersionedPackageContract
      */
     public function getName(): string
     {
-        return "trustup-pro-app-common";
+        return str_replace('_', '-', self::$prefix);
+    }
+
+    /**
+     *  Getting package prefix.
+     * 
+     * @return string
+     */
+    public function getPrefix(): string
+    {
+        return self::$prefix;
+    }
+    
+    /**
+     * Getting config value.
+     * 
+     * @param string $key
+     * @return mixed
+     */
+    public function config(string $key = '')
+    {
+        return config($this->getPrefix() . ($key ? ".$key" : ""));
     }
 }
