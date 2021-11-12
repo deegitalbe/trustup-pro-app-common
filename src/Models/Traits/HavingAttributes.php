@@ -1,7 +1,7 @@
 <?php
 namespace Deegitalbe\TrustupProAppCommon\Models\Traits;
 
-trait havingAttributes
+trait HavingAttributes
 {
     /**
      * Setting model based on given attributes.
