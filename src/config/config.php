@@ -26,4 +26,13 @@ return [
      */
     "server_authorization_key" => env("TRUSTUP_SERVER_AUTHORIZATION"),
     
+    /**
+     * Header containing trustup authorization token.
+     */
+    "trustup_token_header" => env('TRUSTUP_AUTHORIZATION_TOKEN', 'X-TRUSTUP-AUTHORIZATION'),
+    
+    /**
+     * Header containing request account uuid.
+     */
+    "requested_account_header" => env('REQUESTED_ACCOUNT_HEADER', 'X-ACCOUNT-UUID')
 ];

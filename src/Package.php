@@ -45,6 +45,25 @@ class Package implements VersionedPackageContract
     {
         return $this->config('trustup_pro_url');
     }
+
+    /**
+     * Getting trustup auth header name.
+     * 
+     * @return string
+     */
+    public function trustupAuthorizationHeader(): string
+    {
+        return $this->config('trustup_token_header');
+    }
+
+    /**
+     * Getting header defining which account should be requested.
+     * 
+     * @return string
+     */
+    public function requestedAccountHeader()
+    {
+        return $this->config('requested_account_header');
     }
 
     /**
@@ -73,7 +92,7 @@ class Package implements VersionedPackageContract
      */
     public function getVersion(): string
     {
-        return "1.2.2";
+        return "1.3.0";
     }
 
     /**
