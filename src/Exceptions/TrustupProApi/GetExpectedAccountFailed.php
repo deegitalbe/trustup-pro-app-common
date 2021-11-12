@@ -10,7 +10,28 @@ class GetExpectedAccountFailed extends Exception {
      * 
      * @var string
      */
-    protected $message = "Getting expected account from request failed.";
+    protected $message = "No account found matching given uuid.";
+
+    /**
+     * Account uuid that was searched.
+     * 
+     * @var string|null
+     */
+    protected $account_uuid;
+
+    /**
+     * Constructing exception.
+     * 
+     * @param string|null $account_uuid
+     * @return self
+     */
+    public static function forUuid(?string $account_uuid): self
+    {
+        $instance = new self();
+        $instance->account_uuid = $account_uuid;
+        
+        return $instance;
+    }
 
     /**
      * Exception context.
@@ -20,7 +41,7 @@ class GetExpectedAccountFailed extends Exception {
     public function context()
     {
         return [
-            'expected_account_uuid' => request()->header(Package::requestedAccountHeader())
+            'account_uuid' => $this->account_uuid
         ];
     }
 }

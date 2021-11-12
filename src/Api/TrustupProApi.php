@@ -60,10 +60,10 @@ class TrustupProApi implements TrustupProApiContract
     /**
      * Getting account linked to current request.
      * 
-     * @param Request $request
+     * @param string|null $uuid If null, account header will be used.
      * @return Account|null Null if any error occured.
      */
-    public function getAccount(): ?AccountContract
+    public function getAccount(?string $account_uuid = null): ?AccountContract
     {
         $user = $this->getUser();
         
@@ -71,7 +71,7 @@ class TrustupProApi implements TrustupProApiContract
             return null;
         endif;
         
-        $account = $this->getExpectedAccount();
+        $account = $this->getExpectedAccount($account_uuid);
 
         if (!$account):
             return null;
@@ -97,34 +97,35 @@ class TrustupProApi implements TrustupProApiContract
     }
 
     /**
-     * Getting expected account from current request.
+     * Getting expected account for current request.
      * 
-     * @param Request $request
+     * @param string|null $account_uuid If null, account header will be used.
      * @return Account|null Null if not found.
      */
-    protected function getExpectedAccount(): ?AccountContract
+    protected function getExpectedAccount(?string $account_uuid): ?AccountContract
     {
-        $account_uuid = request()->header(Package::requestedAccountHeader());
+        $account_uuid = $account_uuid || request()->header(Package::requestedAccountHeader());
         
         if (!$account_uuid):
-            return $this->expectedAccountNotFound();
+            return $this->expectedAccountNotFound($account_uuid);
         endif;
 
         $account = Package::account()::firstMatchingUuid($account_uuid);
 
         if ($account):
-            return $this->expectedAccountNotFound();
+            return $this->expectedAccountNotFound($account_uuid);
         endif;
     }
 
     /**
      * Behavior when account is not found.
      * 
+     * @param string|null $account_uuid
      * @return null
      */
-    protected function expectedAccountNotFound()
+    protected function expectedAccountNotFound(?string $account_uuid)
     {
-        report(new GetExpectedAccountFailed);
+        report(GetExpectedAccountFailed::forUuid($account_uuid));
         
         return null;
     }

@@ -24,11 +24,16 @@ class UserHavingAccessToAccount
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
+     * @param string|null If defined, we'll try to get account based on this route parameter instead of header.
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, $route_parameter = null)
     {
-        if (!$account = $this->api->getAccount()):
+        $account_uuid = $route_parameter
+            ? $request->route()->parameter($route_parameter)
+            : null;
+            
+        if (!$account = $this->api->getAccount($account_uuid)):
             return response("You don't have access to this account.", 403);
         endif;
 

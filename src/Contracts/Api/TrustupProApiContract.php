@@ -24,8 +24,8 @@ interface TrustupProApiContract
     /**
      * Getting account linked to current request.
      * 
-     * @param Request $request
+     * @param string|null $uuid If null, account header will be used.
      * @return Account|null Null if any error occured.
      */
-    public function getAccount(): ?AccountContract;
+    public function getAccount(?string $uuid = null): ?AccountContract;
 }
