@@ -112,9 +112,11 @@ class TrustupProApi implements TrustupProApiContract
 
         $account = Package::account()::firstMatchingUuid($account_uuid);
 
-        if ($account):
+        if (!$account):
             return $this->expectedAccountNotFound($account_uuid);
         endif;
+
+        return $account;
     }
 
     /**
