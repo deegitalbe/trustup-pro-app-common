@@ -8,7 +8,6 @@ use Deegitalbe\TrustupProAppCommon\Package;
 use Deegitalbe\TrustupProAppCommon\Models\User;
 use Deegitalbe\TrustupProAppCommon\Synchronizer;
 use Deegitalbe\TrustupProAppCommon\Api\AdminAppApi;
-use App\Http\Middleware\SettingAccountAsEnvironment;
 use Deegitalbe\TrustupProAppCommon\Api\TrustupProApi;
 use Deegitalbe\TrustupProAppCommon\Models\Professional;
 use Henrotaym\LaravelApiClient\Contracts\ClientContract;
@@ -26,6 +25,7 @@ use Deegitalbe\TrustupProAppCommon\Contracts\Api\TrustupProApiContract;
 use Deegitalbe\TrustupProAppCommon\Api\Credential\AdminClientCredential;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\Client\AdminClientContract;
 use Deegitalbe\TrustupProAppCommon\Http\Middleware\UserHavingAccessToAccount;
+use Deegitalbe\TrustupProAppCommon\Http\Middleware\SettingAccountAsEnvironment;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\Client\TrustupProClientContract;
 use Deegitalbe\TrustupVersionedPackage\Contracts\VersionedPackageCheckerContract;
 

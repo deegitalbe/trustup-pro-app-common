@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace Deegitalbe\TrustupProAppCommon\Http\Middleware;
 
 use Closure;
 use Hyn\Tenancy\Environment;
