@@ -2,6 +2,8 @@
 namespace Deegitalbe\TrustupProAppCommon\Models;
 
 use Illuminate\Support\Carbon;
+use Deegitalbe\TrustupProAppCommon\Facades\Package;
+use Deegitalbe\TrustupProAppCommon\Contracts\AccountContract;
 use Deegitalbe\TrustupProAppCommon\Models\SynchronizeWhenSaved;
 
 /**
@@ -26,7 +28,7 @@ trait Synchronizable
      */
     public function getAppKey(): string
     {
-        return config('trustup_pro_app_common.app_key');
+        return Package::appKey();
     }
 
     /**
@@ -63,5 +65,18 @@ trait Synchronizable
     public function getCreatedAt(): Carbon
     {
         return $this->created_at ?? now();
+    }
+
+    /**
+     * Getting first account matching given uuid.
+     * 
+     * @param string $uuid
+     * @return AccountContract|null Null if no account found.
+     */
+    public static function firstMatchingUuid(string $uuid): ?AccountContract
+    {
+        return self::query()
+            ->where('uuid', $uuid)
+            ->first();
     }
 }
