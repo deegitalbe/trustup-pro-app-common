@@ -1,5 +1,5 @@
 <?php
-namespace Deegitalbe\TrustupProAppCommon;
+namespace Deegitalbe\TrustupProAppCommon\Api\Credential;
 
 use Deegitalbe\TrustupProAppCommon\Facades\Package;
 use Henrotaym\LaravelApiClient\Contracts\RequestContract;

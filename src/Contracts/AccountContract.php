@@ -43,4 +43,12 @@ interface AccountContract
      * @return Carbon
      */
     public function getCreatedAt(): Carbon;
+
+    /**
+     * Getting first account matching given uuid.
+     * 
+     * @param string $uuid
+     * @return AccountContract|null Null if no account found.
+     */
+    public static function firstMatchingUuid(string $uuid): ?AccountContract;
 }

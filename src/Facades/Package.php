@@ -2,11 +2,12 @@
 namespace Deegitalbe\TrustupProAppCommon\Facades;
 
 use Illuminate\Support\Facades\Facade;
+use Deegitalbe\TrustupProAppCommon\Package as UnderlyingPackage;
 
 class Package extends Facade
 {
     public static function getFacadeAccessor()
     {
-        return 'trustup_pro_app_common';
+        return UnderlyingPackage::$prefix;
     }
 }

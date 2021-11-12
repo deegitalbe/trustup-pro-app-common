@@ -1,5 +1,5 @@
 <?php
-namespace Deegitalbe\TrustupProAppCommon\Http\Controllers;
+namespace Deegitalbe\TrustupProAppCommon\Http\Controllers\Common;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;

@@ -3,7 +3,7 @@ namespace Deegitalbe\TrustupProAppCommon\Api;
 
 use Illuminate\Support\Collection;
 use Henrotaym\LaravelApiClient\Contracts\RequestContract;
-use Deegitalbe\TrustupProAppCommon\Contracts\AdminClientContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\Api\Client\AdminClientContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\AdminAppApiContract;
 use Deegitalbe\TrustupProAppCommon\Exceptions\AdminAppApi\GetAppsException;
 
