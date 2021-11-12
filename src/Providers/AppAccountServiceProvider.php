@@ -1,12 +1,14 @@
 <?php
 namespace Deegitalbe\TrustupProAppCommon\Providers;
 
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Deegitalbe\TrustupProAppCommon\Package;
 use Deegitalbe\TrustupProAppCommon\Models\User;
 use Deegitalbe\TrustupProAppCommon\Synchronizer;
 use Deegitalbe\TrustupProAppCommon\Api\AdminAppApi;
+use App\Http\Middleware\SettingAccountAsEnvironment;
 use Deegitalbe\TrustupProAppCommon\Api\TrustupProApi;
 use Deegitalbe\TrustupProAppCommon\Models\Professional;
 use Henrotaym\LaravelApiClient\Contracts\ClientContract;
@@ -23,6 +25,7 @@ use Deegitalbe\TrustupProAppCommon\Api\Credential\TrustupProCredential;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\TrustupProApiContract;
 use Deegitalbe\TrustupProAppCommon\Api\Credential\AdminClientCredential;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\Client\AdminClientContract;
+use Deegitalbe\TrustupProAppCommon\Http\Middleware\UserHavingAccessToAccount;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\Client\TrustupProClientContract;
 use Deegitalbe\TrustupVersionedPackage\Contracts\VersionedPackageCheckerContract;
 
@@ -135,7 +138,8 @@ class AppAccountServiceProvider extends ServiceProvider
     {
         $this->makeConfigPublishable()
             ->loadRoutes()
-            ->registerPackageAsVersioned();
+            ->registerPackageAsVersioned()
+            ->createAccountRelatedMiddlewareGroup();
     }
 
     /**
@@ -181,6 +185,20 @@ class AppAccountServiceProvider extends ServiceProvider
     {
         app()->make(VersionedPackageCheckerContract::class)
             ->addPackage(PackageFacade::getFacadeRoot());
+        
+        return $this;
+    }
+
+    /**
+     * Setting up accountRelated middleware group.
+     * 
+     * @return self
+     */
+    protected function createAccountRelatedMiddlewareGroup(): self
+    {
+        $router = $this->app->make(Router::class)
+            ->pushMiddlewareToGroup(PackageFacade::getAccountRelatedMiddlewareGroup(), UserHavingAccessToAccount::class)
+            ->pushMiddlewareToGroup(PackageFacade::getAccountRelatedMiddlewareGroup(), SettingAccountAsEnvironment::class);
         
         return $this;
     }

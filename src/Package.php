@@ -9,7 +9,19 @@ use Deegitalbe\TrustupProAppCommon\Exceptions\Config\NoAuthorizationKeyException
 
 class Package implements VersionedPackageContract
 {
+    /**
+     * Prefix used for this package.
+     * 
+     * @var string
+     */
     public static $prefix = "trustup_pro_app_common";
+
+    /**
+     * Account related middleware group.
+     * 
+     * @var string
+     */
+    public static $accountRelatedMiddlewareGroup = "trustup_pro_app_common_account_related";
 
     /**
      * Account model className.
@@ -92,7 +104,27 @@ class Package implements VersionedPackageContract
      */
     public function getVersion(): string
     {
-        return "1.3.4";
+        return "1.4.0";
+    }
+
+    /**
+     * Getting tenancy environment.
+     * 
+     * @return Hyn\Tenancy\Environment
+     */
+    public function environment(): Hyn\Tenancy\Environment
+    {
+        return app()->make(\Hyn\Tenancy\Environment::class);
+    }
+
+    /**
+     * Getting account middleware group.
+     * 
+     * @return string
+     */
+    public function getAccountRelatedMiddlewareGroup(): Hyn\Tenancy\Environment
+    {
+        return self::$accountRelatedMiddlewareGroup;
     }
 
     /**
