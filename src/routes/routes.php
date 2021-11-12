@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Deegitalbe\TrustupProAppCommon\Http\Middleware\AccountRelated;
-use Deegitalbe\TrustupProAppCommon\Http\Controllers\AccountController;
+use Deegitalbe\TrustupProAppCommon\Http\Controllers\Common\AccountController;
 
 /*
 |--------------------------------------------------------------------------
