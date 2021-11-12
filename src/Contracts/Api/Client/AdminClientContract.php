@@ -1,5 +1,5 @@
 <?php
-namespace Deegitalbe\TrustupProAppCommon\Contracts;
+namespace Deegitalbe\TrustupProAppCommon\Contracts\Api\Client;
 
 use Henrotaym\LaravelApiClient\Contracts\ClientContract;
 

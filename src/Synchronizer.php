@@ -6,7 +6,7 @@ use Henrotaym\LaravelApiClient\Contracts\ClientContract;
 use Henrotaym\LaravelApiClient\Contracts\RequestContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\AccountContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\SynchronizerContract;
-use Deegitalbe\TrustupProAppCommon\Contracts\AdminClientContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\Api\Client\AdminClientContract;
 use Deegitalbe\TrustupProAppCommon\Exceptions\Synchronizer\FailedRequest;
 
 /**
