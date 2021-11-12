@@ -104,7 +104,7 @@ class Package implements VersionedPackageContract
      */
     public function getVersion(): string
     {
-        return "1.4.0";
+        return "1.4.1";
     }
 
     /**
@@ -122,7 +122,7 @@ class Package implements VersionedPackageContract
      * 
      * @return string
      */
-    public function getAccountRelatedMiddlewareGroup(): Hyn\Tenancy\Environment
+    public function getAccountRelatedMiddlewareGroup(): string
     {
         return self::$accountRelatedMiddlewareGroup;
     }
