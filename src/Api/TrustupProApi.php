@@ -9,6 +9,7 @@ use Deegitalbe\TrustupProAppCommon\Contracts\UserContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\AccountContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\ProfessionalContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\TrustupProApiContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\Query\AccountQueryContract;
 use Deegitalbe\TrustupProAppCommon\Exceptions\TrustupProApi\GetUserFailed;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\Client\TrustupProClientContract;
 use Deegitalbe\TrustupProAppCommon\Exceptions\TrustupProApi\GetExpectedAccountFailed;
@@ -110,7 +111,9 @@ class TrustupProApi implements TrustupProApiContract
             return $this->expectedAccountNotFound($account_uuid);
         endif;
 
-        $account = Package::account()::firstMatchingUuid($account_uuid);
+        $account = app()->make(AccountQueryContract::class)
+            ->whereUuid($account_uuid)
+            ->first();
 
         if (!$account):
             return $this->expectedAccountNotFound($account_uuid);

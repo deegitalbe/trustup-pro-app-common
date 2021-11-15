@@ -13,6 +13,8 @@ use Deegitalbe\TrustupProAppCommon\Models\Professional;
 use Henrotaym\LaravelApiClient\Contracts\ClientContract;
 use Deegitalbe\TrustupProAppCommon\Api\Client\AdminClient;
 use Deegitalbe\TrustupProAppCommon\Contracts\UserContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\AccountContract;
+use Deegitalbe\TrustupProAppCommon\Models\Query\AccountQuery;
 use Deegitalbe\TrustupProAppCommon\Observers\AccountObserver;
 use Deegitalbe\TrustupProAppCommon\Api\Client\TrustupProClient;
 use Deegitalbe\TrustupProAppCommon\Contracts\ProfessionalContract;
@@ -23,6 +25,7 @@ use Deegitalbe\TrustupProAppCommon\Contracts\Api\AdminAppApiContract;
 use Deegitalbe\TrustupProAppCommon\Api\Credential\TrustupProCredential;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\TrustupProApiContract;
 use Deegitalbe\TrustupProAppCommon\Api\Credential\AdminClientCredential;
+use Deegitalbe\TrustupProAppCommon\Contracts\Query\AccountQueryContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\Client\AdminClientContract;
 use Deegitalbe\TrustupProAppCommon\Http\Middleware\UserHavingAccessToAccount;
 use Deegitalbe\TrustupProAppCommon\Http\Middleware\SettingAccountAsEnvironment;
@@ -43,7 +46,8 @@ class AppAccountServiceProvider extends ServiceProvider
             ->registerTrustupProApi()
             ->registerAdminAppApi()
             ->registerSynchronizer()
-            ->registerModels();
+            ->registerModels()
+            ->registerQueryBuilders();
     }
 
     /**
@@ -123,8 +127,21 @@ class AppAccountServiceProvider extends ServiceProvider
      */
     protected function registerModels(): self
     {
+        $this->app->bind(AccountContract::class, PackageFacade::account());
         $this->app->bind(UserContract::class, User::class);
         $this->app->bind(ProfessionalContract::class, Professional::class);
+
+        return $this;
+    }
+
+    /**
+     * Registering models query builders.
+     * 
+     * @return self
+     */
+    protected function registerQueryBuilders(): self
+    {
+        $this->app->bind(AccountQueryContract::class, AccountQuery::class);
 
         return $this;
     }

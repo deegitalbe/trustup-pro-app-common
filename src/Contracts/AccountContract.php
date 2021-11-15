@@ -2,6 +2,7 @@
 namespace Deegitalbe\TrustupProAppCommon\Contracts;
 
 use Illuminate\Support\Carbon;
+use Deegitalbe\TrustupProAppCommon\Contracts\Query\AccountQueryContract;
 
 /**
  * Representing an account that's storable.
@@ -43,12 +44,4 @@ interface AccountContract
      * @return Carbon
      */
     public function getCreatedAt(): Carbon;
-
-    /**
-     * Getting first account matching given uuid.
-     * 
-     * @param string $uuid
-     * @return AccountContract|null Null if no account found.
-     */
-    public static function firstMatchingUuid(string $uuid): ?AccountContract;
 }
