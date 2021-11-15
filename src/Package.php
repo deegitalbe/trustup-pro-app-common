@@ -99,7 +99,7 @@ class Package implements VersionedPackageContract
      */
     public function getVersion(): string
     {
-        return "1.5.1";
+        return "1.5.2";
     }
 
     /**
@@ -115,22 +115,29 @@ class Package implements VersionedPackageContract
     /**
      * Getting account environment middleware.
      * 
-     * @return string
+     * @param string|null $account_uuid_route_parameter if null, requested account header will be used.
+     * @return array
      */
-    public function accountEnvironmentMiddleware(): string
+    public function accountEnvironmentMiddleware(string $account_uuid_route_parameter = null): array
     {
-        return $this->getPrefix() . '_account_environment_middleware';
+        return [
+            ...$this->userAccountAccessMiddleware($account_uuid_route_parameter),
+            SettingAccountAsEnvironment::class
+        ];
     }
 
     /**
      * Getting user account access middleware.
      * 
-     * @param string|null $account_route_parameter if null, requested account header will be used.
-     * @return string
+     * @param string|null $account_uuid_route_parameter if null, requested account header will be used.
+     * @return array
      */
-    public function userAccountAccessMiddleware(string $account_route_parameter = null): string
+    public function userAccountAccessMiddleware(string $account_uuid_route_parameter = null): array
     {
-        return $this->getPrefix() . 'user_account_access' . ($account_route_parameter ? ":$account_route_parameter" : "");
+        return [
+            $this->authenticatedUserMiddleware(),
+            UserHavingAccessToAccount::class . ($account_uuid_route_parameter ? ":$account_uuid_route_parameter" : "")
+        ];
     }
 
     /**

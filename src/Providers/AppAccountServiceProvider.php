@@ -156,9 +156,7 @@ class AppAccountServiceProvider extends ServiceProvider
     {
         $this->makeConfigPublishable()
             ->loadRoutes()
-            ->registerPackageAsVersioned()
-            ->createAccountEnvironmentMiddleware()
-            ->createUserAccountAccessMiddleware();
+            ->registerPackageAsVersioned();
     }
 
     /**
@@ -204,35 +202,6 @@ class AppAccountServiceProvider extends ServiceProvider
     {
         app()->make(VersionedPackageCheckerContract::class)
             ->addPackage(PackageFacade::getFacadeRoot());
-        
-        return $this;
-    }
-
-    /**
-     * Setting up account environment middleware group.
-     * 
-     * @return self
-     */
-    protected function createAccountEnvironmentMiddleware(): self
-    {
-        $router = $this->app->make(Router::class)
-            ->pushMiddlewareToGroup(PackageFacade::accountEnvironmentMiddleware(), AuthenticatedUser::class)
-            ->pushMiddlewareToGroup(PackageFacade::accountEnvironmentMiddleware(), UserHavingAccessToAccount::class)
-            ->pushMiddlewareToGroup(PackageFacade::accountEnvironmentMiddleware(), SettingAccountAsEnvironment::class);
-        
-        return $this;
-    }
-
-    /**
-     * Setting up user account access middleware group.
-     * 
-     * @return self
-     */
-    protected function createUserAccountAccessMiddleware(): self
-    {
-        $router = $this->app->make(Router::class)
-            ->pushMiddlewareToGroup(PackageFacade::userAccountAccessMiddleware(), AuthenticatedUser::class)
-            ->pushMiddlewareToGroup(PackageFacade::userAccountAccessMiddleware(), UserHavingAccessToAccount::class);
         
         return $this;
     }
