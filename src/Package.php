@@ -7,6 +7,7 @@ use Deegitalbe\TrustupProAppCommon\Http\Middleware\AuthenticatedUser;
 use Deegitalbe\TrustupVersionedPackage\Contracts\Project\ProjectContract;
 use Deegitalbe\TrustupVersionedPackage\Contracts\VersionedPackageContract;
 use Deegitalbe\TrustupProAppCommon\Http\Middleware\UserHavingAccessToAccount;
+use Deegitalbe\TrustupProAppCommon\Http\Middleware\SettingAccountAsEnvironment;
 use Deegitalbe\TrustupProAppCommon\Exceptions\Config\NoAuthorizationKeyException;
 
 class Package implements VersionedPackageContract
@@ -99,7 +100,7 @@ class Package implements VersionedPackageContract
      */
     public function getVersion(): string
     {
-        return "1.5.2";
+        return "1.5.3";
     }
 
     /**
