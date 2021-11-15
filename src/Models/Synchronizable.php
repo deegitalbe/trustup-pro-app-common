@@ -13,6 +13,15 @@ use Deegitalbe\TrustupProAppCommon\Contracts\Query\AccountQueryContract;
 trait Synchronizable
 {
     use SynchronizeWhenSaved;
+
+    /**
+     * Account database id.
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
     
     /**
      * Account uuid that should be used to retrieve account details.

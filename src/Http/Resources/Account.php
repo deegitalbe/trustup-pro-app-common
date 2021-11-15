@@ -14,6 +14,7 @@ class Account extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->getId(),
             'uuid' => $this->getUuid(),
             'authorization_key' => $this->getAuthorizationKey(),
             'app_key' => $this->getAppKey(),

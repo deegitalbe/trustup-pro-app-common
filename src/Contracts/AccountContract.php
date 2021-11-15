@@ -10,6 +10,12 @@ use Deegitalbe\TrustupProAppCommon\Contracts\Query\AccountQueryContract;
 interface AccountContract
 {
     /**
+     * Account database id.
+     * @return int
+     */
+    public function getId(): int;
+
+    /**
      * Account uuid that should be used to retrieve account details.
      * @return string
      */
