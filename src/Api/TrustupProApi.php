@@ -64,11 +64,9 @@ class TrustupProApi implements TrustupProApiContract
      * @param string|null $uuid If null, account header will be used.
      * @return Account|null Null if any error occured.
      */
-    public function getAccount(?string $account_uuid = null): ?AccountContract
-    {
-        $user = $this->getUser();
-        
-        if (!$user):
+    public function getAccount(?string $account_uuid = null, ?UserContract $user = null): ?AccountContract
+    {        
+        if (!$user = $user ?? $this->getUser()):
             return null;
         endif;
         

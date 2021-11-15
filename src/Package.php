@@ -3,6 +3,7 @@ namespace Deegitalbe\TrustupProAppCommon;
 
 use Illuminate\Support\Collection;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\AdminAppApiContract;
+use Deegitalbe\TrustupProAppCommon\Http\Middleware\AuthenticatedUser;
 use Deegitalbe\TrustupVersionedPackage\Contracts\Project\ProjectContract;
 use Deegitalbe\TrustupVersionedPackage\Contracts\VersionedPackageContract;
 use Deegitalbe\TrustupProAppCommon\Http\Middleware\UserHavingAccessToAccount;
@@ -98,7 +99,7 @@ class Package implements VersionedPackageContract
      */
     public function getVersion(): string
     {
-        return "1.5.0";
+        return "1.5.1";
     }
 
     /**
@@ -112,23 +113,34 @@ class Package implements VersionedPackageContract
     }
 
     /**
-     * Getting account middleware group.
+     * Getting account environment middleware.
      * 
      * @return string
      */
     public function accountEnvironmentMiddleware(): string
     {
-        return $this->getPrefix() . '_account_middleware';
+        return $this->getPrefix() . '_account_environment_middleware';
     }
 
     /**
-     * Getting user account access checker middleware.
+     * Getting user account access middleware.
+     * 
+     * @param string|null $account_route_parameter if null, requested account header will be used.
+     * @return string
+     */
+    public function userAccountAccessMiddleware(string $account_route_parameter = null): string
+    {
+        return $this->getPrefix() . 'user_account_access' . ($account_route_parameter ? ":$account_route_parameter" : "");
+    }
+
+    /**
+     * Getting authenticated user middleware.
      * 
      * @return string
      */
-    public function userAccountAccessMiddleware(string $route_parameter = null): string
+    public function authenticatedUserMiddleware(): string
     {
-        return UserHavingAccessToAccount::class . ($route_parameter ? ":$route_parameter" : "");
+        return AuthenticatedUser::class;
     }
 
     /**

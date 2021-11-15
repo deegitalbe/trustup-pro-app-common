@@ -33,7 +33,7 @@ class UserHavingAccessToAccount
             ? $request->route()->parameter($route_parameter)
             : null;
             
-        if (!$account = $this->api->getAccount($account_uuid)):
+        if (!$account = $this->api->getAccount($account_uuid, $request->authenticated_user)):
             return response("You don't have access to this account.", 403);
         endif;
 

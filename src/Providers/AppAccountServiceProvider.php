@@ -22,6 +22,7 @@ use Deegitalbe\TrustupProAppCommon\Contracts\SynchronizerContract;
 use Deegitalbe\ServerAuthorization\Http\Middleware\AuthorizedServer;
 use Deegitalbe\TrustupProAppCommon\Facades\Package as PackageFacade;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\AdminAppApiContract;
+use Deegitalbe\TrustupProAppCommon\Http\Middleware\AuthenticatedUser;
 use Deegitalbe\TrustupProAppCommon\Api\Credential\TrustupProCredential;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\TrustupProApiContract;
 use Deegitalbe\TrustupProAppCommon\Api\Credential\AdminClientCredential;
@@ -156,7 +157,8 @@ class AppAccountServiceProvider extends ServiceProvider
         $this->makeConfigPublishable()
             ->loadRoutes()
             ->registerPackageAsVersioned()
-            ->createAccountEnvironmentMiddleware();
+            ->createAccountEnvironmentMiddleware()
+            ->createUserAccountAccessMiddleware();
     }
 
     /**
@@ -207,15 +209,30 @@ class AppAccountServiceProvider extends ServiceProvider
     }
 
     /**
-     * Setting up accountRelated middleware group.
+     * Setting up account environment middleware group.
      * 
      * @return self
      */
     protected function createAccountEnvironmentMiddleware(): self
     {
         $router = $this->app->make(Router::class)
+            ->pushMiddlewareToGroup(PackageFacade::accountEnvironmentMiddleware(), AuthenticatedUser::class)
             ->pushMiddlewareToGroup(PackageFacade::accountEnvironmentMiddleware(), UserHavingAccessToAccount::class)
             ->pushMiddlewareToGroup(PackageFacade::accountEnvironmentMiddleware(), SettingAccountAsEnvironment::class);
+        
+        return $this;
+    }
+
+    /**
+     * Setting up user account access middleware group.
+     * 
+     * @return self
+     */
+    protected function createUserAccountAccessMiddleware(): self
+    {
+        $router = $this->app->make(Router::class)
+            ->pushMiddlewareToGroup(PackageFacade::userAccountAccessMiddleware(), AuthenticatedUser::class)
+            ->pushMiddlewareToGroup(PackageFacade::userAccountAccessMiddleware(), UserHavingAccessToAccount::class);
         
         return $this;
     }
