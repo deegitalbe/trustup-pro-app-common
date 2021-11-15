@@ -139,7 +139,7 @@ class AppAccountServiceProvider extends ServiceProvider
         $this->makeConfigPublishable()
             ->loadRoutes()
             ->registerPackageAsVersioned()
-            ->createAccountRelatedMiddlewareGroup();
+            ->createAccountEnvironmentMiddleware();
     }
 
     /**
@@ -194,11 +194,11 @@ class AppAccountServiceProvider extends ServiceProvider
      * 
      * @return self
      */
-    protected function createAccountRelatedMiddlewareGroup(): self
+    protected function createAccountEnvironmentMiddleware(): self
     {
         $router = $this->app->make(Router::class)
-            ->pushMiddlewareToGroup(PackageFacade::getAccountRelatedMiddlewareGroup(), UserHavingAccessToAccount::class)
-            ->pushMiddlewareToGroup(PackageFacade::getAccountRelatedMiddlewareGroup(), SettingAccountAsEnvironment::class);
+            ->pushMiddlewareToGroup(PackageFacade::accountEnvironmentMiddleware(), UserHavingAccessToAccount::class)
+            ->pushMiddlewareToGroup(PackageFacade::accountEnvironmentMiddleware(), SettingAccountAsEnvironment::class);
         
         return $this;
     }

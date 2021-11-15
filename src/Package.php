@@ -5,6 +5,7 @@ use Illuminate\Support\Collection;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\AdminAppApiContract;
 use Deegitalbe\TrustupVersionedPackage\Contracts\Project\ProjectContract;
 use Deegitalbe\TrustupVersionedPackage\Contracts\VersionedPackageContract;
+use Deegitalbe\TrustupProAppCommon\Http\Middleware\UserHavingAccessToAccount;
 use Deegitalbe\TrustupProAppCommon\Exceptions\Config\NoAuthorizationKeyException;
 
 class Package implements VersionedPackageContract
@@ -15,13 +16,6 @@ class Package implements VersionedPackageContract
      * @var string
      */
     public static $prefix = "trustup_pro_app_common";
-
-    /**
-     * Account related middleware group.
-     * 
-     * @var string
-     */
-    public static $accountRelatedMiddlewareGroup = "trustup_pro_app_common_account_related";
 
     /**
      * Account model className.
@@ -104,7 +98,7 @@ class Package implements VersionedPackageContract
      */
     public function getVersion(): string
     {
-        return "1.4.3";
+        return "1.5.0";
     }
 
     /**
@@ -122,9 +116,19 @@ class Package implements VersionedPackageContract
      * 
      * @return string
      */
-    public function getAccountRelatedMiddlewareGroup(): string
+    public function accountEnvironmentMiddleware(): string
     {
-        return self::$accountRelatedMiddlewareGroup;
+        return $this->getPrefix() . '_account_middleware';
+    }
+
+    /**
+     * Getting user account access checker middleware.
+     * 
+     * @return string
+     */
+    public function userAccountAccessMiddleware(string $route_parameter = null): string
+    {
+        return UserHavingAccessToAccount::class . ($route_parameter ? ":$route_parameter" : "");
     }
 
     /**
