@@ -26,10 +26,7 @@ class HostnameProjector extends Projector
         $repository->create($hostname);
         $account = $this->getAccount($event);
 
-        $repository->attach(
-            $hostname, 
-            $account
-        );
+        $repository->attach($hostname, $account);
     }
 
     /**
