@@ -53,8 +53,7 @@ class AppAccountServiceProvider extends ServiceProvider
             ->registerModels()
             ->registerQueryBuilders()
             ->registerAuthenticationRelated()
-            ->registerStoringAccountService()
-            ->registerProjectors();
+            ->registerStoringAccountService();
     }
 
     /**
@@ -176,53 +175,6 @@ class AppAccountServiceProvider extends ServiceProvider
 
         return $this;
     }
-
-
-    /**
-     * Registering projectors used by this package.
-     * 
-     * @see https://spatie.be/docs/laravel-event-sourcing for more details.
-     * @return self
-     */
-    protected function registerProjectors()
-    {
-        $this->defineSpatieRelatedAliases();
-        $facade = PackageFacade::spatieEventSourcingFacade();
-
-        if(!class_exists($facade)):
-            return $this;
-        endif;
-
-        $facade::addProjectors([
-            AccountProjector::class,
-            HostnameProjector::class
-        ]);
-
-        return $this;
-    }
-
-    /**
-     * Registering spatie related aliases.
-     * 
-     * It was needed since our applications do not use same spatie package version.
-     * 
-     * @return self
-     */
-    protected function defineSpatieRelatedAliases()
-    {
-        collect([
-            \Deegitalbe\TrustupProAppCommon\Events\ProjectorEvent::class => PackageFacade::spatieEventSourcingEvent(),
-            \Deegitalbe\TrustupProAppCommon\Projectors\Projector::class => PackageFacade::spatieEventSourcingProjector()
-        ])
-            ->each(function($class, $alias) {
-                if (!class_exists($class)):
-                    return;
-                endif;
-                class_alias($class, $alias);
-            });
-
-        return $this;
-    }
     
     /**
      * Booting provider.
@@ -233,6 +185,7 @@ class AppAccountServiceProvider extends ServiceProvider
     {
         $this->makeConfigPublishable()
             ->loadRoutes()
+            ->registerProjectors()
             ->registerPackageAsVersioned();
     }
 
@@ -295,6 +248,52 @@ class AppAccountServiceProvider extends ServiceProvider
         ], function () {
             $this->loadRoutesFrom(__DIR__.'/../routes/accounts.php');
         });
+
+        return $this;
+    }
+
+    /**
+     * Registering projectors used by this package.
+     * 
+     * @see https://spatie.be/docs/laravel-event-sourcing for more details.
+     * @return self
+     */
+    protected function registerProjectors()
+    {
+        $this->defineSpatieRelatedAliases();
+        $facade = PackageFacade::spatieEventSourcingFacade();
+
+        if(!class_exists($facade)):
+            return $this;
+        endif;
+
+        $facade::addProjectors([
+            AccountProjector::class,
+            HostnameProjector::class
+        ]);
+
+        return $this;
+    }
+
+    /**
+     * Registering spatie related aliases.
+     * 
+     * It was needed since our applications do not use same spatie package version.
+     * 
+     * @return self
+     */
+    protected function defineSpatieRelatedAliases()
+    {
+        collect([
+            \Deegitalbe\TrustupProAppCommon\Events\ProjectorEvent::class => PackageFacade::spatieEventSourcingEvent(),
+            \Deegitalbe\TrustupProAppCommon\Projectors\Projector::class => PackageFacade::spatieEventSourcingProjector()
+        ])
+            ->each(function($class, $alias) {
+                if (!class_exists($class)):
+                    return;
+                endif;
+                class_alias($class, $alias);
+            });
 
         return $this;
     }
