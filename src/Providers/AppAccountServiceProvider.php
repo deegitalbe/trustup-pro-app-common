@@ -258,11 +258,14 @@ class AppAccountServiceProvider extends ServiceProvider
      * @see https://spatie.be/docs/laravel-event-sourcing for more details.
      * @return self
      */
-    protected function registerProjectors()
+    protected function registerProjectors(): self
     {
-        $this->defineSpatieRelatedAliases();
-        $facade = PackageFacade::spatieEventSourcingFacade();
+        $success = $this->defineSpatieRelatedAliases();
+        if (!$success):
+            return $this;
+        endif;
 
+        $facade = PackageFacade::spatieEventSourcingFacade();
         if(!class_exists($facade)):
             return $this;
         endif;
@@ -280,22 +283,24 @@ class AppAccountServiceProvider extends ServiceProvider
      * 
      * It was needed since our applications do not use same spatie package version.
      * 
-     * @return self
+     * @return bool Success state concerning aliases
      */
-    protected function defineSpatieRelatedAliases()
+    protected function defineSpatieRelatedAliases(): bool
     {
+        $success = true;
         collect([
             \Deegitalbe\TrustupProAppCommon\Events\ProjectorEvent::class => PackageFacade::spatieEventSourcingEvent(),
             \Deegitalbe\TrustupProAppCommon\Projectors\Projector::class => PackageFacade::spatieEventSourcingProjector()
         ])
-            ->each(function($class, $alias) {
+            ->each(function($class, $alias) use ($success) {
                 if (!class_exists($class)):
+                    $success = false;
                     return;
                 endif;
                 class_alias($class, $alias);
             });
 
-        return $this;
+        return $success;
     }
 
     /**
