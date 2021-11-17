@@ -3,6 +3,7 @@ namespace Deegitalbe\TrustupProAppCommon;
 
 use Illuminate\Support\Collection;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\AdminAppApiContract;
+use Deegitalbe\TrustupProAppCommon\Http\Middleware\AuthenticatedUser;
 use Deegitalbe\TrustupVersionedPackage\Contracts\Project\ProjectContract;
 use Deegitalbe\TrustupVersionedPackage\Contracts\VersionedPackageContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\AuthenticationRelatedContract;
