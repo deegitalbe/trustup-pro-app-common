@@ -83,6 +83,31 @@ return [
     ],
 
     /**
+     * Available routes
+     */
+    "routes" => [
+        /**
+         * Account related routes.
+         */
+        "accounts" => [
+            /**
+             * Controller method called to store account.
+             */
+            'store' => [ \Deegitalbe\TrustupProAppCommon\Http\Controllers\App\AccountController::class, 'store' ],
+
+            /**
+             * Controller method called to show account details.
+             */
+            'show' => [ \Deegitalbe\TrustupProAppCommon\Http\Controllers\App\AccountController::class, 'show' ],
+            
+            /**
+             * Controller method called to get accouts related to a specific authorization key.
+             */
+            'by_authorization_key' => [ \Deegitalbe\TrustupProAppCommon\Http\Controllers\App\AccountController::class, 'byAuthorizationKey' ],
+        ]
+    ],
+
+    /**
      * Spatie event sourcing related informations.
      * 
      * @see https://spatie.be/docs/laravel-event-sourcing for more details.
