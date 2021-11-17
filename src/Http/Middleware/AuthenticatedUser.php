@@ -4,19 +4,23 @@ namespace Deegitalbe\TrustupProAppCommon\Http\Middleware;
 use Closure;
 use Deegitalbe\TrustupProAppCommon\Facades\Package;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\TrustupProApiContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\AuthenticationRelatedContract;
 
+/**
+ * Middleware verifying that user is authenticated by trustup.pro
+ */
 class AuthenticatedUser
 {
     /**
-     * Api representing actions available with trustup.pro.
+     * Authentication related actions.
      * 
-     * @var TrustupProApiContract
+     * @var AuthenticationRelatedContract
      */
-    protected $api;
+    protected $authentication_related;
     
-    public function __construct(TrustupProApiContract $api)
+    public function __construct(AuthenticationRelatedContract $authentication_related)
     {
-        $this->api = $api;
+        $this->authentication_related = $authentication_related;
     }
 
     /**
@@ -29,10 +33,10 @@ class AuthenticatedUser
      */
     public function handle($request, Closure $next)
     {       
-        if (!$user = $this->api->getUser()):
-            return response("Unauthenticated.", 401);
+        if (!$this->authentication_related->getUser()):
+            return response(['message' => "Unauthenticated."], 401);
         endif;
 
-        return $next($request->merge(['authenticated_user' => $user]));
+        return $next($request);
     }
 }

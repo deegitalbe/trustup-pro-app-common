@@ -3,20 +3,28 @@ namespace Deegitalbe\TrustupProAppCommon\Http\Middleware;
 
 use Closure;
 use Deegitalbe\TrustupProAppCommon\Facades\Package;
+use Deegitalbe\TrustupProAppCommon\Contracts\AccountContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\TrustupProApiContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\Query\AccountQueryContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\AuthenticationRelatedContract;
+use Deegitalbe\TrustupProAppCommon\Exceptions\Middleware\UserHavingAccessToAccount\GetExpectedAccountFailed;
+use Deegitalbe\TrustupProAppCommon\Exceptions\Middleware\UserHavingAccessToAccount\UserNotHavingAccessToAccount;
 
+/**
+ * Middleware making sure that authenticated user is having access to expected account environment.
+ */
 class UserHavingAccessToAccount
 {
     /**
-     * Api representing actions available with trustup.pro.
+     * Authentication related actions.
      * 
-     * @var TrustupProApiContract
+     * @var AuthenticationRelatedContract
      */
-    protected $api;
+    protected $authentication_related;
     
-    public function __construct(TrustupProApiContract $api)
+    public function __construct(AuthenticationRelatedContract $authentication_related)
     {
-        $this->api = $api;
+        $this->authentication_related = $authentication_related;
     }
 
     /**
@@ -29,14 +37,66 @@ class UserHavingAccessToAccount
      */
     public function handle($request, Closure $next, $route_parameter = null)
     {
-        $account_uuid = $route_parameter
-            ? $request->route()->parameter($route_parameter)
-            : null;
-            
-        if (!$account = $this->api->getAccount($account_uuid, $request->authenticated_user)):
-            return response("You don't have access to this account.", 403);
+        $account = $this->getExpectedAccount($request, $route_parameter);
+        $user = $this->authentication_related->getUser();
+
+        if (!$account || !$user):
+            return $this->notHavingAccess();
         endif;
 
-        return $next($request->merge(['requested_account' => $account]));
+        if(!$user->hasAccessToAccount($account)):
+            report(UserNotHavingAccessToAccount::get($user, $account));
+            return $this->notHavingAccess();
+        endif;
+
+        $this->authentication_related->setAccount($account);
+
+        return $next($request);
+    }
+
+    /**
+     * Getting expected account for current request.
+     * 
+     * @param Request $request
+     * @param string|null $account_uuid If null, account header will be used.
+     * @return Account|null Null if not found.
+     */
+    protected function getExpectedAccount(Request $request, ?string $route_parameter = null): ?AccountContract
+    {
+        $account_uuid = $route_parameter
+            ? $request->route()->parameter($route_parameter)
+            : $request->header(Package::requestedAccountHeader());
+        
+        if (!$account_uuid):
+            return $this->expectedAccountNotFound($account_uuid);
+        endif;
+
+        $account = app()->make(AccountQueryContract::class)
+            ->whereUuid($account_uuid)
+            ->first();
+
+        if (!$account):
+            return $this->expectedAccountNotFound($account_uuid);
+        endif;
+
+        return $account;
+    }
+
+    /**
+     * Behavior when account is not found.
+     * 
+     * @param string|null $account_uuid
+     * @return null
+     */
+    protected function expectedAccountNotFound(?string $account_uuid)
+    {
+        report(GetExpectedAccountFailed::forUuid($account_uuid));
+        
+        return null;
+    }
+
+    protected function notHavingAccess()
+    {
+        return response(['message' => "You don't have access to this account."], 403);
     }
 }

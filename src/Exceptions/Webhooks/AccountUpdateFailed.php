@@ -4,6 +4,9 @@ namespace Deegitalbe\TrustupProAppCommon\Exceptions\Webhooks;
 use Exception;
 use Deegitalbe\TrustupProAppCommon\Contracts\AccountContract;
 
+/**
+ * Representing exception when request updating account fails.
+ */
 class AccountUpdateFailed extends Exception
 {
     /**

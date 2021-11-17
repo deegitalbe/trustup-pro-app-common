@@ -15,6 +15,9 @@ use Deegitalbe\TrustupProAppCommon\Contracts\Api\Client\TrustupProClientContract
 use Deegitalbe\TrustupProAppCommon\Exceptions\TrustupProApi\GetExpectedAccountFailed;
 use Deegitalbe\TrustupProAppCommon\Exceptions\TrustupProApi\UserNotHavingAccessToAccount;
 
+/**
+ * Representing actions that are available with trustup.pro
+ */
 class TrustupProApi implements TrustupProApiContract
 {
     /**
@@ -56,81 +59,6 @@ class TrustupProApi implements TrustupProApiContract
         $user = $response->response()->get(true)['user'];
 
         return $this->toUserModel($user);
-    }
-
-    /**
-     * Getting account linked to current request.
-     * 
-     * @param string|null $uuid If null, account header will be used.
-     * @return Account|null Null if any error occured.
-     */
-    public function getAccount(?string $account_uuid = null, ?UserContract $user = null): ?AccountContract
-    {        
-        if (!$user = $user ?? $this->getUser()):
-            return null;
-        endif;
-        
-        $account = $this->getExpectedAccount($account_uuid);
-
-        if (!$account):
-            return null;
-        endif;
-
-        if(!$user->hasAccessToAccount($account)):
-            report(UserNotHavingAccessToAccount::get($user, $account));
-            return null;
-        endif;
-
-        return $account;
-    }
-
-    /**
-     * Making sure current request can access given account.
-     * 
-     * @param AccountContract $account
-     * @return bool Access success state.
-     */
-    public function hasAccessToAccount(AccountContract $account): bool
-    {
-        return optional($this->getUser())->hasAccessToAccount($account) || false;
-    }
-
-    /**
-     * Getting expected account for current request.
-     * 
-     * @param string|null $account_uuid If null, account header will be used.
-     * @return Account|null Null if not found.
-     */
-    protected function getExpectedAccount(?string $account_uuid): ?AccountContract
-    {
-        $account_uuid = $account_uuid ?? request()->header(Package::requestedAccountHeader());
-        
-        if (!$account_uuid):
-            return $this->expectedAccountNotFound($account_uuid);
-        endif;
-
-        $account = app()->make(AccountQueryContract::class)
-            ->whereUuid($account_uuid)
-            ->first();
-
-        if (!$account):
-            return $this->expectedAccountNotFound($account_uuid);
-        endif;
-
-        return $account;
-    }
-
-    /**
-     * Behavior when account is not found.
-     * 
-     * @param string|null $account_uuid
-     * @return null
-     */
-    protected function expectedAccountNotFound(?string $account_uuid)
-    {
-        report(GetExpectedAccountFailed::forUuid($account_uuid));
-        
-        return null;
     }
 
     /**

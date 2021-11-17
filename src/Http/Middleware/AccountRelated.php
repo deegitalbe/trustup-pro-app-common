@@ -4,6 +4,9 @@ namespace Deegitalbe\TrustupProAppCommon\Http\Middleware;
 use Closure;
 use Deegitalbe\TrustupProAppCommon\Facades\Package;
 
+/**
+ * Middleware setting up account to request.
+ */
 class AccountRelated
 {
     /**

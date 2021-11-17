@@ -3,13 +3,15 @@ namespace Deegitalbe\TrustupProAppCommon;
 
 use Illuminate\Support\Collection;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\AdminAppApiContract;
-use Deegitalbe\TrustupProAppCommon\Http\Middleware\AuthenticatedUser;
 use Deegitalbe\TrustupVersionedPackage\Contracts\Project\ProjectContract;
 use Deegitalbe\TrustupVersionedPackage\Contracts\VersionedPackageContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\AuthenticationRelatedContract;
 use Deegitalbe\TrustupProAppCommon\Http\Middleware\UserHavingAccessToAccount;
 use Deegitalbe\TrustupProAppCommon\Http\Middleware\SettingAccountAsEnvironment;
-use Deegitalbe\TrustupProAppCommon\Exceptions\Config\NoAuthorizationKeyException;
 
+/**
+ * Trustup pro app common underlying package facade.
+ */
 class Package implements VersionedPackageContract
 {
     /**
@@ -26,9 +28,44 @@ class Package implements VersionedPackageContract
      */
     public function account(): string
     {
-        return $this->config('account_model');
+        return $this->config('models.account');
     }
 
+    /**
+     * Hostname model className.
+     * 
+     * @return string
+     */
+    public function hostname(): string
+    {
+        return $this->config('models.hostname');
+    }
+
+    /**
+     * Account resource.
+     * 
+     * @return string
+     */
+    public function accountResource(): string
+    {
+        return $this->config('resources.account');
+    }
+
+    /**
+     * Service storing account.
+     * 
+     * @return string
+     */
+    public function storingAccountService(): string
+    {
+        return $this->config('services.storing_account');
+    }
+
+    /**
+     * Application key.
+     * 
+     * @return string
+     */
     public function appKey(): string
     {
         return $this->config('app_key');
@@ -41,7 +78,7 @@ class Package implements VersionedPackageContract
      */
     public function adminUrl(): string
     {
-        return $this->config('admin_url');
+        return $this->config('urls.admin');
     }
 
     /**
@@ -51,7 +88,7 @@ class Package implements VersionedPackageContract
      */
     public function trustupProUrl(): string
     {
-        return $this->config('trustup_pro_url');
+        return $this->config('urls.trustup_pro');
     }
 
     /**
@@ -61,7 +98,7 @@ class Package implements VersionedPackageContract
      */
     public function trustupAuthorizationHeader(): string
     {
-        return $this->config('trustup_token_header');
+        return $this->config('headers.trustup_token');
     }
 
     /**
@@ -69,9 +106,9 @@ class Package implements VersionedPackageContract
      * 
      * @return string
      */
-    public function requestedAccountHeader()
+    public function requestedAccountHeader(): string
     {
-        return $this->config('requested_account_header');
+        return $this->config('headers.requested_account');
     }
 
     /**
@@ -100,7 +137,7 @@ class Package implements VersionedPackageContract
      */
     public function getVersion(): string
     {
-        return "1.6.0";
+        return "2.0.0";
     }
 
     /**
@@ -111,6 +148,36 @@ class Package implements VersionedPackageContract
     public function environment(): \Hyn\Tenancy\Environment
     {
         return app()->make(\Hyn\Tenancy\Environment::class);
+    }
+
+    /**
+     * Getting event class to extend to have projector oriented events.
+     * 
+     * @return string
+     */
+    public function spatieEventSourcingEvent(): string
+    {
+        return $this->config('spatie_event_sourcing.event');
+    }
+
+    /**
+     * Getting projector class to extend to get working projectors.
+     * 
+     * @return string
+     */
+    public function spatieEventSourcingProjector(): string
+    {
+        return $this->config('spatie_event_sourcing.projector');
+    }
+
+    /**
+     * Getting facade allowing to register projectors.
+     * 
+     * @return string
+     */
+    public function spatieEventSourcingFacade(): string
+    {
+        return $this->config('spatie_event_sourcing.facade');
     }
 
     /**

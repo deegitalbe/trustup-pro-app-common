@@ -5,12 +5,13 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Deegitalbe\TrustupProAppCommon\Package;
-use Deegitalbe\TrustupProAppCommon\Models\User;
+use App\Projectors\Hostname\HostnameProjector;
 use Deegitalbe\TrustupProAppCommon\Synchronizer;
 use Deegitalbe\TrustupProAppCommon\Api\AdminAppApi;
 use Deegitalbe\TrustupProAppCommon\Api\TrustupProApi;
 use Deegitalbe\TrustupProAppCommon\Models\Professional;
 use Henrotaym\LaravelApiClient\Contracts\ClientContract;
+use Deegitalbe\TrustupProAppCommon\AuthenticationRelated;
 use Deegitalbe\TrustupProAppCommon\Api\Client\AdminClient;
 use Deegitalbe\TrustupProAppCommon\Contracts\UserContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\AccountContract;
@@ -22,16 +23,18 @@ use Deegitalbe\TrustupProAppCommon\Contracts\SynchronizerContract;
 use Deegitalbe\ServerAuthorization\Http\Middleware\AuthorizedServer;
 use Deegitalbe\TrustupProAppCommon\Facades\Package as PackageFacade;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\AdminAppApiContract;
-use Deegitalbe\TrustupProAppCommon\Http\Middleware\AuthenticatedUser;
 use Deegitalbe\TrustupProAppCommon\Api\Credential\TrustupProCredential;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\TrustupProApiContract;
+use Deegitalbe\TrustupProAppCommon\Projectors\Account\AccountProjector;
 use Deegitalbe\TrustupProAppCommon\Api\Credential\AdminClientCredential;
 use Deegitalbe\TrustupProAppCommon\Contracts\Query\AccountQueryContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\AuthenticationRelatedContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\Client\AdminClientContract;
 use Deegitalbe\TrustupProAppCommon\Http\Middleware\UserHavingAccessToAccount;
 use Deegitalbe\TrustupProAppCommon\Http\Middleware\SettingAccountAsEnvironment;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\Client\TrustupProClientContract;
 use Deegitalbe\TrustupVersionedPackage\Contracts\VersionedPackageCheckerContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\Service\StoringAccountServiceContract;
 
 class AppAccountServiceProvider extends ServiceProvider
 {
@@ -48,7 +51,10 @@ class AppAccountServiceProvider extends ServiceProvider
             ->registerAdminAppApi()
             ->registerSynchronizer()
             ->registerModels()
-            ->registerQueryBuilders();
+            ->registerQueryBuilders()
+            ->registerAuthenticationRelated()
+            ->registerStoringAccountService()
+            ->registerProjectors();
     }
 
     /**
@@ -146,6 +152,64 @@ class AppAccountServiceProvider extends ServiceProvider
 
         return $this;
     }
+
+    /**
+     * Registering Authentication related singleton.
+     * 
+     * @return self
+     */
+    protected function registerAuthenticationRelated(): self
+    {
+        $this->app->singleton(AuthenticationRelatedContract::class, AuthenticationRelated::class);
+
+        return $this;
+    }
+
+    /**
+     * Registering storing account service.
+     * 
+     * @return self
+     */
+    protected function registerStoringAccountService(): self
+    {
+        $this->app->bind(StoringAccountServiceContract::class, PackageFacade::storingAccountService());
+
+        return $this;
+    }
+
+
+    /**
+     * Registering projectors used by this package.
+     * 
+     * @see https://spatie.be/docs/laravel-event-sourcing for more details.
+     * @return self
+     */
+    protected function registerProjectors()
+    {
+        $this->defineSpatieRelatedAliases();
+
+        PackageFacade::spatieEventSourcingFacade()::addProjectors([
+            AccountProjector::class,
+            HostnameProjector::class
+        ]);
+
+        return $this;
+    }
+
+    /**
+     * Registering spatie related aliases.
+     * 
+     * It was needed since our applications do not use same spatie package version.
+     * 
+     * @return self
+     */
+    protected function defineSpatieRelatedAliases()
+    {
+        class_alias(PackageFacade::spatieEventSourcingEvent(), \Deegitalbe\TrustupProAppCommon\Events\ProjectorEvent::class);
+        class_alias(PackageFacade::spatieEventSourcingProjector(), \Deegitalbe\TrustupProAppCommon\Projectors\Projector::class);
+
+        return $this;
+    }
     
     /**
      * Booting provider.
@@ -182,12 +246,41 @@ class AppAccountServiceProvider extends ServiceProvider
      */
     protected function loadRoutes(): self
     {
+        return $this->loadCommonRoutes()
+            ->loadAccountsRoutes();
+    }
+
+    /**
+     * Loading common routes.
+     * 
+     * @return self
+     */
+    protected function loadCommonRoutes(): self
+    {
         Route::group([
             'prefix' => 'common-package',
             'name' => "common-package.",
             'middleware' => AuthorizedServer::class
         ], function () {
-            $this->loadRoutesFrom(__DIR__.'/../routes/routes.php');
+            $this->loadRoutesFrom(__DIR__.'/../routes/common.php');
+        });
+
+        return $this;
+    }
+
+    /**
+     * Loading accounts routes.
+     * 
+     * @return self
+     */
+    protected function loadAccountsRoutes(): self
+    {
+        Route::group([
+            'prefix' => 'accounts',
+            'name' => "accounts.",
+            'middleware' => PackageFacade::authenticatedUserMiddleware()
+        ], function () {
+            $this->loadRoutesFrom(__DIR__.'/../routes/accounts.php');
         });
 
         return $this;
