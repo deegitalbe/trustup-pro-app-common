@@ -246,7 +246,8 @@ class AppAccountServiceProvider extends ServiceProvider
      */
     protected function loadRoutes(): self
     {
-        return $this->loadCommonRoutes();
+        return $this->loadCommonRoutes()
+            ->loadAccountsRoutes();
     }
 
     /**
@@ -262,6 +263,24 @@ class AppAccountServiceProvider extends ServiceProvider
             'middleware' => AuthorizedServer::class
         ], function () {
             $this->loadRoutesFrom(__DIR__.'/../routes/common.php');
+        });
+
+        return $this;
+    }
+
+    /**
+     * Loading accounts routes.
+     * 
+     * @return self
+     */
+    protected function loadAccountsRoutes(): self
+    {
+        Route::group([
+            'prefix' => 'accounts',
+            'name' => "accounts.",
+            'middleware' => PackageFacade::authenticatedUserMiddleware()
+        ], function () {
+            $this->loadRoutesFrom(__DIR__.'/../routes/accounts.php');
         });
 
         return $this;
