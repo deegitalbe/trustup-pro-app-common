@@ -5,6 +5,7 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Deegitalbe\TrustupProAppCommon\Package;
+use App\Projectors\Hostname\HostnameProjector;
 use Deegitalbe\TrustupProAppCommon\Synchronizer;
 use Deegitalbe\TrustupProAppCommon\Api\AdminAppApi;
 use Deegitalbe\TrustupProAppCommon\Api\TrustupProApi;
@@ -24,6 +25,7 @@ use Deegitalbe\TrustupProAppCommon\Facades\Package as PackageFacade;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\AdminAppApiContract;
 use Deegitalbe\TrustupProAppCommon\Api\Credential\TrustupProCredential;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\TrustupProApiContract;
+use Deegitalbe\TrustupProAppCommon\Projectors\Account\AccountProjector;
 use Deegitalbe\TrustupProAppCommon\Api\Credential\AdminClientCredential;
 use Deegitalbe\TrustupProAppCommon\Contracts\Query\AccountQueryContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\AuthenticationRelatedContract;
@@ -174,6 +176,21 @@ class AppAccountServiceProvider extends ServiceProvider
         return $this;
     }
 
+
+    /**
+     * Registering spatie related aliases.
+     * 
+     * It was needed since our applications do not use same spatie package version.
+     * 
+     * @return self
+     */
+    protected function defineSpatieRelatedAliases()
+    {
+        class_alias(PackageFacade::spatieEventSourcingEvent(), \Deegitalbe\TrustupProAppCommon\Events\ProjectorEvent::class);
+        class_alias(PackageFacade::spatieEventSourcingProjector(), \Deegitalbe\TrustupProAppCommon\Projectors\Projector::class);
+
+        return $this;
+    }
     
     /**
      * Booting provider.

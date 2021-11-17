@@ -32,6 +32,16 @@ class Package implements VersionedPackageContract
     }
 
     /**
+     * Hostname model className.
+     * 
+     * @return string
+     */
+    public function hostname(): string
+    {
+        return $this->config('models.hostname');
+    }
+
+    /**
      * Account resource.
      * 
      * @return string
@@ -96,7 +106,7 @@ class Package implements VersionedPackageContract
      * 
      * @return string
      */
-    public function requestedAccountHeader()
+    public function requestedAccountHeader(): string
     {
         return $this->config('headers.requested_account');
     }
@@ -138,6 +148,36 @@ class Package implements VersionedPackageContract
     public function environment(): \Hyn\Tenancy\Environment
     {
         return app()->make(\Hyn\Tenancy\Environment::class);
+    }
+
+    /**
+     * Getting event class to extend to have projector oriented events.
+     * 
+     * @return string
+     */
+    public function spatieEventSourcingEvent(): string
+    {
+        return $this->config('spatie_event_sourcing.event');
+    }
+
+    /**
+     * Getting projector class to extend to get working projectors.
+     * 
+     * @return string
+     */
+    public function spatieEventSourcingProjector(): string
+    {
+        return $this->config('spatie_event_sourcing.projector');
+    }
+
+    /**
+     * Getting facade allowing to register projectors.
+     * 
+     * @return string
+     */
+    public function spatieEventSourcingFacade(): string
+    {
+        return $this->config('spatie_event_sourcing.facade');
     }
 
     /**

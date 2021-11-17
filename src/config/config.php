@@ -82,4 +82,25 @@ return [
         "requested_account_header" => "X-ACCOUNT-UUID",
     ],
 
+    /**
+     * Spatie event sourcing related informations.
+     * 
+     * @see https://spatie.be/docs/laravel-event-sourcing for more details.
+     */
+    "spatie_event_sourcing" => [
+        /**
+         * Class to extend to get projector.
+         */
+        "projector" => \App\Projectors\Projector::class,
+
+        /**
+         *  Class to extend to get projector compatible event.
+         */
+        "event" => \App\Events\StoredEvent::class,
+
+        /**
+         * Facade allowing to register projectors.
+         */
+        "facade" => \Spatie\EventSourcing\Facades\Projectionist::class
+    ]
 ];
