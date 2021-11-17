@@ -71,7 +71,7 @@ class StoringAccountService implements StoringAccountServiceContract
      */
     protected function getHostnameAttributes(AccountContract $account): array
     {
-        return ['fqdn' => $account->getUuid() . str_replace('https://', '', config('app.url'))];
+        return ['fqdn' => $account->getUuid() . "." . str_replace('https://', '', config('app.url'))];
     }
 
     /**
