@@ -3,13 +3,15 @@ namespace Deegitalbe\TrustupProAppCommon;
 
 use Illuminate\Support\Collection;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\AdminAppApiContract;
-use Deegitalbe\TrustupProAppCommon\Http\Middleware\AuthenticatedUser;
 use Deegitalbe\TrustupVersionedPackage\Contracts\Project\ProjectContract;
 use Deegitalbe\TrustupVersionedPackage\Contracts\VersionedPackageContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\AuthenticationRelatedContract;
 use Deegitalbe\TrustupProAppCommon\Http\Middleware\UserHavingAccessToAccount;
 use Deegitalbe\TrustupProAppCommon\Http\Middleware\SettingAccountAsEnvironment;
-use Deegitalbe\TrustupProAppCommon\Exceptions\Config\NoAuthorizationKeyException;
 
+/**
+ * Trustup pro app common underlying package facade.
+ */
 class Package implements VersionedPackageContract
 {
     /**
@@ -26,9 +28,34 @@ class Package implements VersionedPackageContract
      */
     public function account(): string
     {
-        return $this->config('account_model');
+        return $this->config('models.account');
     }
 
+    /**
+     * Account resource.
+     * 
+     * @return string
+     */
+    public function accountResource(): string
+    {
+        return $this->config('resources.account');
+    }
+
+    /**
+     * Service storing account.
+     * 
+     * @return string
+     */
+    public function storingAccountService(): string
+    {
+        return $this->config('services.storing_account');
+    }
+
+    /**
+     * Application key.
+     * 
+     * @return string
+     */
     public function appKey(): string
     {
         return $this->config('app_key');
@@ -41,7 +68,7 @@ class Package implements VersionedPackageContract
      */
     public function adminUrl(): string
     {
-        return $this->config('admin_url');
+        return $this->config('urls.admin');
     }
 
     /**
@@ -51,7 +78,7 @@ class Package implements VersionedPackageContract
      */
     public function trustupProUrl(): string
     {
-        return $this->config('trustup_pro_url');
+        return $this->config('urls.trustup_pro');
     }
 
     /**
@@ -61,7 +88,7 @@ class Package implements VersionedPackageContract
      */
     public function trustupAuthorizationHeader(): string
     {
-        return $this->config('trustup_token_header');
+        return $this->config('headers.trustup_token');
     }
 
     /**
@@ -71,7 +98,7 @@ class Package implements VersionedPackageContract
      */
     public function requestedAccountHeader()
     {
-        return $this->config('requested_account_header');
+        return $this->config('headers.requested_account');
     }
 
     /**
