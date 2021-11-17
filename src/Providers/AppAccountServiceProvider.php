@@ -5,12 +5,12 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Deegitalbe\TrustupProAppCommon\Package;
-use Deegitalbe\TrustupProAppCommon\Models\User;
 use Deegitalbe\TrustupProAppCommon\Synchronizer;
 use Deegitalbe\TrustupProAppCommon\Api\AdminAppApi;
 use Deegitalbe\TrustupProAppCommon\Api\TrustupProApi;
 use Deegitalbe\TrustupProAppCommon\Models\Professional;
 use Henrotaym\LaravelApiClient\Contracts\ClientContract;
+use Deegitalbe\TrustupProAppCommon\AuthenticationRelated;
 use Deegitalbe\TrustupProAppCommon\Api\Client\AdminClient;
 use Deegitalbe\TrustupProAppCommon\Contracts\UserContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\AccountContract;
@@ -22,11 +22,11 @@ use Deegitalbe\TrustupProAppCommon\Contracts\SynchronizerContract;
 use Deegitalbe\ServerAuthorization\Http\Middleware\AuthorizedServer;
 use Deegitalbe\TrustupProAppCommon\Facades\Package as PackageFacade;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\AdminAppApiContract;
-use Deegitalbe\TrustupProAppCommon\Http\Middleware\AuthenticatedUser;
 use Deegitalbe\TrustupProAppCommon\Api\Credential\TrustupProCredential;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\TrustupProApiContract;
 use Deegitalbe\TrustupProAppCommon\Api\Credential\AdminClientCredential;
 use Deegitalbe\TrustupProAppCommon\Contracts\Query\AccountQueryContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\AuthenticationRelatedContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\Client\AdminClientContract;
 use Deegitalbe\TrustupProAppCommon\Http\Middleware\UserHavingAccessToAccount;
 use Deegitalbe\TrustupProAppCommon\Http\Middleware\SettingAccountAsEnvironment;
@@ -48,7 +48,8 @@ class AppAccountServiceProvider extends ServiceProvider
             ->registerAdminAppApi()
             ->registerSynchronizer()
             ->registerModels()
-            ->registerQueryBuilders();
+            ->registerQueryBuilders()
+            ->registerAuthenticationRelated();
     }
 
     /**
@@ -146,6 +147,18 @@ class AppAccountServiceProvider extends ServiceProvider
 
         return $this;
     }
+
+    /**
+     * 
+     * @return self
+     */
+    protected function registerAuthenticationRelated(): self
+    {
+        $this->app->singleton(AuthenticationRelatedContract::class, AuthenticationRelated::class);
+
+        return $this;
+    }
+
     
     /**
      * Booting provider.
