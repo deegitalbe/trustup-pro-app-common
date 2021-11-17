@@ -4,7 +4,6 @@ namespace Deegitalbe\TrustupProAppCommon\Events\Hostname;
 
 use Deegitalbe\TrustupProAppCommon\Facades\Package;
 use Deegitalbe\TrustupProAppCommon\Events\ProjectorEvent;
-use Deegitalbe\TrustupProAppCommon\Contracts\Query\AccountQueryContract;
 
 /**
  * Event when hostname is created.
@@ -35,18 +34,6 @@ class HostnameCreated extends ProjectorEvent
     {
         $this->account_uuid = $account_uuid;
         $this->attributes = $attributes;
-    }
-
-    /**
-     * Retrieving related account.
-     * 
-     * @return mixed
-     */
-    public function getAccount()
-    {
-        return app()->make(AccountQueryContract::class)
-            ->whereUuid($this->account_uuid)
-            ->first();
     }
 
     /**

@@ -11,6 +11,12 @@ use Deegitalbe\TrustupProAppCommon\Events\Account\AccountCreated;
  */
 class AccountProjector extends Projector
 {
+    /**
+     * Storing account from event.
+     * 
+     * @param AccountCreated
+     * @return void
+     */
     public function storeAccount(AccountCreated $event)
     {
         $account = $event->newAccount();
