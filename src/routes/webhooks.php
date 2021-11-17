@@ -1,17 +1,17 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Deegitalbe\TrustupProAppCommon\Facades\Package;
 use Deegitalbe\TrustupProAppCommon\Http\Middleware\AccountRelated;
 use Deegitalbe\TrustupProAppCommon\Http\Controllers\Common\AccountController;
 
 /*
 |--------------------------------------------------------------------------
-| Package Routes
+| Package Webhooks Routes
 |--------------------------------------------------------------------------
 |
 */
 
-// Application webhooks
 Route::prefix('webhooks')->name('webhooks.')->group(function() {
     Route::prefix('accounts')->name('accounts.')->group(function() {
         Route::get('/', [AccountController::class, 'index'])->name('index');
