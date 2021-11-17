@@ -213,42 +213,40 @@ class AppAccountServiceProvider extends ServiceProvider
      */
     protected function loadRoutes(): self
     {
-        return $this->loadCommonRoutes()
-            ->loadAccountsRoutes();
+        return $this->loadWebRoutes()
+            ->loadApiRoutes();
     }
 
     /**
-     * Loading common routes.
+     * Loading web routes.
      * 
      * @return self
      */
-    protected function loadCommonRoutes(): self
+    protected function loadWebRoutes(): self
     {
-        Route::group([
-            'prefix' => 'common-package',
-            'name' => "common-package.",
-            'middleware' => AuthorizedServer::class
-        ], function () {
-            $this->loadRoutesFrom(__DIR__.'/../routes/common.php');
-        });
+        Route::prefix('common-package')
+            ->name('common-package.')
+            ->middleware(AuthorizedServer::class)
+            ->group(function () {
+                $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
+            });
 
         return $this;
     }
 
     /**
-     * Loading accounts routes.
+     * Loading api routes.
      * 
      * @return self
      */
-    protected function loadAccountsRoutes(): self
+    protected function loadApiRoutes(): self
     {
-        Route::group([
-            'prefix' => 'accounts',
-            'name' => "accounts.",
-            'middleware' => PackageFacade::authenticatedUserMiddleware()
-        ], function () {
-            $this->loadRoutesFrom(__DIR__.'/../routes/accounts.php');
-        });
+        Route::prefix('api')
+            ->name('api.')
+            ->middleware(['api', PackageFacade::authenticatedUserMiddleware()])
+            ->group(function () {
+                $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
+            });
 
         return $this;
     }
