@@ -79,7 +79,7 @@ return [
         /**
          * Header containing requested account uuid.
          */
-        "requested_account_header" => "X-ACCOUNT-UUID",
+        "requested_account" => "X-ACCOUNT-UUID",
     ],
 
     /**
