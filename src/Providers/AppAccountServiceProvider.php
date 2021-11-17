@@ -53,7 +53,8 @@ class AppAccountServiceProvider extends ServiceProvider
             ->registerModels()
             ->registerQueryBuilders()
             ->registerAuthenticationRelated()
-            ->registerStoringAccountService();
+            ->registerStoringAccountService()
+            ->registerProjectors();
     }
 
     /**
@@ -176,6 +177,24 @@ class AppAccountServiceProvider extends ServiceProvider
         return $this;
     }
 
+
+    /**
+     * Registering projectors used by this package.
+     * 
+     * @see https://spatie.be/docs/laravel-event-sourcing for more details.
+     * @return self
+     */
+    protected function registerProjectors()
+    {
+        $this->defineSpatieRelatedAliases();
+
+        PackageFacade::spatieEventSourcingFacade()::addProjectors([
+            AccountProjector::class,
+            HostnameProjector::class
+        ]);
+
+        return $this;
+    }
 
     /**
      * Registering spatie related aliases.
