@@ -1,5 +1,5 @@
 <?php
-namespace Deegitalbe\TrustupProAppCommon\Exceptions\TrustupProApi;
+namespace Deegitalbe\TrustupProAppCommon\Exceptions\Middleware\UserHavingAccessToAccount;
 
 use Exception;
 use Deegitalbe\TrustupProAppCommon\Facades\Package;
@@ -7,13 +7,16 @@ use Deegitalbe\TrustupProAppCommon\Contracts\UserContract;
 use Deegitalbe\TrustupProAppCommon\Http\Resources\Account;
 use Deegitalbe\TrustupProAppCommon\Contracts\AccountContract;
 
+/**
+ * Exception when authenticated user is trying to access unallowed professional.
+ */
 class UserNotHavingAccessToAccount extends Exception {
     /**
      * Exception message.
      * 
      * @var string
      */
-    protected $message = "Authentified trustup user can't access expected account.";
+    protected $message = "authenticated user can't access expected account.";
 
     /**
      * Expected account.
@@ -23,7 +26,7 @@ class UserNotHavingAccessToAccount extends Exception {
     protected $account;
 
     /**
-     * Authentified user.
+     * Authenticated user.
      * 
      * @var UserContract
      */

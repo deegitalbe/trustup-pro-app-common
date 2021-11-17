@@ -1,9 +1,12 @@
 <?php
-namespace Deegitalbe\TrustupProAppCommon\Exceptions\TrustupProApi;
+namespace Deegitalbe\TrustupProAppCommon\Exceptions\Middleware\UserHavingAccessToAccount;
 
 use Exception;
 use Deegitalbe\TrustupProAppCommon\Facades\Package;
 
+/**
+ * Exception representing that no account was found.
+ */
 class GetExpectedAccountFailed extends Exception {
     /**
      * Exception message.
