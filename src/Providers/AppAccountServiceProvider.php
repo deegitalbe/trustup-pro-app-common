@@ -187,8 +187,13 @@ class AppAccountServiceProvider extends ServiceProvider
     protected function registerProjectors()
     {
         $this->defineSpatieRelatedAliases();
+        $facade = PackageFacade::spatieEventSourcingFacade();
 
-        PackageFacade::spatieEventSourcingFacade()::addProjectors([
+        if(!class_exists($facade)):
+            return $this;
+        endif;
+
+        $facade::addProjectors([
             AccountProjector::class,
             HostnameProjector::class
         ]);
@@ -205,8 +210,16 @@ class AppAccountServiceProvider extends ServiceProvider
      */
     protected function defineSpatieRelatedAliases()
     {
-        class_alias(PackageFacade::spatieEventSourcingEvent(), \Deegitalbe\TrustupProAppCommon\Events\ProjectorEvent::class);
-        class_alias(PackageFacade::spatieEventSourcingProjector(), \Deegitalbe\TrustupProAppCommon\Projectors\Projector::class);
+        collect([
+            \Deegitalbe\TrustupProAppCommon\Events\ProjectorEvent::class => PackageFacade::spatieEventSourcingEvent(),
+            \Deegitalbe\TrustupProAppCommon\Projectors\Projector::class => PackageFacade::spatieEventSourcingProjector()
+        ])
+            ->each(function($class, $alias) {
+                if (!class_exists($class)):
+                    return;
+                endif;
+                class_alias($class, $alias);
+            });
 
         return $this;
     }
