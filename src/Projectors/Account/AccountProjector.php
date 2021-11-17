@@ -13,7 +13,8 @@ class AccountProjector extends Projector
 {
     public function storeAccount(AccountCreated $event)
     {
+        $account = $event->newAccount();
         app()->make(WebsiteRepository::class)
-            ->create($event->newAccount());
+            ->create($account);
     }
 }

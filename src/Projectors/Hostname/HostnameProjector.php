@@ -11,11 +11,12 @@ use Deegitalbe\TrustupProAppCommon\Events\Hostname\HostnameCreated;
  */
 class HostnameProjector extends Projector
 {
-    public function createHostname(HostnameCreated $event)
+    public function storeHostname(HostnameCreated $event)
     {
         $repository = app()->make(HostnameRepository::class);
+        $hostname = $event->newHostname();
         $repository->attach(
-            $repository->create($event->newHostname()), 
+            $repository->create($hostname), 
             $event->getAccount()
         );
     }
