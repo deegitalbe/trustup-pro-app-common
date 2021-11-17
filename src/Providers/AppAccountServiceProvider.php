@@ -288,11 +288,12 @@ class AppAccountServiceProvider extends ServiceProvider
     protected function defineSpatieRelatedAliases(): bool
     {
         $success = true;
+        
         collect([
             \Deegitalbe\TrustupProAppCommon\Events\ProjectorEvent::class => PackageFacade::spatieEventSourcingEvent(),
             \Deegitalbe\TrustupProAppCommon\Projectors\Projector::class => PackageFacade::spatieEventSourcingProjector()
         ])
-            ->each(function($class, $alias) use ($success) {
+            ->each(function($class, $alias) use (&$success) {
                 if (!class_exists($class)):
                     $success = false;
                     return;
