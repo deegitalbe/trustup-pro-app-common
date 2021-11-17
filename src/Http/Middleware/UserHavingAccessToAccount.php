@@ -2,6 +2,7 @@
 namespace Deegitalbe\TrustupProAppCommon\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
 use Deegitalbe\TrustupProAppCommon\Facades\Package;
 use Deegitalbe\TrustupProAppCommon\Contracts\AccountContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\TrustupProApiContract;
