@@ -48,37 +48,55 @@ You can use this trait in your model to synchronize automatically
 Same step as default configuration step
 
 ### Define interface methods yourself
+
     /**
-    
-    * Account uuid that should be used to retrieve account details.
-    
-    * @return  string
-    
-    */
-    
-    public  function  getUuid():  string;
-    
+     * Account database id.
+     * 
+     * @return int
+     */
+    public function getId(): int;
+
     /**
-    
-    * Application key linked to account.
-    
-    * @return  string
-    
-    */
-    
-    public  function  getAppKey():  string;
-    
-      
+     * Account uuid that should be used to retrieve account details.
+     * 
+     * @return string
+     */
+    public function getUuid(): string;
     
     /**
-    
-    * Professional authorization_key linked to account.
-    
-    * @return  string
-    
-    */
-    
-    public  function  getAuthorizationKey():  string;
+     * Application key linked to account.
+     * 
+     * @return string
+     */
+    public function getAppKey(): string;
+
+    /**
+     * Professional authorization_key linked to account.
+     * 
+     * @return string
+     */
+    public function getAuthorizationKey(): string;
+
+    /**
+     * Subscription id linked to account.
+     * 
+     * @return string|null
+     */
+    public function getSubscriptionId(): ?string;
+
+    /**
+     * Subscription status linked to account.
+     * 
+     * @return string|null
+     */
+    public function getSubscriptionStatus(): ?string;
+
+    /**
+     * Account creation date.
+     * 
+     * @return Carbon
+     */
+    public function getCreatedAt(): Carbon;
 
 ### Watch model events using package trait
 
