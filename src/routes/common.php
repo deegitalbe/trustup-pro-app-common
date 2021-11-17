@@ -12,6 +12,7 @@ use Deegitalbe\TrustupProAppCommon\Http\Controllers\Common\AccountController;
 |
 */
 
+// Webhooks related
 Route::prefix('webhooks')->name('webhooks.')->group(function() {
     Route::prefix('accounts')->name('accounts.')->group(function() {
         Route::get('/', [AccountController::class, 'index'])->name('index');

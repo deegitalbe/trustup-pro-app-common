@@ -246,22 +246,22 @@ class AppAccountServiceProvider extends ServiceProvider
      */
     protected function loadRoutes(): self
     {
-        return $this->loadWebhooksRoutes();
+        return $this->loadCommonRoutes();
     }
 
     /**
-     * Loading webhooks routes.
+     * Loading common routes.
      * 
      * @return self
      */
-    protected function loadWebhooksRoutes(): self
+    protected function loadCommonRoutes(): self
     {
         Route::group([
             'prefix' => 'common-package',
             'name' => "common-package.",
             'middleware' => AuthorizedServer::class
         ], function () {
-            $this->loadRoutesFrom(__DIR__.'/../routes/webhooks.php');
+            $this->loadRoutesFrom(__DIR__.'/../routes/common.php');
         });
 
         return $this;
