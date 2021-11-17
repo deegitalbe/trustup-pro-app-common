@@ -32,6 +32,7 @@ use Deegitalbe\TrustupProAppCommon\Http\Middleware\UserHavingAccessToAccount;
 use Deegitalbe\TrustupProAppCommon\Http\Middleware\SettingAccountAsEnvironment;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\Client\TrustupProClientContract;
 use Deegitalbe\TrustupVersionedPackage\Contracts\VersionedPackageCheckerContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\Service\StoringAccountServiceContract;
 
 class AppAccountServiceProvider extends ServiceProvider
 {
@@ -49,7 +50,8 @@ class AppAccountServiceProvider extends ServiceProvider
             ->registerSynchronizer()
             ->registerModels()
             ->registerQueryBuilders()
-            ->registerAuthenticationRelated();
+            ->registerAuthenticationRelated()
+            ->registerStoringAccountService();
     }
 
     /**
@@ -149,12 +151,25 @@ class AppAccountServiceProvider extends ServiceProvider
     }
 
     /**
+     * Registering Authentication related singleton.
      * 
      * @return self
      */
     protected function registerAuthenticationRelated(): self
     {
         $this->app->singleton(AuthenticationRelatedContract::class, AuthenticationRelated::class);
+
+        return $this;
+    }
+
+    /**
+     * Registering storing account service.
+     * 
+     * @return self
+     */
+    protected function registerStoringAccountService(): self
+    {
+        $this->app->bind(StoringAccountServiceContract::class, PackageFacade::storingAccountService());
 
         return $this;
     }
