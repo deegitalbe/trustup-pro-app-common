@@ -6,6 +6,9 @@ use Henrotaym\LaravelApiClient\Contracts\RequestContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\AccountContract;
 use Henrotaym\LaravelApiClient\Exceptions\RequestRelatedException;
 
+/**
+ * Representing a synchronizer failed request.
+ */
 class FailedRequest extends RequestRelatedException
 {
     /**
