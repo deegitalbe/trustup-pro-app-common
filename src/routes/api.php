@@ -5,7 +5,7 @@ use Deegitalbe\TrustupProAppCommon\Facades\Package;
 
 /*
 |--------------------------------------------------------------------------
-| Package Accounts Routes
+| Package API Routes
 |--------------------------------------------------------------------------
 |
 */

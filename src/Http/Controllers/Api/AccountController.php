@@ -1,5 +1,5 @@
 <?php
-namespace Deegitalbe\TrustupProAppCommon\Http\Controllers\App;
+namespace Deegitalbe\TrustupProAppCommon\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -34,10 +34,14 @@ class AccountController extends Controller
     /**
      * Getting accounts by authenticated user's professional authorization key
      */
-    public function byAuthorizationKey(Request $request, AuthenticationRelatedContract $authentication_related)
+    public function byAuthorizationKey(Request $request)
     {
+        ['authorization_key' => $authorization_key] = $request->validate([
+            'authorization_key' => "required|string"
+        ]);
+
         $accounts = app()->make(AccountQueryContract::class)
-            ->whereAuthorizationKey($authentication_related->getUser()->getProfessional()->getAuthorizationKey())
+            ->whereAuthorizationKey($authorization_key)
             ->get();
 
         return Package::accountResource()::collection($accounts);

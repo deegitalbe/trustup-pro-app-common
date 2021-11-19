@@ -93,17 +93,17 @@ return [
             /**
              * Controller method called to store account.
              */
-            'store' => [ \Deegitalbe\TrustupProAppCommon\Http\Controllers\App\AccountController::class, 'store' ],
+            'store' => [ \Deegitalbe\TrustupProAppCommon\Http\Controllers\Api\AccountController::class, 'store' ],
 
             /**
              * Controller method called to show account details.
              */
-            'show' => [ \Deegitalbe\TrustupProAppCommon\Http\Controllers\App\AccountController::class, 'show' ],
+            'show' => [ \Deegitalbe\TrustupProAppCommon\Http\Controllers\Api\AccountController::class, 'show' ],
             
             /**
              * Controller method called to get accouts related to a specific authorization key.
              */
-            'by_authorization_key' => [ \Deegitalbe\TrustupProAppCommon\Http\Controllers\App\AccountController::class, 'byAuthorizationKey' ],
+            'by_authorization_key' => [ \Deegitalbe\TrustupProAppCommon\Http\Controllers\Api\AccountController::class, 'byAuthorizationKey' ],
         ]
     ],
 
