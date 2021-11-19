@@ -33,15 +33,13 @@ class AccountController extends Controller
 
     /**
      * Getting accounts by authenticated user's professional authorization key
+     * 
+     * @param string $key
      */
-    public function byAuthorizationKey(Request $request)
+    public function byAuthorizationKey(string $key)
     {
-        ['authorization_key' => $authorization_key] = $request->validate([
-            'authorization_key' => "required|string"
-        ]);
-
         $accounts = app()->make(AccountQueryContract::class)
-            ->whereAuthorizationKey($authorization_key)
+            ->whereAuthorizationKey($key)
             ->get();
 
         return Package::accountResource()::collection($accounts);
