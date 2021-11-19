@@ -213,7 +213,7 @@ class AppAccountServiceProvider extends ServiceProvider
      */
     protected function loadRoutes(): self
     {
-        return $this->loadWebRoutes()
+        return $this->loadCommonRoutes()
             ->loadApiRoutes();
     }
 
@@ -222,13 +222,13 @@ class AppAccountServiceProvider extends ServiceProvider
      * 
      * @return self
      */
-    protected function loadWebRoutes(): self
+    protected function loadCommonRoutes(): self
     {
         Route::prefix('common-package')
             ->name('common-package.')
             ->middleware(AuthorizedServer::class)
             ->group(function () {
-                $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
+                $this->loadRoutesFrom(__DIR__.'/../routes/common.php');
             });
 
         return $this;

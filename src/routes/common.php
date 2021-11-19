@@ -3,21 +3,26 @@
 use Illuminate\Support\Facades\Route;
 use Deegitalbe\TrustupProAppCommon\Facades\Package;
 use Deegitalbe\TrustupProAppCommon\Http\Middleware\AccountRelated;
-use Deegitalbe\TrustupProAppCommon\Http\Controllers\Common\AccountController;
+use Deegitalbe\TrustupProAppCommon\Http\Controllers\Common\AccountController as CommonAccountController;
+use Deegitalbe\TrustupProAppCommon\Http\Controllers\Common\Webhook\AccountController as WebhookAccountController;
 
 /*
 |--------------------------------------------------------------------------
-| Package Webhooks Routes
+| Package Common Routes
 |--------------------------------------------------------------------------
 |
 */
 
-// Webhook related routes
+// Webhooks routes
 Route::prefix('webhooks')->name('webhooks.')->group(function() {
     Route::prefix('accounts')->name('accounts.')->group(function() {
-        Route::get('/', [AccountController::class, 'index'])->name('index');
         Route::prefix('{account}')->middleware(AccountRelated::class)->group(function() {
-            Route::put('/', [AccountController::class, 'update'])->name('update');
+            Route::put('/', [WebhookAccountController::class, 'update'])->name('update');
         });
     });
+});
+
+// Common routes
+Route::prefix('accounts')->name('accounts.')->group(function() {
+    Route::get('/', [CommonAccountController::class, 'index'])->name('index');   
 });

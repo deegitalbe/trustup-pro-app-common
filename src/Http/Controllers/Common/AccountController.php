@@ -3,39 +3,30 @@ namespace Deegitalbe\TrustupProAppCommon\Http\Controllers\Common;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Deegitalbe\TrustupProAppCommon\Facades\Package;
+use Deegitalbe\TrustupProAppCommon\Contracts\Query\AccountQueryContract;
 use Deegitalbe\TrustupProAppCommon\Http\Resources\Account as AccountResource;
-use Deegitalbe\TrustupProAppCommon\Exceptions\Webhooks\AccountUpdateFailed;
 
 /**
- * Account related webhooks. 
+ * Account related commons. 
  */
 class AccountController extends Controller
 {
     /**
-     * Updating account.
-     */
-    public function update(Request $request)
-    {
-        $request->account->fill($request->except(['account']));
-        
-        if(!$request->account->saveQuietly()):
-            $error = new AccountUpdateFailed();
-            report($error
-                ->setAttributes($request->except(['account']))
-                ->setAccount($request->account)
-            );
-            return response(['message' => "Account update failed."], 500);
-        endif;
-
-        return new AccountResource($request->account);
-    }
-
-    /**
      * Getting list of accounts.
      */
-    public function index()
+    public function index(Request $request, AccountQueryContract $query)
     {
-        return AccountResource::collection(Package::account()::all());
+        // available filters.
+        $filters = $request->validate([
+            'authorization_key' => "nullable|string"
+        ]);
+        
+        // authorization key filter.
+        $authorization_key = $filters['authorization_key'] ?? null;
+        if ($authorization_key):
+            $query->whereAuthorizationKey($authorization_key);
+        endif;
+
+        return AccountResource::collection($query->get());
     }
 }
