@@ -1,6 +1,8 @@
 <?php
 namespace Deegitalbe\TrustupProAppCommon\Contracts;
 
+use stdClass;
+use Deegitalbe\TrustupProAppCommon\Contracts\AppContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\UserContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\AccountContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\TrustupProApiContract;
@@ -24,6 +26,13 @@ interface AuthenticationRelatedContract
      * @return AccountContract|null
      */
     public function getAccount(): ?AccountContract;
+
+    /**
+     * Getting current app for current request.
+     * 
+     * @return AppContract|null
+     */
+    public function getCurrentApp(): ?AppContract;
 
     /**
      * Setting account for current request (should not be called manually).

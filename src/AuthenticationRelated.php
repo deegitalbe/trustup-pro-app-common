@@ -1,8 +1,10 @@
 <?php
 namespace Deegitalbe\TrustupProAppCommon;
 
+use Deegitalbe\TrustupProAppCommon\Contracts\AppContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\UserContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\AccountContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\Api\AdminAppApiContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\TrustupProApiContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\AuthenticationRelatedContract;
 
@@ -19,6 +21,13 @@ class AuthenticationRelated implements AuthenticationRelatedContract
     protected $user;
 
     /**
+     * Current app.
+     * 
+     * @return AppContract|null
+     */
+    protected $app;
+
+    /**
      * Account environment.
      * 
      * @return AccountContract|null
@@ -30,23 +39,39 @@ class AuthenticationRelated implements AuthenticationRelatedContract
      * 
      * @var TrustupProApiContract
      */
-    protected $api;
+    protected $trustup_pro_api;
 
     /**
-     * Telling if authenticated was already retrieved from trustup.pro
+     * Admin app API.
+     * 
+     * @var AdminAppApiContract
+     */
+    protected $admin_api;
+
+    /**
+     * Telling if authenticated user was already retrieved from trustup.pro
      * 
      * @var bool
      */
-    protected $api_called = false;
+    protected $user_retrieved = false;
+
+    /**
+     * Telling if current app was already retrieved from admin.trustup.pro
+     * 
+     * @var bool
+     */
+    protected $app_retrieved = false;
 
     /**
      * Creating instance.
      * 
-     * @param TrustupProApiContract $api
+     * @param TrustupProApiContract $trustup_pro_api
+     * @param AdminAppApiContract $admin_api
      */
-    public function __construct(TrustupProApiContract $api)
+    public function __construct(TrustupProApiContract $trustup_pro_api, AdminAppApiContract $admin_api)
     {
-        $this->api = $api;
+        $this->trustup_pro_api = $trustup_pro_api;
+        $this->admin_api = $admin_api;
     }
 
     /**
@@ -56,9 +81,9 @@ class AuthenticationRelated implements AuthenticationRelatedContract
      */
     public function getUser(): ?UserContract
     {
-        if (!$this->api_called):
-            $this->user = $this->api->getUser();
-            $this->api_called = true;
+        if (!$this->user_retrieved):
+            $this->user = $this->trustup_pro_api->getUser();
+            $this->user_retrieved = true;
         endif;
         
         return $this->user;
@@ -72,6 +97,21 @@ class AuthenticationRelated implements AuthenticationRelatedContract
     public function getAccount(): ?AccountContract
     {
         return $this->account;
+    }
+
+    /**
+     * Getting current app for current request.
+     * 
+     * @return AppContract|null
+     */
+    public function getCurrentApp(): ?AppContract
+    {
+        if (!$this->app_retrieved):
+            $this->app = $this->admin_api->getCurrentApp();
+            $this->app_retrieved = true;
+        endif;
+        
+        return $this->app;
     }
 
     /**
