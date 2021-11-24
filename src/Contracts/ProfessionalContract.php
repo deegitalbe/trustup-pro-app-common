@@ -30,6 +30,13 @@ interface ProfessionalContract extends Arrayable
     public function getAuthorizationKey(): string;
 
     /**
+     * Getting chargebee customer id.
+     * 
+     * @return string|null
+     */
+    public function getCustomerId(): ?string;
+
+    /**
      * Getting professional from an attributes array.
      * 
      * @param array $attributes

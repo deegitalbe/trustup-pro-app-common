@@ -31,6 +31,13 @@ class Professional implements ProfessionalContract
      * @var string
      */
     protected $authorization_key;
+
+    /**
+     * Chargebee customer id.
+     * 
+     * @return string|null
+     */
+    protected $chargebee_customer_id;
     
     /**
      * Getting id.
@@ -63,6 +70,16 @@ class Professional implements ProfessionalContract
     }
 
     /**
+     * Getting chargebee customer id.
+     * 
+     * @return string|null
+     */
+    public function getCustomerId(): ?string
+    {
+        return $this->chargebee_customer_id;
+    }
+
+    /**
      * Transforming to array.
      * 
      * @return array
@@ -72,7 +89,8 @@ class Professional implements ProfessionalContract
         return [
             'id' => $this->id,
             'company' => $this->company,
-            'authorization_key' => $this->authorization_key
+            'authorization_key' => $this->authorization_key,
+            'chargebee_customer_id' => $this->chargebee_customer_id
         ];
     }
 
