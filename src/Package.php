@@ -2,6 +2,7 @@
 namespace Deegitalbe\TrustupProAppCommon;
 
 use Illuminate\Support\Collection;
+use Deegitalbe\TrustupProAppCommon\Contracts\AppContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\AdminAppApiContract;
 use Deegitalbe\TrustupProAppCommon\Http\Middleware\AuthenticatedUser;
 use Deegitalbe\TrustupVersionedPackage\Contracts\Project\ProjectContract;
@@ -121,16 +122,20 @@ class Package implements VersionedPackageContract
     {
         $apps = app()->make(AdminAppApiContract::class)
             ->getAppsExceptDashboard() ?? collect();
+        
+        dd($apps->map(function(AppContract $app) {
+            return $app->getDefaultSubscriptionPlan();
+        }));
 
         return $apps
-                ->filter(function($app) {
-                    return $app->url !== config('app.url');
-                })
-                ->map(function($app) {
-                    return app()->make(ProjectContract::class)
-                        ->setUrl($app->url)
-                        ->setVersionedPackage($this);
-                });
+            ->filter(function(AppContract $app) {
+                return $app->getUrl() !== config('app.url');
+            })
+            ->map(function(AppContract $app) {
+                return app()->make(ProjectContract::class)
+                    ->setUrl($app->getUrl())
+                    ->setVersionedPackage($this);
+            });
     }
 
     /**
