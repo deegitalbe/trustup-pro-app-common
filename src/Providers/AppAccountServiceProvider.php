@@ -5,6 +5,7 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Deegitalbe\TrustupProAppCommon\Package;
+use Deegitalbe\TrustupProAppCommon\Models\App;
 use Deegitalbe\TrustupProAppCommon\Models\User;
 use Deegitalbe\TrustupProAppCommon\Synchronizer;
 use Deegitalbe\TrustupProAppCommon\Api\AdminAppApi;
@@ -12,6 +13,7 @@ use Deegitalbe\TrustupProAppCommon\Api\TrustupProApi;
 use Deegitalbe\TrustupProAppCommon\Models\Professional;
 use Henrotaym\LaravelApiClient\Contracts\ClientContract;
 use Deegitalbe\TrustupProAppCommon\AuthenticationRelated;
+use Deegitalbe\TrustupProAppCommon\Contracts\AppContract;
 use Deegitalbe\TrustupProAppCommon\Api\Client\AdminClient;
 use Deegitalbe\TrustupProAppCommon\Contracts\UserContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\AccountContract;
@@ -135,6 +137,7 @@ class AppAccountServiceProvider extends ServiceProvider
     protected function registerModels(): self
     {
         $this->app->bind(AccountContract::class, PackageFacade::account());
+        $this->app->bind(AppContract::class, App::class);
         $this->app->bind(UserContract::class, User::class);
         $this->app->bind(ProfessionalContract::class, Professional::class);
 
