@@ -229,11 +229,12 @@ class StoringAccountService implements StoringAccountServiceContract
     /**
      * Getting hostname attributes based on given account.
      * 
+     * @param AccountContract $account
      * @return array Attributes to create hostname with.
      */
-    protected function getHostnameAttributes(): array
+    protected function getHostnameAttributes(AccountContract $account): array
     {
-        return ['fqdn' => $this->account->getUuid() . "." . str_replace('https://', '', config('app.url'))];
+        return ['fqdn' => $account->getUuid() . "." . str_replace('https://', '', config('app.url'))];
     }
 
     /**
