@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "653ede52c5ac1d0fd8c972d94ed67c7f",
+    "content-hash": "2a6f1553906c6be2d466c66aa1a43989",
     "packages": [
         {
             "name": "brick/math",
@@ -65,6 +65,58 @@
                 }
             ],
             "time": "2021-08-15T20:50:18+00:00"
+        },
+        {
+            "name": "deegitalbe/chargebee-client",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/deegitalbe/chargebee-client.git",
+                "reference": "5331bc9c938dd112533ff9833753540228759185"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/deegitalbe/chargebee-client/zipball/5331bc9c938dd112533ff9833753540228759185",
+                "reference": "5331bc9c938dd112533ff9833753540228759185",
+                "shasum": ""
+            },
+            "require": {
+                "deegitalbe/trustup-versioned-package": "^1.1",
+                "henrotaym/laravel-api-client": "^1.3"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^6.0",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Deegitalbe\\ChargebeeClient\\Providers\\ChargebeeClientProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Deegitalbe\\ChargebeeClient\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mathieu Henrotay",
+                    "email": "mathieu.henrotay@gmail.com"
+                }
+            ],
+            "description": "Chargebee client used by our applications.",
+            "support": {
+                "issues": "https://github.com/deegitalbe/chargebee-client/issues",
+                "source": "https://github.com/deegitalbe/chargebee-client/tree/v1.0.0"
+            },
+            "time": "2021-11-24T10:05:51+00:00"
         },
         {
             "name": "deegitalbe/server-authorization",
