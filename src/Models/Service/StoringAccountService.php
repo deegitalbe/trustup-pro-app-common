@@ -213,7 +213,14 @@ class StoringAccountService implements StoringAccountServiceContract
      */
     protected function createSubscription(): ?SubscriptionContract
     {
-        return $this->subscription_api->create($this->subscription_plan, $this->customer);
+        $subscription = $this->subscription_api->create($this->subscription_plan, $this->customer);
+
+        // if subscription was created and customer is known by chargebee, cancel at terms to avoid auto collection.
+        if ($subscription && $this->customer->isPersisted()):
+            return $this->subscription_api->cancelAtTerms($subscription);
+        endif;
+        
+        return $subscription;
     }
 
     /**
