@@ -66,7 +66,37 @@ class User implements UserContract
      */
     public function getName(): string
     {
-        return $this->name;
+        return $this->name ?? "{$this->getFirstName()} {$this->getLastName()}";
+    }
+
+    /**
+     * Getting first name.
+     * 
+     * @return string
+     */
+    public function getFirstName(): string
+    {
+        return $this->first_name ?? $this->last_name;
+    }
+
+    /**
+     * Getting last name.
+     * 
+     * @return string
+     */
+    public function getLastName(): string
+    {
+        return $this->last_name;
+    }
+
+    /**
+     * Getting email.
+     * 
+     * @return string
+     */
+    public function getEmail(): string
+    {
+        return $this->email;
     }
 
     /**
@@ -118,7 +148,9 @@ class User implements UserContract
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
+            'name' => $this->getName(),
+            'first_name' => $this->getFirstName(),
+            'last_name' => $this->getLastName(),
             'avatar' => $this->avatar,
             'role' => $this->role,
             'professional' => $this->professional->toArray()

@@ -25,6 +25,27 @@ interface UserContract extends Arrayable
     public function getName(): string;
 
     /**
+     * Getting first name.
+     * 
+     * @return string
+     */
+    public function getFirstName(): string;
+
+    /**
+     * Getting last name.
+     * 
+     * @return string
+     */
+    public function getLastName(): string;
+
+    /**
+     * Getting email.
+     * 
+     * @return string
+     */
+    public function getEmail(): string;
+
+    /**
      * Getting avatar.
      * 
      * @return string|null
