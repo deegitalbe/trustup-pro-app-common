@@ -16,6 +16,7 @@ use Deegitalbe\TrustupProAppCommon\AuthenticationRelated;
 use Deegitalbe\TrustupProAppCommon\Contracts\AppContract;
 use Deegitalbe\TrustupProAppCommon\Api\Client\AdminClient;
 use Deegitalbe\TrustupProAppCommon\Contracts\UserContract;
+use Deegitalbe\TrustupProAppCommon\Commands\InstallPackage;
 use Deegitalbe\TrustupProAppCommon\Contracts\AccountContract;
 use Deegitalbe\TrustupProAppCommon\Models\Query\AccountQuery;
 use Deegitalbe\TrustupProAppCommon\Observers\AccountObserver;
@@ -188,6 +189,7 @@ class AppAccountServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->makeConfigPublishable()
+            ->registerCommands()
             ->loadRoutes()
             ->registerProjectors()
             ->registerPackageAsVersioned();
@@ -205,6 +207,22 @@ class AppAccountServiceProvider extends ServiceProvider
               $this->getConfigPath() => config_path(PackageFacade::getPrefix().'.php'),
             ], 'config');
         endif;
+
+        return $this;
+    }
+
+    /**
+     * Registering commands
+     * 
+     * @return self
+     */
+    protected function registerCommands(): self
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                InstallPackage::class
+            ]);
+        }
 
         return $this;
     }
