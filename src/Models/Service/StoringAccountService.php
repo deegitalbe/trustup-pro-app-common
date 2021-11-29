@@ -18,12 +18,6 @@ use Deegitalbe\ChargebeeClient\Chargebee\Models\Contracts\SubscriptionContract;
 use Deegitalbe\ChargebeeClient\Chargebee\Models\Contracts\SubscriptionPlanContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Service\StoringAccountServiceContract;
 
-// install chargebee package DONE
-// authenticated user should have email first name and last name and professional should have customer id DONE
-// update admin common package concerning app query
-// this service should check if app is free or not and create chargebee subscription if needed
-// emit event when subscription created and projector updating account chargebee status.
-
 /**
  * Service storing account.
  */
