@@ -142,9 +142,18 @@ class StoringAccountService implements StoringAccountServiceContract
     protected function createAccount(): AccountContract
     {
         $attributes = $this->getAccountAttributes();
-        event(new AccountCreated($attributes));
+        event(
+            app()->make(AccountCreated::class)
+                ->setAttributes($attributes)
+        );
+        
         $account = $this->account_query->whereUuid($attributes['uuid'])->first();
-        event(new HostnameCreated($this->getHostnameAttributes($account), $account->getUuid()));
+        
+        event(
+            app()->make(HostnameCreated::class)
+                ->setAttributes($this->getHostnameAttributes($account))
+                ->setAccountUuid($account->getUuid())
+        );
 
         return $account;
     }
@@ -168,7 +177,14 @@ class StoringAccountService implements StoringAccountServiceContract
             return;
         endif;
 
-        event(new AccountSubscribed($this->subscription->getId(), $this->subscription->getStatus(), $this->account->getUuid()));
+        event(
+            app()->make(AccountSubscribed::class)
+                ->setAttributes([
+                    'chargebee_subscription_id' => $this->subscription->getId(),
+                    'chargebee_subscription_status' => $this->subscription->getStatus(),
+                ])
+                ->setAccountUuid($this->account->getUuid())
+        );
 
         $this->account->refresh();
     }

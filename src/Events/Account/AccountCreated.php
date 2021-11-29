@@ -4,28 +4,15 @@ namespace Deegitalbe\TrustupProAppCommon\Events\Account;
 
 use Deegitalbe\TrustupProAppCommon\Events\ProjectorEvent;
 use Deegitalbe\TrustupProAppCommon\Contracts\AccountContract;
+use Deegitalbe\TrustupProAppCommon\Events\Traits\HavingAttributes;
+use Deegitalbe\TrustupProAppCommon\Contracts\Events\HavingAttributesContract;
 
 /**
  * Event when account is created.
  */
-class AccountCreated extends ProjectorEvent
+class AccountCreated extends ProjectorEvent implements HavingAttributesContract
 {
-    /**
-     * Attributes to create account with.
-     * 
-     * @return array
-     */
-    public $attributes;
-
-    /**
-     * Instanciating class.
-     * 
-     * @param array $attributes
-     */
-    public function __construct(array $attributes)
-    {
-        $this->attributes = $attributes;
-    }
+    use HavingAttributes;
 
     /**
      * Instanciating a new account.
@@ -34,6 +21,6 @@ class AccountCreated extends ProjectorEvent
      */
     public function newAccount()
     {
-        return app()->make(AccountContract::class, ['attributes' => $this->attributes]);
+        return app()->make(AccountContract::class, ['attributes' => $this->getAttributes()]);
     }
 }

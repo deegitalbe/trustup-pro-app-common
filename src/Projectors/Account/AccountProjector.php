@@ -8,12 +8,15 @@ use Deegitalbe\TrustupProAppCommon\Contracts\AccountContract;
 use Deegitalbe\TrustupProAppCommon\Events\Account\AccountCreated;
 use Deegitalbe\TrustupProAppCommon\Events\Account\AccountSubscribed;
 use Deegitalbe\TrustupProAppCommon\Contracts\Query\AccountQueryContract;
+use Deegitalbe\TrustupProAppCommon\Projectors\Traits\AccountRelatedProjector;
 
 /**
  * Projector handling account related events.
  */
 class AccountProjector extends Projector
 {
+    use AccountRelatedProjector;
+
     /**
      * Storing account from event.
      * 
@@ -35,14 +38,10 @@ class AccountProjector extends Projector
      */
     public function subscribeAccount(AccountSubscribed $event)
     {
-        $account = app(AccountQueryContract::class)->whereUuid($event->account_uuid)->first();
-        
-        if (!$account):
+        if (!$account = $this->getAccount($event)):
             return;
         endif;
 
-        $account->chargebee_subscription_id = $event->subscription_id;
-        $account->chargebee_subscription_status = $event->subscription_status;
-        $account->save();
+        $account->fill($event->getAttributes())->save();
     }
 }
