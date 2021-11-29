@@ -1,5 +1,5 @@
 <?php
-namespace Deegitalbe\TrustupProAppCommon\Contracts\Events;
+namespace Deegitalbe\TrustupProAppCommon\Contracts\Projectors;
 
 use Deegitalbe\TrustupProAppCommon\Contracts\AccountContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Events\AccountRelatedEventContract;
