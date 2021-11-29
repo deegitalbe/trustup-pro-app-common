@@ -17,11 +17,11 @@ Package expects you to have those lines in your .env
  - `TRUSTUP_APP_KEY` key should be unique identifier for current app. (e.g: "tasks" for application taches.trustup.pro)
  - `TRUSTUP_ADMIN_URL` should be defined in development mode only. (since package already has correct value for production)
 
-## Publish configuration
+## Install command
 
-You have to publish configuration
+Execute this command to install package and publish configuration.
 
-    php artisan vendor:publish --provider="Deegitalbe\TrustupProAppCommon\Providers\AppAccountServiceProvider" --tag="config"
+    php artisan trustup_pro_app_common:install
 
 You will then have access to `config/trustup_pro_app_common.php` that you have to configure properly.
 
