@@ -123,9 +123,9 @@ class Package implements VersionedPackageContract
         $apps = app()->make(AdminAppApiContract::class)
             ->getAppsExceptDashboard() ?? collect();
         
-        dd($apps->map(function(AppContract $app) {
-            return $app->getDefaultSubscriptionPlan();
-        }));
+        // dd($apps->map(function(AppContract $app) {
+        //     return $app->getDefaultSubscriptionPlan();
+        // }));
 
         return $apps
             ->filter(function(AppContract $app) {
@@ -143,7 +143,7 @@ class Package implements VersionedPackageContract
      */
     public function getVersion(): string
     {
-        return "2.1.7";
+        return "2.1.8";
     }
 
     /**
