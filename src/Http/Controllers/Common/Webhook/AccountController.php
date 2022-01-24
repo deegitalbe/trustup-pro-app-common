@@ -16,9 +16,13 @@ class AccountController extends Controller
      */
     public function update(Request $request)
     {
-        $request->account->fill($request->except(['account']));
+        $success = Package::account()::withoutEvents(function () use ($request) {
+            return $request->account
+                ->fill($request->except(['account']))
+                ->save();
+        });
         
-        if(!$request->account->saveQuietly()):
+        if(!$success):
             $error = new AccountUpdateFailed();
             report($error
                 ->setAttributes($request->except(['account']))
