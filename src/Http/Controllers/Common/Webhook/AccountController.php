@@ -3,6 +3,7 @@ namespace Deegitalbe\TrustupProAppCommon\Http\Controllers\Common\Webhook;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Deegitalbe\TrustupProAppCommon\Facades\Package;
 use Deegitalbe\TrustupProAppCommon\Exceptions\Webhooks\AccountUpdateFailed;
 use Deegitalbe\TrustupProAppCommon\Http\Resources\Account as AccountResource;
 
