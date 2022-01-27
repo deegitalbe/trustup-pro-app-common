@@ -119,13 +119,25 @@ class StoringAccountService implements StoringAccountServiceContract
         $this->request = $request;
         $this->account = $this->createAccount();
 
-        if (optional($this->authentication_related->getCurrentApp())->getPaid()):
+        if ($this->shouldSubscribeAccount()):
             $this->subscribeAccount();
         endif;
 
         $this->afterSubscription();
 
         return $this->account;
+    }
+
+    /**
+     * Telling if service should try to subscribe account.
+     * 
+     * @return bool
+     */
+    protected function shouldSubscribeAccount(): bool
+    {
+        // Subscribe if account is not having subscription id and current app is paid.
+        return !$this->account->getSubscriptionId() 
+            && optional($this->authentication_related->getCurrentApp())->getPaid();
     }
 
     /**
@@ -263,12 +275,15 @@ class StoringAccountService implements StoringAccountServiceContract
     {
         $attributes = $this->request->validate([
             'authorization_key' => ['required', 'string', new UserHavingAuthorizationKey],
-            'name' => ['nullable', 'string']
+            'name' => ['nullable', 'string'],
+            'chargebee_subscription_id' => ['sometimes', 'nullable', 'string'],
+            'chargebee_subscription_status' => ['sometimes', 'nullable', 'string'],
         ]);
 
         $attributes['uuid'] = Helpers::uuid();
         $attributes['name'] = $attributes['name'] ?? Str::slug($this->authentication_related->getUser()->getProfessional()->getCompany());
 
-        return $attributes;
+        // Removing null fields.
+        return array_filter($attributes);
     }
 }
