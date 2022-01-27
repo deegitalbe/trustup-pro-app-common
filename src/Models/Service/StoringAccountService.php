@@ -278,9 +278,14 @@ class StoringAccountService implements StoringAccountServiceContract
             'name' => ['nullable', 'string'],
             'chargebee_subscription_id' => ['sometimes', 'nullable', 'string'],
             'chargebee_subscription_status' => ['sometimes', 'nullable', 'string'],
+            'uuid' => ['sometimes', 'nullable', 'string']
         ]);
 
-        $attributes['uuid'] = Helpers::uuid();
+        // Create uuid if none given or noll or empty string value.
+        if (!isset($attributes['uuid']) || !$attributes['uuid']):
+            $attributes['uuid'] = Helpers::uuid();
+        endif;
+
         $attributes['name'] = $attributes['name'] ?? Str::slug($this->authentication_related->getUser()->getProfessional()->getCompany());
 
         // Removing null fields.
