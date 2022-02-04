@@ -143,7 +143,7 @@ class Package implements VersionedPackageContract
      */
     public function getVersion(): string
     {
-        return "2.2.1";
+        return "2.2.2";
     }
 
     /**
