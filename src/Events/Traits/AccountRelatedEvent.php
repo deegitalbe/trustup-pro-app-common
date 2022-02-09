@@ -24,7 +24,7 @@ trait AccountRelatedEvent
      * Setting up account uuid.
      * 
      * @param string $account_uuid
-     * @return AccountRelatedEventContract
+     * @return static
      */
     public function setAccountUuid(string $account_uuid): AccountRelatedEventContract
     {
