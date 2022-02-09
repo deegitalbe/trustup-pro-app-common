@@ -159,7 +159,7 @@ class AppAccountServiceProvider extends VersionablePackageServiceProvider
      * 
      * @return void
      */
-    public function addToBoot(): void
+    protected function addToBoot(): void
     {
         $this->registerCommands()
             ->loadRoutes()

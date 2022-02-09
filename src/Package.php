@@ -18,7 +18,7 @@ class Package extends VersionablePackage implements VersionedPackageContract
 {
     public static function prefix(): string
     {
-        return "laravel_package_versioning_config";
+        return "trustup_pro_app_common";
     }
 
     /**
