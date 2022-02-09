@@ -2,12 +2,13 @@
 
 namespace Deegitalbe\TrustupProAppCommon\Projectors\Account;
 
+use Deegitalbe\TrustupProAppCommon\Facades\Package;
 use Deegitalbe\TrustupProAppCommon\Projectors\Projector;
 use Hyn\Tenancy\Contracts\Repositories\WebsiteRepository;
-use Deegitalbe\TrustupProAppCommon\Contracts\AccountContract;
+use Deegitalbe\TrustupProAppCommon\Models\SynchronizeWhenSaved;
 use Deegitalbe\TrustupProAppCommon\Events\Account\AccountCreated;
 use Deegitalbe\TrustupProAppCommon\Events\Account\AccountSubscribed;
-use Deegitalbe\TrustupProAppCommon\Contracts\Query\AccountQueryContract;
+use Deegitalbe\TrustupProAppCommon\Events\Account\AccountUpdatedFromWebhook;
 use Deegitalbe\TrustupProAppCommon\Projectors\Traits\AccountRelatedProjector;
 
 /**
@@ -18,7 +19,7 @@ class AccountProjector extends Projector
     use AccountRelatedProjector;
 
     /**
-     * Storing account from event.
+     * Storing account given by trustup.pro.
      * 
      * @param AccountCreated $event
      * @return void
@@ -26,8 +27,11 @@ class AccountProjector extends Projector
     public function storeAccount(AccountCreated $event)
     {
         $account = $event->newAccount();
-        app()->make(WebsiteRepository::class)
-            ->create($account);
+
+        $this->muteAccountEvents(function() use ($account) {
+            app()->make(WebsiteRepository::class)
+                ->create($account);
+        });
     }
 
     /**
@@ -38,10 +42,30 @@ class AccountProjector extends Projector
      */
     public function subscribeAccount(AccountSubscribed $event)
     {
-        if (!$account = $this->getAccount($event)):
-            return;
-        endif;
+        $this->updateAccount($event);
+    }
 
-        $account->fill($event->getAttributes())->save();
+    /**
+     * Updating account from admin webhook.
+     * 
+     * @param AccountUpdatedFromWebhook $event
+     * @return void
+     */
+    public function updateAccountFromWebhook(AccountUpdatedFromWebhook $event)
+    {
+        $this->muteAccountEvents(function() use ($event) {
+            $this->updateAccount($event);
+        });
+    }
+
+    /**
+     * Not triggering admin webhooks by muting account events.
+     * 
+     * @param callable $callback Callback to execute without account events.
+     * @return mixed Callback return value.
+     */
+    public function muteAccountEvents(callable $callback)
+    {
+        return Package::account()::withoutEvents($callback);
     }
 }
