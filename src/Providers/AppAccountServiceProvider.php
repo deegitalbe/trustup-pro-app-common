@@ -1,9 +1,7 @@
 <?php
 namespace Deegitalbe\TrustupProAppCommon\Providers;
 
-use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\ServiceProvider;
 use Deegitalbe\TrustupProAppCommon\Package;
 use Deegitalbe\TrustupProAppCommon\Models\App;
 use Deegitalbe\TrustupProAppCommon\Models\User;
@@ -11,7 +9,6 @@ use Deegitalbe\TrustupProAppCommon\Synchronizer;
 use Deegitalbe\TrustupProAppCommon\Api\AdminAppApi;
 use Deegitalbe\TrustupProAppCommon\Api\TrustupProApi;
 use Deegitalbe\TrustupProAppCommon\Models\Professional;
-use Henrotaym\LaravelApiClient\Contracts\ClientContract;
 use Deegitalbe\TrustupProAppCommon\AuthenticationRelated;
 use Deegitalbe\TrustupProAppCommon\Contracts\AppContract;
 use Deegitalbe\TrustupProAppCommon\Api\Client\AdminClient;
@@ -19,7 +16,6 @@ use Deegitalbe\TrustupProAppCommon\Contracts\UserContract;
 use Deegitalbe\TrustupProAppCommon\Commands\InstallPackage;
 use Deegitalbe\TrustupProAppCommon\Contracts\AccountContract;
 use Deegitalbe\TrustupProAppCommon\Models\Query\AccountQuery;
-use Deegitalbe\TrustupProAppCommon\Observers\AccountObserver;
 use Deegitalbe\TrustupProAppCommon\Api\Client\TrustupProClient;
 use Deegitalbe\TrustupProAppCommon\Contracts\ProfessionalContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\SynchronizerContract;
@@ -34,23 +30,26 @@ use Deegitalbe\TrustupProAppCommon\Contracts\Query\AccountQueryContract;
 use Deegitalbe\TrustupProAppCommon\Projectors\Hostname\HostnameProjector;
 use Deegitalbe\TrustupProAppCommon\Contracts\AuthenticationRelatedContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\Client\AdminClientContract;
-use Deegitalbe\TrustupProAppCommon\Http\Middleware\UserHavingAccessToAccount;
-use Deegitalbe\TrustupProAppCommon\Http\Middleware\SettingAccountAsEnvironment;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\Client\TrustupProClientContract;
 use Deegitalbe\TrustupVersionedPackage\Contracts\VersionedPackageCheckerContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Service\StoringAccountServiceContract;
+use Henrotaym\LaravelPackageVersioning\Providers\Abstracts\VersionablePackageServiceProvider;
 
-class AppAccountServiceProvider extends ServiceProvider
+class AppAccountServiceProvider extends VersionablePackageServiceProvider
 {
+    public static function getPackageClass(): string
+    {
+        return Package::class;
+    }
+
     /**
-     * Provider register method
+     * Adding this to service provider register() method.
      * 
      * @return void
      */
-    public function register()
+    protected function addToRegister(): void
     {
-        $this->registerPackageFacade()
-            ->registerConfig()
+        $this
             ->registerTrustupProApi()
             ->registerAdminAppApi()
             ->registerSynchronizer()
@@ -58,32 +57,6 @@ class AppAccountServiceProvider extends ServiceProvider
             ->registerQueryBuilders()
             ->registerAuthenticationRelated()
             ->registerStoringAccountService();
-    }
-
-    /**
-     * Registering package facade.
-     * 
-     * @return self
-     */
-    protected function registerPackageFacade(): self
-    {
-        $this->app->bind(Package::$prefix, function($app) {
-            return $app->make(Package::class);
-        });
-
-        return $this;
-    }
-
-    /**
-     * Registering package configuration.
-     * 
-     * @return self
-     */
-    protected function registerConfig(): self
-    {
-        $this->mergeConfigFrom($this->getConfigPath(), PackageFacade::getPrefix());
-
-        return $this;
     }
 
     /**
@@ -182,33 +155,16 @@ class AppAccountServiceProvider extends ServiceProvider
     }
     
     /**
-     * Booting provider.
+     * Adding this to service provider boot() method.
      * 
      * @return void
      */
-    public function boot()
+    public function addToBoot(): void
     {
-        $this->makeConfigPublishable()
-            ->registerCommands()
+        $this->registerCommands()
             ->loadRoutes()
             ->registerProjectors()
             ->registerPackageAsVersioned();
-    }
-
-    /**
-     * Making config publishable.
-     * 
-     * @return self
-     */
-    protected function makeConfigPublishable(): self
-    {
-        if ($this->app->runningInConsole()):
-            $this->publishes([
-              $this->getConfigPath() => config_path(PackageFacade::getPrefix().'.php'),
-            ], 'config');
-        endif;
-
-        return $this;
     }
 
     /**
@@ -218,11 +174,7 @@ class AppAccountServiceProvider extends ServiceProvider
      */
     protected function registerCommands(): self
     {
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                InstallPackage::class
-            ]);
-        }
+        $this->registerCommand(InstallPackage::class);
 
         return $this;
     }
@@ -335,15 +287,5 @@ class AppAccountServiceProvider extends ServiceProvider
             ->addPackage(PackageFacade::getFacadeRoot());
         
         return $this;
-    }
-
-    /**
-     * Getting path to config.
-     * 
-     * @return string
-     */
-    protected function getConfigPath(): string
-    {
-        return __DIR__.'/../config/config.php';
     }
 }

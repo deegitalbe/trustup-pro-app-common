@@ -6,9 +6,12 @@ use Deegitalbe\TrustupProAppCommon\Tests\TestCase;
 use Deegitalbe\TrustupProAppCommon\Facades\Package;
 use Deegitalbe\TrustupProAppCommon\Exceptions\AdminAppApi\GetAppsException;
 use Deegitalbe\TrustupVersionedPackage\Contracts\VersionedPackageCheckerContract;
+use Henrotaym\LaravelPackageVersioning\Testing\Traits\InstallPackageTest;
 
 class ExampleTest extends TestCase
 {
+    use InstallPackageTest;
+    
     /**
      * @test
      */

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2a6f1553906c6be2d466c66aa1a43989",
+    "content-hash": "f6651b34384db3bbf35694d7d56b930e",
     "packages": [
         {
             "name": "brick/math",
@@ -711,12 +711,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Facade\\Ignition\\": "src"
-                },
                 "files": [
                     "src/helpers.php"
-                ]
+                ],
+                "psr-4": {
+                    "Facade\\Ignition\\": "src"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -1229,6 +1229,59 @@
             "time": "2022-01-11T10:38:39+00:00"
         },
         {
+            "name": "henrotaym/laravel-container-auto-register",
+            "version": "v1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/henrotaym/laravel-container-auto-register.git",
+                "reference": "6dff821ce1aa57b28822096cbebf51decdd46b1d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/henrotaym/laravel-container-auto-register/zipball/6dff821ce1aa57b28822096cbebf51decdd46b1d",
+                "reference": "6dff821ce1aa57b28822096cbebf51decdd46b1d",
+                "shasum": ""
+            },
+            "require": {
+                "henrotaym/laravel-helpers": "^1.3",
+                "henrotaym/laravel-package-versioning-config": "^1.0",
+                "henrotaym/laravel-test-suite": "^2.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^6.0",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Henrotaym\\LaravelContainerAutoRegister\\Providers\\LaravelContainerAutoRegisterServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Henrotaym\\LaravelContainerAutoRegister\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mathieu Henrotay",
+                    "email": "mathieu.henrotay@gmail.com"
+                }
+            ],
+            "description": "Auto registering classes into laravel container.",
+            "support": {
+                "issues": "https://github.com/henrotaym/laravel-container-auto-register/issues",
+                "source": "https://github.com/henrotaym/laravel-container-auto-register/tree/v1.2.1"
+            },
+            "time": "2022-01-31T21:25:26+00:00"
+        },
+        {
             "name": "henrotaym/laravel-flare-exception-handler",
             "version": "v1.0.0",
             "source": {
@@ -1324,17 +1377,73 @@
             "time": "2022-01-28T15:17:32+00:00"
         },
         {
-            "name": "henrotaym/laravel-test-suite",
-            "version": "v2.2.2",
+            "name": "henrotaym/laravel-package-versioning-config",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/henrotaym/laravel-test-suite.git",
-                "reference": "52a64579cbb7b3a943fdf40551a370f989c0c8bd"
+                "url": "https://github.com/henrotaym/laravel-package-versioning-config.git",
+                "reference": "805d18ccbeb2e49c7b0bf160054e67907a4eed29"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/henrotaym/laravel-test-suite/zipball/52a64579cbb7b3a943fdf40551a370f989c0c8bd",
-                "reference": "52a64579cbb7b3a943fdf40551a370f989c0c8bd",
+                "url": "https://api.github.com/repos/henrotaym/laravel-package-versioning-config/zipball/805d18ccbeb2e49c7b0bf160054e67907a4eed29",
+                "reference": "805d18ccbeb2e49c7b0bf160054e67907a4eed29",
+                "shasum": ""
+            },
+            "require": {
+                "henrotaym/laravel-container-auto-register": "^1.2",
+                "henrotaym/laravel-helpers": "^1.3",
+                "henrotaym/laravel-test-suite": "^2.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^6.0",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Henrotaym\\LaravelPackageVersioning\\Providers\\LaravelPackageVersioningServiceProvider"
+                    ]
+                },
+                "branch-alias": {
+                    "dev-main": "1.x.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Henrotaym\\LaravelPackageVersioning\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mathieu Henrotay",
+                    "email": "mathieu.henrotay@gmail.com"
+                }
+            ],
+            "description": "Versioning your package while registering common features.",
+            "support": {
+                "issues": "https://github.com/henrotaym/laravel-package-versioning-config/issues",
+                "source": "https://github.com/henrotaym/laravel-package-versioning-config/tree/v1.2.0"
+            },
+            "time": "2022-02-07T09:43:12+00:00"
+        },
+        {
+            "name": "henrotaym/laravel-test-suite",
+            "version": "v2.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/henrotaym/laravel-test-suite.git",
+                "reference": "62971bb61c35d4bb8eb65f7e14a7c2e06ac80fcc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/henrotaym/laravel-test-suite/zipball/62971bb61c35d4bb8eb65f7e14a7c2e06ac80fcc",
+                "reference": "62971bb61c35d4bb8eb65f7e14a7c2e06ac80fcc",
                 "shasum": ""
             },
             "require-dev": {
@@ -1360,22 +1469,22 @@
             "description": "Adding recurrent functionalities to laravel test suite.",
             "support": {
                 "issues": "https://github.com/henrotaym/laravel-test-suite/issues",
-                "source": "https://github.com/henrotaym/laravel-test-suite/tree/v2.2.2"
+                "source": "https://github.com/henrotaym/laravel-test-suite/tree/v2.2.3"
             },
-            "time": "2022-01-31T15:03:41+00:00"
+            "time": "2022-02-01T02:12:44+00:00"
         },
         {
             "name": "laravel/framework",
-            "version": "v8.81.0",
+            "version": "v8.83.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "9cc0efd724ce67a190b1695ba31a27bbb1ae9177"
+                "reference": "29bc8779103909ebc428478b339ee6fa8703e193"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/9cc0efd724ce67a190b1695ba31a27bbb1ae9177",
-                "reference": "9cc0efd724ce67a190b1695ba31a27bbb1ae9177",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/29bc8779103909ebc428478b339ee6fa8703e193",
+                "reference": "29bc8779103909ebc428478b339ee6fa8703e193",
                 "shasum": ""
             },
             "require": {
@@ -1535,20 +1644,20 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2022-01-25T16:41:46+00:00"
+            "time": "2022-02-08T15:44:51+00:00"
         },
         {
             "name": "laravel/serializable-closure",
-            "version": "v1.0.5",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/serializable-closure.git",
-                "reference": "25de3be1bca1b17d52ff0dc02b646c667ac7266c"
+                "reference": "65c9faf50d567b65d81764a44526545689e3fe63"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/serializable-closure/zipball/25de3be1bca1b17d52ff0dc02b646c667ac7266c",
-                "reference": "25de3be1bca1b17d52ff0dc02b646c667ac7266c",
+                "url": "https://api.github.com/repos/laravel/serializable-closure/zipball/65c9faf50d567b65d81764a44526545689e3fe63",
+                "reference": "65c9faf50d567b65d81764a44526545689e3fe63",
                 "shasum": ""
             },
             "require": {
@@ -1594,7 +1703,7 @@
                 "issues": "https://github.com/laravel/serializable-closure/issues",
                 "source": "https://github.com/laravel/serializable-closure"
             },
-            "time": "2021-11-30T15:53:04+00:00"
+            "time": "2022-02-01T16:29:39+00:00"
         },
         {
             "name": "league/commonmark",
@@ -3980,12 +4089,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Iconv\\": ""
-                },
                 "files": [
                     "bootstrap.php"
-                ]
+                ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Iconv\\": ""
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -4060,12 +4169,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Intl\\Grapheme\\": ""
-                },
                 "files": [
                     "bootstrap.php"
-                ]
+                ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Intl\\Grapheme\\": ""
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -4143,12 +4252,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Intl\\Idn\\": ""
-                },
                 "files": [
                     "bootstrap.php"
-                ]
+                ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Intl\\Idn\\": ""
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -4228,12 +4337,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Intl\\Normalizer\\": ""
-                },
                 "files": [
                     "bootstrap.php"
                 ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Intl\\Normalizer\\": ""
+                },
                 "classmap": [
                     "Resources/stubs"
                 ]
@@ -4392,12 +4501,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Php72\\": ""
-                },
                 "files": [
                     "bootstrap.php"
-                ]
+                ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Php72\\": ""
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -4468,12 +4577,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Php73\\": ""
-                },
                 "files": [
                     "bootstrap.php"
                 ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Php73\\": ""
+                },
                 "classmap": [
                     "Resources/stubs"
                 ]
@@ -4547,12 +4656,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Php80\\": ""
-                },
                 "files": [
                     "bootstrap.php"
                 ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Php80\\": ""
+                },
                 "classmap": [
                     "Resources/stubs"
                 ]
@@ -4630,12 +4739,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Php81\\": ""
-                },
                 "files": [
                     "bootstrap.php"
                 ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Php81\\": ""
+                },
                 "classmap": [
                     "Resources/stubs"
                 ]
@@ -5604,16 +5713,16 @@
         },
         {
             "name": "fakerphp/faker",
-            "version": "v1.18.0",
+            "version": "v1.19.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FakerPHP/Faker.git",
-                "reference": "2e77a868f6540695cf5ebf21e5ab472c65f47567"
+                "reference": "d7f08a622b3346766325488aa32ddc93ccdecc75"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FakerPHP/Faker/zipball/2e77a868f6540695cf5ebf21e5ab472c65f47567",
-                "reference": "2e77a868f6540695cf5ebf21e5ab472c65f47567",
+                "url": "https://api.github.com/repos/FakerPHP/Faker/zipball/d7f08a622b3346766325488aa32ddc93ccdecc75",
+                "reference": "d7f08a622b3346766325488aa32ddc93ccdecc75",
                 "shasum": ""
             },
             "require": {
@@ -5626,10 +5735,12 @@
             },
             "require-dev": {
                 "bamarni/composer-bin-plugin": "^1.4.1",
+                "doctrine/persistence": "^1.3 || ^2.0",
                 "ext-intl": "*",
                 "symfony/phpunit-bridge": "^4.4 || ^5.2"
             },
             "suggest": {
+                "doctrine/orm": "Required to use Faker\\ORM\\Doctrine",
                 "ext-curl": "Required by Faker\\Provider\\Image to download images.",
                 "ext-dom": "Required by Faker\\Provider\\HtmlLorem for generating random HTML.",
                 "ext-iconv": "Required by Faker\\Provider\\ru_RU\\Text::realText() for generating real Russian text.",
@@ -5638,7 +5749,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "v1.18-dev"
+                    "dev-main": "v1.19-dev"
                 }
             },
             "autoload": {
@@ -5663,9 +5774,9 @@
             ],
             "support": {
                 "issues": "https://github.com/FakerPHP/Faker/issues",
-                "source": "https://github.com/FakerPHP/Faker/tree/v1.18.0"
+                "source": "https://github.com/FakerPHP/Faker/tree/v1.19.0"
             },
-            "time": "2022-01-23T17:56:23+00:00"
+            "time": "2022-02-02T17:38:57+00:00"
         },
         {
             "name": "hamcrest/hamcrest-php",
@@ -5817,12 +5928,12 @@
             },
             "type": "library",
             "autoload": {
-                "psr-4": {
-                    "DeepCopy\\": "src/DeepCopy/"
-                },
                 "files": [
                     "src/DeepCopy/deep_copy.php"
-                ]
+                ],
+                "psr-4": {
+                    "DeepCopy\\": "src/DeepCopy/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -5906,22 +6017,22 @@
         },
         {
             "name": "orchestra/testbench",
-            "version": "v6.24.0",
+            "version": "v6.24.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/orchestral/testbench.git",
-                "reference": "938c7224b5a770fb69b331d1ed947712a62c94e4"
+                "reference": "7b6a225851f6c148a80e241af5cbd833c83e572c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orchestral/testbench/zipball/938c7224b5a770fb69b331d1ed947712a62c94e4",
-                "reference": "938c7224b5a770fb69b331d1ed947712a62c94e4",
+                "url": "https://api.github.com/repos/orchestral/testbench/zipball/7b6a225851f6c148a80e241af5cbd833c83e572c",
+                "reference": "7b6a225851f6c148a80e241af5cbd833c83e572c",
                 "shasum": ""
             },
             "require": {
                 "laravel/framework": "^8.75",
                 "mockery/mockery": "^1.4.4",
-                "orchestra/testbench-core": "^6.28",
+                "orchestra/testbench-core": "^6.28.1",
                 "php": "^7.3 || ^8.0",
                 "phpunit/phpunit": "^8.5.21 || ^9.5.10",
                 "spatie/laravel-ray": "^1.26.2"
@@ -5955,7 +6066,7 @@
             ],
             "support": {
                 "issues": "https://github.com/orchestral/testbench/issues",
-                "source": "https://github.com/orchestral/testbench/tree/v6.24.0"
+                "source": "https://github.com/orchestral/testbench/tree/v6.24.1"
             },
             "funding": [
                 {
@@ -5967,20 +6078,20 @@
                     "type": "liberapay"
                 }
             ],
-            "time": "2022-01-13T05:23:00+00:00"
+            "time": "2022-02-08T12:57:17+00:00"
         },
         {
             "name": "orchestra/testbench-core",
-            "version": "v6.28.0",
+            "version": "v6.28.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/orchestral/testbench-core.git",
-                "reference": "33bc180671f065a52d6d67417b9d38ca7879cc9a"
+                "reference": "e66074e825e21b40b3433703dc3f76f2bfebebe0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orchestral/testbench-core/zipball/33bc180671f065a52d6d67417b9d38ca7879cc9a",
-                "reference": "33bc180671f065a52d6d67417b9d38ca7879cc9a",
+                "url": "https://api.github.com/repos/orchestral/testbench-core/zipball/e66074e825e21b40b3433703dc3f76f2bfebebe0",
+                "reference": "e66074e825e21b40b3433703dc3f76f2bfebebe0",
                 "shasum": ""
             },
             "require": {
@@ -6015,12 +6126,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Orchestra\\Testbench\\": "src/"
-                },
                 "files": [
                     "src/helpers.php"
-                ]
+                ],
+                "psr-4": {
+                    "Orchestra\\Testbench\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -6057,7 +6168,7 @@
                     "type": "liberapay"
                 }
             ],
-            "time": "2022-01-13T05:00:07+00:00"
+            "time": "2022-02-08T12:50:35+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -6121,16 +6232,16 @@
         },
         {
             "name": "phar-io/version",
-            "version": "3.1.0",
+            "version": "3.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phar-io/version.git",
-                "reference": "bae7c545bef187884426f042434e561ab1ddb182"
+                "reference": "15a90844ad40f127afd244c0cad228de2a80052a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phar-io/version/zipball/bae7c545bef187884426f042434e561ab1ddb182",
-                "reference": "bae7c545bef187884426f042434e561ab1ddb182",
+                "url": "https://api.github.com/repos/phar-io/version/zipball/15a90844ad40f127afd244c0cad228de2a80052a",
+                "reference": "15a90844ad40f127afd244c0cad228de2a80052a",
                 "shasum": ""
             },
             "require": {
@@ -6166,9 +6277,9 @@
             "description": "Library for handling version information and constraints",
             "support": {
                 "issues": "https://github.com/phar-io/version/issues",
-                "source": "https://github.com/phar-io/version/tree/3.1.0"
+                "source": "https://github.com/phar-io/version/tree/3.1.1"
             },
-            "time": "2021-02-23T14:00:09+00:00"
+            "time": "2022-02-07T21:56:48+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -6777,11 +6888,11 @@
                 }
             },
             "autoload": {
-                "classmap": [
-                    "src/"
-                ],
                 "files": [
                     "src/Framework/Assert/Functions.php"
+                ],
+                "classmap": [
+                    "src/"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -8030,16 +8141,16 @@
         },
         {
             "name": "spatie/ray",
-            "version": "1.33.1",
+            "version": "1.33.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/ray.git",
-                "reference": "88719d6b48d36947fd3b3b0ffec5cc55d62cdb64"
+                "reference": "28f6bd88e2db0fada88a7999c8ee0aad69f56192"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/ray/zipball/88719d6b48d36947fd3b3b0ffec5cc55d62cdb64",
-                "reference": "88719d6b48d36947fd3b3b0ffec5cc55d62cdb64",
+                "url": "https://api.github.com/repos/spatie/ray/zipball/28f6bd88e2db0fada88a7999c8ee0aad69f56192",
+                "reference": "28f6bd88e2db0fada88a7999c8ee0aad69f56192",
                 "shasum": ""
             },
             "require": {
@@ -8062,12 +8173,12 @@
             },
             "type": "library",
             "autoload": {
-                "psr-4": {
-                    "Spatie\\Ray\\": "src"
-                },
                 "files": [
                     "src/helpers.php"
-                ]
+                ],
+                "psr-4": {
+                    "Spatie\\Ray\\": "src"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -8089,7 +8200,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/ray/issues",
-                "source": "https://github.com/spatie/ray/tree/1.33.1"
+                "source": "https://github.com/spatie/ray/tree/1.33.2"
             },
             "funding": [
                 {
@@ -8101,7 +8212,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2022-01-17T09:26:20+00:00"
+            "time": "2022-02-02T15:16:13+00:00"
         },
         {
             "name": "symfony/stopwatch",

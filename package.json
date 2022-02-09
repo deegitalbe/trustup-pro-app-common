@@ -1,0 +1,14 @@
+{
+    "name": "trustup-pro-app-common",
+    "version": "2.2.2",
+    "main": "index.js",
+    "repository": "git@github.com:deegitalbe/trustup-pro-app-common.git",
+    "author": "Mathieu Henrotay <mathieu.henrotay@gmail.com>",
+    "license": "MIT",
+    "scripts": {
+        "push": "git push && git push --tags",
+        "postversion": "npm run push",
+        "commit": "gitmoji -c && npm run push",
+        "commit:all": "git add . && npm run commit"
+    }
+}

@@ -7,21 +7,19 @@ use Deegitalbe\TrustupProAppCommon\Contracts\Api\AdminAppApiContract;
 use Deegitalbe\TrustupProAppCommon\Http\Middleware\AuthenticatedUser;
 use Deegitalbe\TrustupVersionedPackage\Contracts\Project\ProjectContract;
 use Deegitalbe\TrustupVersionedPackage\Contracts\VersionedPackageContract;
-use Deegitalbe\TrustupProAppCommon\Contracts\AuthenticationRelatedContract;
 use Deegitalbe\TrustupProAppCommon\Http\Middleware\UserHavingAccessToAccount;
 use Deegitalbe\TrustupProAppCommon\Http\Middleware\SettingAccountAsEnvironment;
+use Henrotaym\LaravelPackageVersioning\Services\Versioning\VersionablePackage;
 
 /**
  * Trustup pro app common underlying package facade.
  */
-class Package implements VersionedPackageContract
+class Package extends VersionablePackage implements VersionedPackageContract
 {
-    /**
-     * Prefix used for this package.
-     * 
-     * @var string
-     */
-    public static $prefix = "trustup_pro_app_common";
+    public static function prefix(): string
+    {
+        return "laravel_package_versioning_config";
+    }
 
     /**
      * Account model className.
@@ -139,14 +137,6 @@ class Package implements VersionedPackageContract
     }
 
     /**
-     * Getting package version.
-     */
-    public function getVersion(): string
-    {
-        return "2.2.2";
-    }
-
-    /**
      * Getting tenancy environment.
      * 
      * @return \Hyn\Tenancy\Environment
@@ -231,17 +221,7 @@ class Package implements VersionedPackageContract
      */
     public function getName(): string
     {
-        return str_replace('_', '-', self::$prefix);
-    }
-
-    /**
-     *  Getting package prefix.
-     * 
-     * @return string
-     */
-    public function getPrefix(): string
-    {
-        return self::$prefix;
+        return str_replace('_', '-', $this->getPrefix());
     }
     
     /**
@@ -252,6 +232,6 @@ class Package implements VersionedPackageContract
      */
     public function config(string $key = '')
     {
-        return config($this->getPrefix() . ($key ? ".$key" : ""));
+        return $this->getConfig($key);
     }
 }

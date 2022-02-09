@@ -1,17 +1,22 @@
 <?php
 namespace Deegitalbe\TrustupProAppCommon\Tests;
 
-use Orchestra\Testbench\TestCase as BaseTestCase;
-use Henrotaym\LaravelHelpers\Providers\HelperServiceProvider;
 use Henrotaym\LaravelApiClient\Providers\ClientServiceProvider;
 use Deegitalbe\ChargebeeClient\Providers\ChargebeeClientProvider;
 use Deegitalbe\TrustupProAppCommon\Providers\AppAccountServiceProvider;
+use Henrotaym\LaravelPackageVersioning\Testing\VersionablePackageTestCase;
 use Deegitalbe\ServerAuthorization\Providers\ServerAuthorizationServiceProvider;
+use Deegitalbe\TrustupProAppCommon\Package;
 use Deegitalbe\TrustupVersionedPackage\Providers\TrustupVersionedPackageServiceProvider;
 
-class TestCase extends BaseTestCase
+class TestCase extends VersionablePackageTestCase
 {
-    protected function getPackageProviders($app)
+    public static function getPackageClass(): string
+    {
+        return Package::class;
+    }
+
+    public function getServiceProviders(): array
     {
         return [
             TrustupVersionedPackageServiceProvider::class,
@@ -19,7 +24,6 @@ class TestCase extends BaseTestCase
             ClientServiceProvider::class,
             ChargebeeClientProvider::class,
             AppAccountServiceProvider::class,
-            HelperServiceProvider::class
         ];
     }
 }

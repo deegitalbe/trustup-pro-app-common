@@ -1,16 +1,16 @@
 <?php
 namespace Deegitalbe\TrustupProAppCommon\Facades;
 
-use Illuminate\Support\Facades\Facade;
-use Deegitalbe\TrustupProAppCommon\Package as UnderlyingPackage;
+use Deegitalbe\TrustupProAppCommon\Package as Underlying;
+use Henrotaym\LaravelPackageVersioning\Facades\Abstracts\VersionablePackageFacade;
 
 /**
  * Trustup pro app common package facade.
  */
-class Package extends Facade
+class Package extends VersionablePackageFacade
 {
-    public static function getFacadeAccessor()
+    public static function getPackageClass(): string
     {
-        return UnderlyingPackage::$prefix;
+        return Underlying::class;
     }
 }
