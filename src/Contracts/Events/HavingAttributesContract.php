@@ -16,7 +16,7 @@ interface HavingAttributesContract
     /**
      * Setting model attributes.
      * 
-     * @return HavingAttributesContract
+     * @return static
      */
     public function setAttributes(array $attributes): HavingAttributesContract;
 }
