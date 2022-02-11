@@ -266,10 +266,18 @@ class AppAccountServiceProvider extends VersionablePackageServiceProvider
             \Deegitalbe\TrustupProAppCommon\Projectors\Projector::class => PackageFacade::spatieEventSourcingProjector()
         ])
             ->each(function($class, $alias) use (&$success) {
+                // if config class is not valid => fail and stop.
                 if (!class_exists($class)):
                     $success = false;
                     return;
                 endif;
+
+                // If alias already defined => stop.
+                if (class_exists($alias)):
+                    return;
+                endif;
+                
+                // Register alias.
                 class_alias($class, $alias);
             });
 
