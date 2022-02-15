@@ -117,10 +117,10 @@ class AuthenticationRelated implements AuthenticationRelatedContract
     /**
      * Setting account for current request (should not be called manually).
      * 
-     * @param AccountContract $account
-     * @return AuthenticationRelatedContract
+     * @param AccountContract|null $account
+     * @return static
      */
-    public function setAccount(AccountContract $account): AuthenticationRelatedContract
+    public function setAccount(?AccountContract $account): AuthenticationRelatedContract
     {
         $this->account = $account;
 

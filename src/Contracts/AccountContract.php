@@ -2,12 +2,13 @@
 namespace Deegitalbe\TrustupProAppCommon\Contracts;
 
 use Illuminate\Support\Carbon;
-use Deegitalbe\TrustupProAppCommon\Contracts\Query\AccountQueryContract;
+use Hyn\Tenancy\Contracts\Hostname;
+use Hyn\Tenancy\Contracts\Website;
 
 /**
  * Representing an account that's storable.
  */
-interface AccountContract
+interface AccountContract extends Website
 {
     /**
      * Account database id.
@@ -50,6 +51,13 @@ interface AccountContract
      * @return string|null
      */
     public function getSubscriptionStatus(): ?string;
+
+    /**
+     * Default account hostname.
+     * 
+     * @return Hostname|null
+     */
+    public function getDefaultHostname(): ?Hostname;
 
     /**
      * Account creation date.
