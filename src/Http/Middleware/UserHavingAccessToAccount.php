@@ -5,9 +5,9 @@ use Closure;
 use Illuminate\Http\Request;
 use Deegitalbe\TrustupProAppCommon\Facades\Package;
 use Deegitalbe\TrustupProAppCommon\Contracts\AccountContract;
-use Deegitalbe\TrustupProAppCommon\Contracts\Api\TrustupProApiContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Query\AccountQueryContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\AuthenticationRelatedContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\Service\EnvironmentSwitchContract;
 use Deegitalbe\TrustupProAppCommon\Exceptions\Middleware\UserHavingAccessToAccount\GetExpectedAccountFailed;
 use Deegitalbe\TrustupProAppCommon\Exceptions\Middleware\UserHavingAccessToAccount\UserNotHavingAccessToAccount;
 
@@ -22,10 +22,18 @@ class UserHavingAccessToAccount
      * @var AuthenticationRelatedContract
      */
     protected $authentication_related;
+
+    /**
+     * Environment switch.
+     * 
+     * @var EnvironmentSwitchContract
+     */
+    protected $environment_switch;
     
-    public function __construct(AuthenticationRelatedContract $authentication_related)
+    public function __construct(AuthenticationRelatedContract $authentication_related, EnvironmentSwitchContract $environment_switch)
     {
         $this->authentication_related = $authentication_related;
+        $this->environment_switch = $environment_switch;
     }
 
     /**
@@ -50,7 +58,7 @@ class UserHavingAccessToAccount
             return $this->notHavingAccess();
         endif;
 
-        $this->authentication_related->setAccount($account);
+        $this->environment_switch->toAccountEnvironment($account);
 
         return $next($request);
     }
@@ -60,7 +68,7 @@ class UserHavingAccessToAccount
      * 
      * @param Request $request
      * @param string|null $account_uuid If null, account header will be used.
-     * @return Account|null Null if not found.
+     * @return AccountContract|null Null if not found.
      */
     protected function getExpectedAccount(Request $request, ?string $route_parameter = null): ?AccountContract
     {
