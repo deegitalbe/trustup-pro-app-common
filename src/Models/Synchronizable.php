@@ -3,9 +3,8 @@ namespace Deegitalbe\TrustupProAppCommon\Models;
 
 use Illuminate\Support\Carbon;
 use Deegitalbe\TrustupProAppCommon\Facades\Package;
-use Deegitalbe\TrustupProAppCommon\Contracts\AccountContract;
 use Deegitalbe\TrustupProAppCommon\Models\SynchronizeWhenSaved;
-use Deegitalbe\TrustupProAppCommon\Contracts\Query\AccountQueryContract;
+use Hyn\Tenancy\Contracts\Hostname;
 
 /**
  * AccountContract implementation + account saved event watcher (SynchronizeWhenSaved).
@@ -75,5 +74,15 @@ trait Synchronizable
     public function getCreatedAt(): Carbon
     {
         return $this->created_at ?? now();
+    }
+
+    /**
+     * Default account hostname.
+     * 
+     * @return Hostname|null
+     */
+    public function getDefaultHostname(): ?Hostname
+    {
+        return $this->hostnames->first();
     }
 }
