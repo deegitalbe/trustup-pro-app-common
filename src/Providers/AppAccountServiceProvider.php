@@ -31,8 +31,12 @@ use Deegitalbe\TrustupProAppCommon\Projectors\Hostname\HostnameProjector;
 use Deegitalbe\TrustupProAppCommon\Contracts\AuthenticationRelatedContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\Client\AdminClientContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\Client\TrustupProClientContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\Service\EnvironmentSwitchContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\Service\MeiliSearch\MeiliSearchIndexServiceContract;
 use Deegitalbe\TrustupVersionedPackage\Contracts\VersionedPackageCheckerContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Service\StoringAccountServiceContract;
+use Deegitalbe\TrustupProAppCommon\Models\Service\EnvironmentSwitch;
+use Deegitalbe\TrustupProAppCommon\Models\Service\MeiliSearch\MeiliSearchIndexService;
 use Henrotaym\LaravelPackageVersioning\Providers\Abstracts\VersionablePackageServiceProvider;
 
 class AppAccountServiceProvider extends VersionablePackageServiceProvider
@@ -56,7 +60,8 @@ class AppAccountServiceProvider extends VersionablePackageServiceProvider
             ->registerModels()
             ->registerQueryBuilders()
             ->registerAuthenticationRelated()
-            ->registerStoringAccountService();
+            ->registerEnvironmentSwitch()
+            ->registerServices();
     }
 
     /**
@@ -138,6 +143,42 @@ class AppAccountServiceProvider extends VersionablePackageServiceProvider
     protected function registerAuthenticationRelated(): self
     {
         $this->app->singleton(AuthenticationRelatedContract::class, AuthenticationRelated::class);
+
+        return $this;
+    }
+
+    /**
+     * Registering services.
+     * 
+     * @return self
+     */
+    protected function registerServices(): self
+    {
+        return $this->registerEnvironmentSwitch()
+            ->registerMeiliSearchIndexService()
+            ->registerStoringAccountService();
+    }
+
+    /**
+     * Registering environment switch.
+     * 
+     * @return self
+     */
+    protected function registerEnvironmentSwitch(): self
+    {
+        $this->app->bind(EnvironmentSwitchContract::class, EnvironmentSwitch::class);
+
+        return $this;
+    }
+
+    /**
+     * Registering meilisearch index service.
+     * 
+     * @return self
+     */
+    protected function registerMeiliSearchIndexService(): self
+    {
+        $this->app->bind(MeiliSearchIndexServiceContract::class, MeiliSearchIndexService::class);
 
         return $this;
     }
