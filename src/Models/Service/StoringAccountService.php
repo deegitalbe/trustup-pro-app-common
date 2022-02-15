@@ -16,7 +16,10 @@ use Deegitalbe\ChargebeeClient\Chargebee\Models\Contracts\CustomerContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\AuthenticationRelatedContract;
 use Deegitalbe\ChargebeeClient\Chargebee\Models\Contracts\SubscriptionContract;
 use Deegitalbe\ChargebeeClient\Chargebee\Models\Contracts\SubscriptionPlanContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\Service\EnvironmentSwitchContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Service\StoringAccountServiceContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\Service\MeiliSearch\MeiliSearchIndexServiceContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\Service\MeiliSearch\Models\MeiliSearchModelContract;
 
 /**
  * Service storing account.
@@ -59,6 +62,20 @@ class StoringAccountService implements StoringAccountServiceContract
     protected $account_query;
 
     /**
+     * MeiliSearch index service.
+     * 
+     * @var MeiliSearchIndexServiceContract
+     */
+    protected $meili_search_index_service;
+
+    /**
+     * MeiliSearch index service.
+     * 
+     * @var EnvironmentSwitchContract
+     */
+    protected $environment_switch;
+
+    /**
      * Account being created
      * 
      * @var AccountContract
@@ -93,19 +110,24 @@ class StoringAccountService implements StoringAccountServiceContract
      * @param SubscriptionApiContract $subscription_api
      * @param CustomerApiContract $customer_api
      * @param AccountQueryContract $query
+     * @param MeiliSearchIndexServiceContract $meili_search_index_service
      * @return void
      */
     public function __construct(
         AuthenticationRelatedContract $authentication_related, 
         SubscriptionApiContract $subscription_api, 
         CustomerApiContract $customer_api, 
-        AccountQueryContract $account_query
+        AccountQueryContract $account_query,
+        MeiliSearchIndexServiceContract $meili_search_index_service,
+        EnvironmentSwitchContract $environment_switch
     )
     {
         $this->authentication_related = $authentication_related;
         $this->subscription_api = $subscription_api;
         $this->customer_api = $customer_api;
         $this->account_query = $account_query;
+        $this->meili_search_index_service = $meili_search_index_service;
+        $this->environment_switch = $environment_switch;
     }
 
     /**
@@ -252,7 +274,7 @@ class StoringAccountService implements StoringAccountServiceContract
      */
     protected function afterSubscription()
     {
-        //
+        $this->storeMeiliSearchIndexes();
     }
 
     /**
@@ -290,5 +312,42 @@ class StoringAccountService implements StoringAccountServiceContract
 
         // Removing null fields.
         return array_filter($attributes);
+    }
+
+    /**
+     * Trying to store MeiliSearch index for current app.
+     * 
+     * @return bool
+     */
+    protected function storeMeiliSearchIndexes(): bool
+    {
+        // If no models, consider it as success.
+        if (!count($this->getMeiliSearchModels())):
+            return true;
+        endif;
+
+        // Creating indexes in account environment.
+        return $this->environment_switch->callInAccountEnvironment($this->account, function() {
+            $success = true;
+            foreach($this->getMeiliSearchModels() as $model):
+                if (!$this->meili_search_index_service->store($model)):
+                    $success = false;
+                endif;
+            endforeach;
+            
+            return $success;
+        });
+    }
+
+    /**
+     * Getting models used by meilisearch.
+     * 
+     * @return MeiliSearchModelContract[]
+     */
+    protected function getMeiliSearchModels(): array
+    {
+        return [
+            // Instanciate your meili search models here.
+        ];
     }
 }
