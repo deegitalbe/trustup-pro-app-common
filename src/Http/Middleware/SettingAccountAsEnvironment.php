@@ -34,12 +34,9 @@ class SettingAccountAsEnvironment
      */
     public function handle($request, Closure $next)
     {
-        if (!$account = $this->authentication_related->getAccount()):
+        if (!$this->authentication_related->getAccount()):
             return response(['message' => "Could not understand which account should be used for this request."], 400);
         endif;
-
-        Package::environment()->tenant($account);
-        Package::environment()->hostname($account->hostnames()->first());
 
         return $next($request);
     }
