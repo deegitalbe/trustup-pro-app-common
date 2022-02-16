@@ -8,7 +8,9 @@ use Deegitalbe\TrustupProAppCommon\Contracts\AuthenticationRelatedContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Service\EnvironmentSwitchContract;
 use Hyn\Tenancy\Contracts\CurrentHostname;
 use Hyn\Tenancy\Contracts\Tenant;
+use Illuminate\Database\DatabaseManager;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Config;
 
 /** Environment Switch */
 class EnvironmentSwitch implements EnvironmentSwitchContract
@@ -28,16 +30,24 @@ class EnvironmentSwitch implements EnvironmentSwitchContract
     protected $app;
 
     /**
+     * Database manager.
+     * 
+     * @var DatabaseManager
+     */
+    protected $database_manager;
+
+    /**
      * Injecting dependencies
      * 
      * @param AuthenticationRelatedContract $authentication_related
      * @param Application $app
      * @return void
      */
-    public function __construct(AuthenticationRelatedContract $authentication_related, Application $app)
+    public function __construct(AuthenticationRelatedContract $authentication_related, Application $app, DatabaseManager $database_manager)
     {
         $this->authentication_related = $authentication_related;
         $this->app = $app;
+        $this->database_manager = $database_manager;
     }
 
     /**
@@ -91,9 +101,9 @@ class EnvironmentSwitch implements EnvironmentSwitchContract
      */
     public function toSystemEnvironment(): EnvironmentSwitchContract
     {
-        $this->resetHynModels();
-        $connection = $this->getHynConnection();
-        $connection->set(null, $connection->systemName());
+        $this->resetHynModels()
+            ->removeTenantConnection();
+
         $this->authentication_related->setAccount(null);
 
         return $this;
@@ -112,6 +122,30 @@ class EnvironmentSwitch implements EnvironmentSwitchContract
 
         $this->app->singleton(Tenant::class, $empty);
         $this->app->singleton(CurrentHostname::class, $empty);
+
+        return $this;
+    }
+
+    /**
+     * Removing tenant connection.
+     * 
+     * @return static
+     */
+    protected function removeTenantConnection(): self
+    {
+        $tenant_connection_name = config('tenancy.db.tenant-connection-name');
+        
+        // Purging cache concerning tenant connection.
+        $this->database_manager->purge($tenant_connection_name);
+        
+        // Removing tenant connection from existing ones.
+        $connections = collect(config('database.connections'))
+            ->filter(function($value, $name) use ($tenant_connection_name) {
+                return $name !== $tenant_connection_name;
+            });
+        
+        // Setting connections as filtered ones.
+        Config::set('database.connections', $connections);
 
         return $this;
     }
