@@ -1,12 +1,15 @@
 <?php
 namespace Deegitalbe\TrustupProAppCommon\Models\Traits;
 
-use Deegitalbe\TrustupProAppCommon\Contracts\AuthenticationRelatedContract;
+use Laravel\Scout\Searchable;
 use Deegitalbe\TrustupProAppCommon\Facades\Package;
+use Deegitalbe\TrustupProAppCommon\Contracts\AuthenticationRelatedContract;
 
 /** Used for meilisearch models related to specific professional. */
 trait MeiliSearchModel
 {
+    use Searchable;
+    
     /**
      * Get the name of the index associated with the model. (concerning laravel scout)
      * 
@@ -19,7 +22,11 @@ trait MeiliSearchModel
         /** @var AuthenticationRelatedContract */
         $authentication = app()->make(AuthenticationRelatedContract::class);
 
-        return "{$authentication->getAccount()->getAuthorizationKey()}_". Package::appKey() ."_{$this->getTable()}" ;
+        return join('_', [
+            Package::appKey(),
+            $authentication->getAccount()->getAuthorizationKey(),
+            $this->getTable()
+        ]);
     }
 
     /**
