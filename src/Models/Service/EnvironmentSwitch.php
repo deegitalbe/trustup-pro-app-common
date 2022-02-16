@@ -8,6 +8,7 @@ use Deegitalbe\TrustupProAppCommon\Contracts\AuthenticationRelatedContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Service\EnvironmentSwitchContract;
 use Hyn\Tenancy\Contracts\CurrentHostname;
 use Hyn\Tenancy\Contracts\Tenant;
+use Illuminate\Foundation\Application;
 
 /** Environment Switch */
 class EnvironmentSwitch implements EnvironmentSwitchContract
@@ -20,14 +21,23 @@ class EnvironmentSwitch implements EnvironmentSwitchContract
     protected $authentication_related;
 
     /**
+     * Application.
+     * 
+     * @var Application
+     */
+    protected $app;
+
+    /**
      * Injecting dependencies
      * 
      * @param AuthenticationRelatedContract $authentication_related
+     * @param Application $app
      * @return void
      */
-    public function __construct(AuthenticationRelatedContract $authentication_related)
+    public function __construct(AuthenticationRelatedContract $authentication_related, Application $app)
     {
         $this->authentication_related = $authentication_related;
+        $this->app = $app;
     }
 
     /**
@@ -37,7 +47,7 @@ class EnvironmentSwitch implements EnvironmentSwitchContract
      */
     protected function getHynEnvironment(): Environment
     {
-        return app()->make(Environment::class);
+        return $this->app->make(Environment::class);
     }
 
     /**
@@ -47,7 +57,7 @@ class EnvironmentSwitch implements EnvironmentSwitchContract
      */
     protected function getHynConnection(): Connection
     {
-        return app()->make(Connection::class);
+        return $this->app->make(Connection::class);
     }
 
     /**
