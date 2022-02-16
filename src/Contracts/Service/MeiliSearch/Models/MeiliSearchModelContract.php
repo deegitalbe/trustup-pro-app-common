@@ -16,6 +16,15 @@ interface MeiliSearchModelContract
     public function getMeiliSearchSearchableAttributes(): array;
 
     /**
+     * Transforming model to meilisearch entity.
+     * 
+     * It should be associative array.
+     *
+     * @return array
+     */
+    public function toMeiliSearchModel(): array;
+
+    /**
      * Getting meiliSearch model unique identifier.
      * 
      * Identifier can be considered as MYSQL row ID.
