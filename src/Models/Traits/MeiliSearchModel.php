@@ -52,4 +52,15 @@ trait MeiliSearchModel
     {
         return $this->searchableAs();
     }
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array
+     */
+    public function toSearchableArray()
+    {
+        return $this->toMeiliSearchModel();
+    }
+
 }
