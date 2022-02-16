@@ -23,8 +23,8 @@ trait MeiliSearchModel
         $authentication = app()->make(AuthenticationRelatedContract::class);
 
         return join('_', [
-            Package::appKey(),
             $authentication->getAccount()->getAuthorizationKey(),
+            Package::appKey(),
             $this->getTable()
         ]);
     }
