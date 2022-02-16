@@ -147,6 +147,11 @@ class StoringAccountService implements StoringAccountServiceContract
 
         $this->afterSubscription();
 
+        // Storing meilisearch related data.
+        $this->storeMeiliSearchIndexes();
+
+        $this->finally();
+
         return $this->account;
     }
 
@@ -274,7 +279,17 @@ class StoringAccountService implements StoringAccountServiceContract
      */
     protected function afterSubscription()
     {
-        $this->storeMeiliSearchIndexes();
+        //
+    }
+
+    /**
+     * Called automatically at the end of process.
+     * 
+     * @return void
+     */
+    protected function finally()
+    {
+        //
     }
 
     /**
