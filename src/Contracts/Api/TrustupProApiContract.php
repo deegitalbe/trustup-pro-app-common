@@ -12,7 +12,7 @@ interface TrustupProApiContract
     /**
      * Getting authenticated user linked current request.
      * 
-     * @return UserContract|null
+     * @return array|null
      */
-    public function getUser(): ?UserContract;
+    public function getUser(): ?array;
 }

@@ -43,7 +43,7 @@ class TrustupProApi implements TrustupProApiContract
      * 
      * @return UserContract|null
      */
-    public function getUser(): ?UserContract
+    public function getUser(): ?array
     {
         $request = app()->make(RequestContract::class)
             ->setVerb('GET')
@@ -56,26 +56,6 @@ class TrustupProApi implements TrustupProApiContract
             return null;
         endif;
 
-        $user = $response->response()->get(true)['user'];
-
-        return $this->toUserModel($user);
-    }
-
-    /**
-     * Transforming raw user attributes to user model.
-     * 
-     * @param array $raw_user
-     * @return UserContract
-     */
-    protected function toUserModel(array $attributes)
-    {
-        // Setting up role.
-        $attributes['role'] = $attributes['default_professional']['user_role'];
-        
-        // Setting up professional.
-        $attributes['professional'] = app()->make(ProfessionalContract::class)->fromArray($attributes['default_professional']);
-        unset($attributes['default_professional']);
-
-        return app()->make(UserContract::class)->fromArray($attributes);
+        return $response->response()->get(true)['user'];
     }
 }

@@ -1,9 +1,11 @@
 <?php
 namespace Deegitalbe\TrustupProAppCommon;
 
+use Illuminate\Support\Str;
 use Deegitalbe\TrustupProAppCommon\Contracts\AppContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\UserContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\AccountContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\ProfessionalContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\AdminAppApiContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\TrustupProApiContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\AuthenticationRelatedContract;
@@ -81,12 +83,55 @@ class AuthenticationRelated implements AuthenticationRelatedContract
      */
     public function getUser(): ?UserContract
     {
-        if (!$this->user_retrieved):
-            $this->user = $this->trustup_pro_api->getUser();
+        if ( ! $this->user_retrieved && request()->header('X-TrustUp-JWT') ) {
+            $user = $this->decryptJWTToken();
+
+            if ( $user ) {
+                $this->user = $this->toUserModel($user);
+                $this->user_retrieved = true;
+            }
+        }
+
+        if ( ! $this->user_retrieved ) {
+            $this->user = $this->toUserModel($this->trustup_pro_api->getUser());
             $this->user_retrieved = true;
-        endif;
+        }
         
         return $this->user;
+    }
+
+    public function decryptJWTToken(): ?array
+    {
+        return rescue(function () {
+            $base64key = env('TRUSTUP_PRO_JWT_KEY');
+
+            $key = base64_decode(Str::after($base64key, 'base64:'));
+            $encrypter = new \Illuminate\Encryption\Encrypter($key, config('app.cipher'));
+    
+            return $encrypter->decrypt(request()->header('X-TrustUp-JWT'));
+        });
+    }
+
+    /**
+     * Transforming raw user attributes to user model.
+     * 
+     * @param array $raw_user
+     * @return UserContract
+     */
+    protected function toUserModel(array $attributes = null): ?UserContract
+    {
+        if ( ! $attributes ) {
+            return null;
+        }
+
+        // Setting up role.
+        $attributes['role'] = $attributes['default_professional']['user_role'];
+        
+        // Setting up professional.
+        $attributes['professional'] = app()->make(ProfessionalContract::class)->fromArray($attributes['default_professional']);
+        unset($attributes['default_professional']);
+
+        return app()->make(UserContract::class)->fromArray($attributes);
     }
 
     /**
