@@ -38,7 +38,7 @@ trait MeiliSearchModel
      */
     public function getMeiliSearchIndexPrimaryKey(): string
     {
-        return $this->primaryKey;
+        return "uuid";
     }
 
     /**
