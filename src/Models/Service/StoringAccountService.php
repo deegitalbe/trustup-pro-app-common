@@ -362,7 +362,7 @@ class StoringAccountService implements StoringAccountServiceContract
      */
     protected function getMeiliSearchModels(): array
     {
-        return collect(Package::meiliSearchModels())->each(function(string $class) {
+        return collect(Package::meiliSearchModels())->map(function(string $class) {
             return app()->make($class);
         })->all();
     }
