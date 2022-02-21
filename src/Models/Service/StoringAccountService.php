@@ -20,6 +20,7 @@ use Deegitalbe\TrustupProAppCommon\Contracts\Service\EnvironmentSwitchContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Service\StoringAccountServiceContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Service\MeiliSearch\MeiliSearchIndexServiceContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Service\MeiliSearch\Models\MeiliSearchModelContract;
+use Deegitalbe\TrustupProAppCommon\Facades\Package;
 
 /**
  * Service storing account.
@@ -361,8 +362,8 @@ class StoringAccountService implements StoringAccountServiceContract
      */
     protected function getMeiliSearchModels(): array
     {
-        return [
-            // Instanciate your meili search models here.
-        ];
+        return collect(Package::meiliSearchModels())->each(function(string $class) {
+            return app()->make($class);
+        })->all();
     }
 }

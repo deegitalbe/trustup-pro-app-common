@@ -64,7 +64,22 @@ return [
          * 
          * @var \Deegitalbe\TrustupProAppCommon\Contracts\Service\StoringAccountServiceContract
          */
-        "storing_account" => \Deegitalbe\TrustupProAppCommon\Models\Service\StoringAccountService::class
+        "storing_account" => \Deegitalbe\TrustupProAppCommon\Models\Service\StoringAccountService::class,
+
+        /**
+         * Configuration related to meilisearch service.
+         */
+        "meilisearch" => [
+            /**
+             * Meilisearch models.
+             * 
+             * These should implement interface MeiliSearchModelContract.
+             * 
+             * @see \Deegitalbe\TrustupProAppCommon\Contracts\Service\MeiliSearch\Models\MeiliSearchModelContract
+             * @var string[]
+             */
+            "models" => []
+        ]
     ],
 
     /**
