@@ -16,9 +16,18 @@ interface MeiliSearchModelContract
     public function getMeiliSearchSearchableAttributes(): array;
 
     /**
+     * Defining meiliSearch filterable attributes.
+     * 
+     * These fields can be used as filter to do custom queries.
+     *
+     * @return array
+     */
+    public function getMeilisearchFilterableAttributes(): array;
+
+    /**
      * Transforming model to meilisearch entity.
      * 
-     * It should be associative array.
+     * It should be associative array. In default configuration order DO matter for future search.
      *
      * @return array
      */

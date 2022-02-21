@@ -54,6 +54,30 @@ trait MeiliSearchModel
     }
 
     /**
+     * Defining meiliSearch searchable attributes.
+     * 
+     * Order is important since search would be performed respecting given order.
+     *
+     * @return array
+     */
+    public function getMeiliSearchSearchableAttributes(): array
+    {
+        return array_keys($this->toMeiliSearchModel());
+    }
+
+    /**
+     * Defining meiliSearch filterable attributes.
+     * 
+     * These fields can be used as filter to do custom queries.
+     *
+     * @return array
+     */
+    public function getMeilisearchFilterableAttributes(): array
+    {
+        return $this->getMeiliSearchSearchableAttributes();
+    }
+
+    /**
      * Get the indexable data array for the model.
      *
      * @return array
@@ -61,6 +85,26 @@ trait MeiliSearchModel
     public function toSearchableArray()
     {
         return $this->toMeiliSearchModel();
+    }
+
+    /**
+     * Get the value used to index the model.
+     *
+     * @return mixed
+     */
+    public function getScoutKey()
+    {
+        return $this->{$this->getScoutKeyName()};
+    }
+ 
+    /**
+     * Get the key name used to index the model.
+     *
+     * @return mixed
+     */
+    public function getScoutKeyName()
+    {
+        return $this->getMeiliSearchIndexPrimaryKey();
     }
 
 }
