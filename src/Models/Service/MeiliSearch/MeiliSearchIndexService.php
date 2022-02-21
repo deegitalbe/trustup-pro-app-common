@@ -39,7 +39,11 @@ class MeiliSearchIndexService implements MeiliSearchIndexServiceContract
         // Creating index respecting primary key.
         $this->client->createIndex($model->getMeiliSearchIndexName(), ['primaryKey' => $model->getMeiliSearchIndexPrimaryKey()]);
         // Defining index searchable attributes (order matters).
-        $this->client->index($model->getMeiliSearchIndexName())->updateSearchableAttributes($model->getMeiliSearchSearchableAttributes());
+        $this->client->index($model->getMeiliSearchIndexName())
+            ->updateSearchableAttributes($model->getMeiliSearchSearchableAttributes());
+        // Defining index filterable attributes
+        $this->client->index($model->getMeiliSearchIndexName())
+            ->updateFilterableAttributes($model->getMeilisearchFilterableAttributes());
 
         return true;
     }
