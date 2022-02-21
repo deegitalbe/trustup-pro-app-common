@@ -8,8 +8,9 @@ use Deegitalbe\TrustupProAppCommon\Http\Middleware\AuthenticatedUser;
 use Deegitalbe\TrustupVersionedPackage\Contracts\Project\ProjectContract;
 use Deegitalbe\TrustupVersionedPackage\Contracts\VersionedPackageContract;
 use Deegitalbe\TrustupProAppCommon\Http\Middleware\UserHavingAccessToAccount;
-use Deegitalbe\TrustupProAppCommon\Http\Middleware\SettingAccountAsEnvironment;
 use Henrotaym\LaravelPackageVersioning\Services\Versioning\VersionablePackage;
+use Deegitalbe\TrustupProAppCommon\Http\Middleware\SettingAccountAsEnvironment;
+use Deegitalbe\TrustupProAppCommon\Contracts\Service\MeiliSearch\Models\MeiliSearchModelContract;
 
 /**
  * Trustup pro app common underlying package facade.
@@ -59,6 +60,19 @@ class Package extends VersionablePackage implements VersionedPackageContract
     public function storingAccountService(): string
     {
         return $this->config('services.storing_account');
+    }
+
+    /**
+     * Meilisearch models.
+     * 
+     * These should implement interface MeiliSearchModelContract.
+     * 
+     * @see \Deegitalbe\TrustupProAppCommon\Contracts\Service\MeiliSearch\Models\MeiliSearchModelContract
+     * @return string[]
+     */
+    public function meiliSearchModels(): array
+    {
+        return $this->config('services.meilisearch.models');
     }
 
     /**
