@@ -1,6 +1,7 @@
 <?php
 namespace Deegitalbe\TrustupProAppCommon\Api;
 
+use Deegitalbe\TrustupProAppCommon\Auth\Token;
 use Deegitalbe\TrustupProAppCommon\Models\User;
 use Deegitalbe\TrustupProAppCommon\Facades\Package;
 use Deegitalbe\TrustupProAppCommon\Models\Professional;
@@ -28,14 +29,22 @@ class TrustupProApi implements TrustupProApiContract
     protected $client;
 
     /**
+     * Token related actions
+     * 
+     * @var Token
+     */
+    protected $token;
+
+    /**
      * Constructing class.
      * 
      * @param TrustupProClientContract $client
      * @return void
      */
-    public function __construct(TrustupProClientContract $client)
+    public function __construct(TrustupProClientContract $client, Token $token)
     {
         $this->client = $client;
+        $this->token = $token;
     }
 
     /**
@@ -74,6 +83,7 @@ class TrustupProApi implements TrustupProApiContract
         
         // Setting up professional.
         $attributes['professional'] = app()->make(ProfessionalContract::class)->fromArray($attributes['default_professional']);
+        $attributes['token'] = $this->token->get();
         unset($attributes['default_professional']);
 
         return app()->make(UserContract::class)->fromArray($attributes);

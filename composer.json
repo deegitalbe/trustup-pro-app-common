@@ -20,7 +20,8 @@
         "spatie/laravel-event-sourcing": "^4.9",
         "laravel/scout": "^9.4",
         "meilisearch/meilisearch-php": "^0.22.0",
-        "http-interop/http-factory-guzzle": "^1.2"
+        "http-interop/http-factory-guzzle": "^1.2",
+        "lcobucci/jwt": "^4.1"
     },
     "require-dev": {
         "orchestra/testbench": "^6.0",

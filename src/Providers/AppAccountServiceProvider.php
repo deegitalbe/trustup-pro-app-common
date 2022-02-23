@@ -1,43 +1,58 @@
 <?php
 namespace Deegitalbe\TrustupProAppCommon\Providers;
 
+use Lcobucci\JWT\Configuration;
+use Lcobucci\JWT\Signer\Rsa\Sha256;
 use Illuminate\Support\Facades\Route;
+use Lcobucci\JWT\Signer\Key\InMemory;
+use Illuminate\Foundation\Application;
 use Deegitalbe\TrustupProAppCommon\Package;
+use Deegitalbe\TrustupProAppCommon\Auth\Token;
 use Deegitalbe\TrustupProAppCommon\Models\App;
 use Deegitalbe\TrustupProAppCommon\Models\User;
 use Deegitalbe\TrustupProAppCommon\Synchronizer;
+use Lcobucci\JWT\Validation\Constraint\SignedWith;
 use Deegitalbe\TrustupProAppCommon\Api\AdminAppApi;
+use Deegitalbe\TrustupProAppCommon\Auth\TokenParser;
 use Deegitalbe\TrustupProAppCommon\Api\TrustupProApi;
+use Lcobucci\JWT\Validation\Constraint\StrictValidAt;
+use Deegitalbe\TrustupProAppCommon\Auth\TokenProvider;
 use Deegitalbe\TrustupProAppCommon\Models\Professional;
 use Deegitalbe\TrustupProAppCommon\AuthenticationRelated;
 use Deegitalbe\TrustupProAppCommon\Contracts\AppContract;
 use Deegitalbe\TrustupProAppCommon\Api\Client\AdminClient;
 use Deegitalbe\TrustupProAppCommon\Contracts\UserContract;
 use Deegitalbe\TrustupProAppCommon\Commands\InstallPackage;
+use Deegitalbe\TrustupProAppCommon\Auth\Internals\Clockable;
 use Deegitalbe\TrustupProAppCommon\Contracts\AccountContract;
 use Deegitalbe\TrustupProAppCommon\Models\Query\AccountQuery;
+use Deegitalbe\TrustupProAppCommon\Auth\TokenProviderContract;
 use Deegitalbe\TrustupProAppCommon\Api\Client\TrustupProClient;
+use Deegitalbe\TrustupProAppCommon\Contracts\Auth\TokenContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\ProfessionalContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\SynchronizerContract;
 use Deegitalbe\ServerAuthorization\Http\Middleware\AuthorizedServer;
 use Deegitalbe\TrustupProAppCommon\Facades\Package as PackageFacade;
+use Deegitalbe\TrustupProAppCommon\Models\Service\EnvironmentSwitch;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\AdminAppApiContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\Auth\TokenParserContract;
 use Deegitalbe\TrustupProAppCommon\Api\Credential\TrustupProCredential;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\TrustupProApiContract;
 use Deegitalbe\TrustupProAppCommon\Projectors\Account\AccountProjector;
 use Deegitalbe\TrustupProAppCommon\Api\Credential\AdminClientCredential;
+use Deegitalbe\TrustupProAppCommon\Auth\TokenGuard;
 use Deegitalbe\TrustupProAppCommon\Contracts\Query\AccountQueryContract;
 use Deegitalbe\TrustupProAppCommon\Projectors\Hostname\HostnameProjector;
 use Deegitalbe\TrustupProAppCommon\Contracts\AuthenticationRelatedContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\Client\AdminClientContract;
-use Deegitalbe\TrustupProAppCommon\Contracts\Api\Client\TrustupProClientContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Service\EnvironmentSwitchContract;
-use Deegitalbe\TrustupProAppCommon\Contracts\Service\MeiliSearch\MeiliSearchIndexServiceContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\Api\Client\TrustupProClientContract;
 use Deegitalbe\TrustupVersionedPackage\Contracts\VersionedPackageCheckerContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Service\StoringAccountServiceContract;
-use Deegitalbe\TrustupProAppCommon\Models\Service\EnvironmentSwitch;
 use Deegitalbe\TrustupProAppCommon\Models\Service\MeiliSearch\MeiliSearchIndexService;
 use Henrotaym\LaravelPackageVersioning\Providers\Abstracts\VersionablePackageServiceProvider;
+use Deegitalbe\TrustupProAppCommon\Contracts\Service\MeiliSearch\MeiliSearchIndexServiceContract;
+use Illuminate\Support\Facades\Auth;
 
 class AppAccountServiceProvider extends VersionablePackageServiceProvider
 {
@@ -61,7 +76,8 @@ class AppAccountServiceProvider extends VersionablePackageServiceProvider
             ->registerQueryBuilders()
             ->registerAuthenticationRelated()
             ->registerEnvironmentSwitch()
-            ->registerServices();
+            ->registerServices()
+            ->registerJWTServices();
     }
 
     /**
@@ -194,6 +210,55 @@ class AppAccountServiceProvider extends VersionablePackageServiceProvider
 
         return $this;
     }
+
+    /**
+     * Registering everythin related to JWT tokens.
+     */
+    protected function registerJWTServices(): self
+    {
+        $this->registerJWTConfig();
+
+        $this->app->bind(TokenContract::class, Token::class);
+        $this->app->bind(TokenParserContract::class, TokenParser::class);
+        $this->app->bind(TokenProviderContract::class, TokenProvider::class);
+
+        return $this;
+    }
+
+    /**
+     * Registering JWT config and bind it to container.
+     *
+     * @return self
+     */
+    protected function registerJWTConfig(): self
+    {
+        $this->app->bind(Configuration::class, function(Application $app) {
+            $config = Configuration::forAsymmetricSigner(
+                new Sha256(),
+                InMemory::empty(),
+                InMemory::file($this->getJWTPublicKeyPath())
+            );
+
+            $config->setValidationConstraints(
+                new SignedWith($config->signer(), $config->verificationKey()),
+                new StrictValidAt($app->make(Clockable::class))
+            );
+
+            return $config;
+        });
+
+        return $this;
+    }
+
+    /**
+     * Getting path to public key used to verify tokens.
+     * 
+     * @return string
+     */
+    protected function getJWTPublicKeyPath(): string
+    {
+        return storage_path('oauth-public.key');
+    }
     
     /**
      * Adding this to service provider boot() method.
@@ -205,7 +270,8 @@ class AppAccountServiceProvider extends VersionablePackageServiceProvider
         $this->registerCommands()
             ->loadRoutes()
             ->registerProjectors()
-            ->registerPackageAsVersioned();
+            ->registerPackageAsVersioned()
+            ->registerTokenAuth();
     }
 
     /**
@@ -335,6 +401,23 @@ class AppAccountServiceProvider extends VersionablePackageServiceProvider
         app()->make(VersionedPackageCheckerContract::class)
             ->addPackage(PackageFacade::getFacadeRoot());
         
+        return $this;
+    }
+
+    protected function registerTokenAuth(): self
+    {
+        Auth::provider('trustup-token', function ($app) {
+            // Return an instance of Illuminate\Contracts\Auth\UserProvider...
+            return $app->make(TokenProviderContract::class);
+        });
+
+        Auth::extend('trustup', function ($app, $name, array $config) {
+            // Return an instance of Illuminate\Contracts\Auth\Guard...
+            return $app->make(TokenGuard::class, [
+                'provider' => Auth::createUserProvider($config['provider'])
+            ]);
+        });
+
         return $this;
     }
 }

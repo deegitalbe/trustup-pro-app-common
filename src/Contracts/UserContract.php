@@ -4,11 +4,12 @@ namespace Deegitalbe\TrustupProAppCommon\Contracts;
 use Illuminate\Contracts\Support\Arrayable;
 use Deegitalbe\TrustupProAppCommon\Contracts\AccountContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\ProfessionalContract;
+use Illuminate\Contracts\Auth\Authenticatable;
 
 /**
  * Representing a user.
  */
-interface UserContract extends Arrayable
+interface UserContract extends Arrayable, Authenticatable
 {
     /**
      * Getting id.
@@ -58,6 +59,13 @@ interface UserContract extends Arrayable
      * @return string|null
      */
     public function getRole(): ?string;
+
+    /**
+     * Getting related trustup authorization token.
+     * 
+     * @return string
+     */
+    public function getToken(): string;
 
     /**
      * Getting linked professional.
