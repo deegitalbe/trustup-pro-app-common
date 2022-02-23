@@ -1,11 +1,12 @@
 <?php
 namespace Deegitalbe\TrustupProAppCommon\Auth;
 
-use Deegitalbe\TrustupProAppCommon\Contracts\Auth\TokenParserContract;
-use Deegitalbe\TrustupProAppCommon\Contracts\UserContract;
-use Henrotaym\LaravelHelpers\Facades\Helpers;
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Token\Plain as JwtToken;
+use Henrotaym\LaravelHelpers\Facades\Helpers;
+use Deegitalbe\TrustupProAppCommon\Contracts\UserContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\ProfessionalContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\Auth\TokenParserContract;
 
 /**
  * Responsible to parse tokens and retrieve users from it.
