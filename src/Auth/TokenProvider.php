@@ -11,6 +11,13 @@ use Deegitalbe\TrustupProAppCommon\Contracts\Auth\TokenProviderContract;
 class TokenProvider implements TokenProviderContract
 {
     /**
+     * Related user.
+     * 
+     * @var UserContract|null
+     */
+    protected $user;
+
+    /**
      * Trustup token.
      * 
      * @var TokenContract
