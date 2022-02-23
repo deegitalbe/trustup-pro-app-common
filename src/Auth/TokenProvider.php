@@ -3,9 +3,10 @@ namespace Deegitalbe\TrustupProAppCommon\Auth;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use Deegitalbe\TrustupProAppCommon\Contracts\UserContract;
-use Deegitalbe\TrustupProAppCommon\Contracts\Api\TrustupProApiContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Auth\TokenContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Auth\TokenParserContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\Api\TrustupProApiContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\Auth\TokenProviderContract;
 
 class TokenProvider implements TokenProviderContract
 {

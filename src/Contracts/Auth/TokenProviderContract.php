@@ -1,5 +1,5 @@
 <?php
-namespace Deegitalbe\TrustupProAppCommon\Auth;
+namespace Deegitalbe\TrustupProAppCommon\Contracts\Auth;
 
 use Illuminate\Contracts\Auth\UserProvider;
 use Deegitalbe\TrustupProAppCommon\Contracts\UserContract;
