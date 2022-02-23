@@ -107,4 +107,15 @@ trait MeiliSearchModel
         return $this->getMeiliSearchIndexPrimaryKey();
     }
 
+    /**
+     * Preventing meilisearch update until callback is done.
+     *
+     * @param callable $callback Callback performing model updates.
+     * @return void
+     */
+    public static function muteMeiliSearchUntli(callable $callback)
+    {
+        static::withoutSyncingToSearch($callback);
+    }
+
 }
