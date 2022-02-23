@@ -3,10 +3,9 @@ namespace Deegitalbe\TrustupProAppCommon\Auth;
 
 use Illuminate\Auth\GuardHelpers;
 use Illuminate\Contracts\Auth\Guard;
-use Deegitalbe\TrustupProAppCommon\Auth\Token;
-use Deegitalbe\TrustupProAppCommon\Auth\TokenProvider;
-use Deegitalbe\TrustupProAppCommon\Contracts\Auth\TokenContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\UserContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\Auth\TokenContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\Auth\TokenProviderContract;
 
 class TokenGuard implements Guard
 {
