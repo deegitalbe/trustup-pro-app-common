@@ -9,7 +9,7 @@ trait HavingAttributes
      * @param array $attributes
      * @return static
      */
-    public function setAttributes(array $attributes): static
+    public function setAttributes(array $attributes)
     {
         foreach($attributes as $name => $value):
             $this->{$name} = $value;
