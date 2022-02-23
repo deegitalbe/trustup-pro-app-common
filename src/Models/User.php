@@ -29,6 +29,27 @@ class User implements UserContract
     protected $name;
 
     /**
+     * User first name.
+     * 
+     * @var string
+     */
+    protected $first_name;
+
+    /**
+     * User last name.
+     * 
+     * @var string
+     */
+    protected $last_name;
+
+    /**
+     * User last name.
+     * 
+     * @var string
+     */
+    protected $email;
+
+    /**
      * User avatar.
      * 
      * @var string
@@ -164,13 +185,15 @@ class User implements UserContract
     public function toArray()
     {
         return [
-            'id' => $this->id,
+            'id' => $this->getId(),
             'name' => $this->getName(),
             'first_name' => $this->getFirstName(),
             'last_name' => $this->getLastName(),
-            'avatar' => $this->avatar,
-            'role' => $this->role,
-            'professional' => $this->professional->toArray()
+            'email' => $this->getEmail(),
+            'avatar' => $this->getAvatar(),
+            'role' => $this->getRole(),
+            'token' => $this->getToken(),
+            'professional' => $this->getProfessional()->toArray()
         ];
     }
 
