@@ -37,13 +37,6 @@ class AuthenticationRelated implements AuthenticationRelatedContract
     protected $account;
 
     /**
-     * Trustup pro API.
-     * 
-     * @var TrustupProApiContract
-     */
-    protected $trustup_pro_api;
-
-    /**
      * Admin app API.
      * 
      * @var AdminAppApiContract
@@ -67,12 +60,10 @@ class AuthenticationRelated implements AuthenticationRelatedContract
     /**
      * Creating instance.
      * 
-     * @param TrustupProApiContract $trustup_pro_api
      * @param AdminAppApiContract $admin_api
      */
-    public function __construct(TrustupProApiContract $trustup_pro_api, AdminAppApiContract $admin_api)
+    public function __construct(AdminAppApiContract $admin_api)
     {
-        $this->trustup_pro_api = $trustup_pro_api;
         $this->admin_api = $admin_api;
     }
 
@@ -83,19 +74,10 @@ class AuthenticationRelated implements AuthenticationRelatedContract
      */
     public function getUser(): ?UserContract
     {
-        if ( ! $this->user_retrieved && request()->header('X-TrustUp-JWT') ) {
-            $user = $this->decryptJWTToken();
-
-            if ( $user ) {
-                $this->user = $this->toUserModel($user);
-                $this->user_retrieved = true;
-            }
-        }
-
-        if ( ! $this->user_retrieved ) {
-            $this->user = $this->toUserModel($this->trustup_pro_api->getUser());
+        if (!$this->user_retrieved):
+            $this->user = auth()->user();
             $this->user_retrieved = true;
-        }
+        endif;
         
         return $this->user;
     }
