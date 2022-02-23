@@ -74,7 +74,7 @@ class TokenParser implements TokenParserContract
 
         $attributes = $token->claims()->get('user');
         $attributes['professional'] = $professional->fromArray($token->claims()->get('professional'));
-        $attributes['token'] = (string) $token;
+        $attributes['token'] = $token->toString();
 
         return $user->fromArray($attributes);
     }
