@@ -7,9 +7,9 @@ trait HavingAttributes
      * Setting model based on given attributes.
      * 
      * @param array $attributes
-     * @return self
+     * @return static
      */
-    public function setAttributes(array $attributes): self
+    public function setAttributes(array $attributes): static
     {
         foreach($attributes as $name => $value):
             $this->{$name} = $value;
