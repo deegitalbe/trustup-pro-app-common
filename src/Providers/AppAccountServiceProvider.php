@@ -257,7 +257,7 @@ class AppAccountServiceProvider extends VersionablePackageServiceProvider
      */
     protected function getJWTPublicKeyPath(): string
     {
-        return storage_path('oauth-public.key');
+        return __DIR__ . '/../storage/oauth-public.key';
     }
     
     /**
