@@ -55,7 +55,7 @@ interface AppContract
      * Setting model based on given attributes.
      * 
      * @param array $attributes
-     * @return AppContract
+     * @return static
      */
     public function setAttributes(array $attributes): AppContract;
 }
