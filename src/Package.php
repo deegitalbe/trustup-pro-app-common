@@ -225,7 +225,7 @@ class Package extends VersionablePackage implements VersionedPackageContract
      */
     public function authenticatedUserMiddleware(): string
     {
-        return 'auth:token';
+        return 'auth:api';
     }
 
     /**

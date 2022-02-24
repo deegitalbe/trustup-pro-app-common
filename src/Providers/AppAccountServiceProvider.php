@@ -3,6 +3,7 @@ namespace Deegitalbe\TrustupProAppCommon\Providers;
 
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Lcobucci\JWT\Signer\Key\InMemory;
 use Illuminate\Foundation\Application;
@@ -13,6 +14,7 @@ use Deegitalbe\TrustupProAppCommon\Models\User;
 use Deegitalbe\TrustupProAppCommon\Synchronizer;
 use Lcobucci\JWT\Validation\Constraint\SignedWith;
 use Deegitalbe\TrustupProAppCommon\Api\AdminAppApi;
+use Deegitalbe\TrustupProAppCommon\Auth\TokenGuard;
 use Deegitalbe\TrustupProAppCommon\Auth\TokenParser;
 use Deegitalbe\TrustupProAppCommon\Api\TrustupProApi;
 use Lcobucci\JWT\Validation\Constraint\StrictValidAt;
@@ -26,7 +28,6 @@ use Deegitalbe\TrustupProAppCommon\Commands\InstallPackage;
 use Deegitalbe\TrustupProAppCommon\Auth\Internals\Clockable;
 use Deegitalbe\TrustupProAppCommon\Contracts\AccountContract;
 use Deegitalbe\TrustupProAppCommon\Models\Query\AccountQuery;
-use Deegitalbe\TrustupProAppCommon\Auth\TokenProviderContract;
 use Deegitalbe\TrustupProAppCommon\Api\Client\TrustupProClient;
 use Deegitalbe\TrustupProAppCommon\Contracts\Auth\TokenContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\ProfessionalContract;
@@ -40,7 +41,7 @@ use Deegitalbe\TrustupProAppCommon\Api\Credential\TrustupProCredential;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\TrustupProApiContract;
 use Deegitalbe\TrustupProAppCommon\Projectors\Account\AccountProjector;
 use Deegitalbe\TrustupProAppCommon\Api\Credential\AdminClientCredential;
-use Deegitalbe\TrustupProAppCommon\Auth\TokenGuard;
+use Deegitalbe\TrustupProAppCommon\Contracts\Auth\TokenProviderContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Query\AccountQueryContract;
 use Deegitalbe\TrustupProAppCommon\Projectors\Hostname\HostnameProjector;
 use Deegitalbe\TrustupProAppCommon\Contracts\AuthenticationRelatedContract;
@@ -52,7 +53,6 @@ use Deegitalbe\TrustupProAppCommon\Contracts\Service\StoringAccountServiceContra
 use Deegitalbe\TrustupProAppCommon\Models\Service\MeiliSearch\MeiliSearchIndexService;
 use Henrotaym\LaravelPackageVersioning\Providers\Abstracts\VersionablePackageServiceProvider;
 use Deegitalbe\TrustupProAppCommon\Contracts\Service\MeiliSearch\MeiliSearchIndexServiceContract;
-use Illuminate\Support\Facades\Auth;
 
 class AppAccountServiceProvider extends VersionablePackageServiceProvider
 {
@@ -406,16 +406,12 @@ class AppAccountServiceProvider extends VersionablePackageServiceProvider
 
     protected function registerTokenAuth(): self
     {
-        Auth::provider('trustup-token', function ($app) {
-            // Return an instance of Illuminate\Contracts\Auth\UserProvider...
+        Auth::provider('trustup-pro-token', function ($app) {
             return $app->make(TokenProviderContract::class);
         });
 
-        Auth::extend('trustup', function ($app, $name, array $config) {
-            // Return an instance of Illuminate\Contracts\Auth\Guard...
-            return $app->make(TokenGuard::class, [
-                'provider' => Auth::createUserProvider($config['provider'])
-            ]);
+        Auth::extend('trustup-pro', function ($app) {
+            return $app->make(TokenGuard::class);
         });
 
         return $this;
