@@ -48,7 +48,7 @@ class TokenParser implements TokenParserContract
         endif;
 
         if(!$this->config->validator()->validate($parsed, ...$this->config->validationConstraints())):
-            return false;
+            return null;
         endif;
 
         return $parsed;
