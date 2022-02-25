@@ -126,6 +126,18 @@ class Package extends VersionablePackage implements VersionedPackageContract
     }
 
     /**
+     * Getting token signing key path.
+     * 
+     * @return string
+     */
+    public function jwtPublicKeyPath(): string
+    {
+        return env("JWT_LOCAL_PUBLIC_KEY")
+            ? storage_path('oauth-public.key')
+            : __DIR__ . '/storage/oauth-public.key';
+    }
+
+    /**
      * Getting projects using this package.
      * 
      * @return Collection
@@ -134,10 +146,6 @@ class Package extends VersionablePackage implements VersionedPackageContract
     {
         $apps = app()->make(AdminAppApiContract::class)
             ->getAppsExceptDashboard() ?? collect();
-        
-        // dd($apps->map(function(AppContract $app) {
-        //     return $app->getDefaultSubscriptionPlan();
-        // }));
 
         return $apps
             ->filter(function(AppContract $app) {

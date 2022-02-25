@@ -236,7 +236,7 @@ class AppAccountServiceProvider extends VersionablePackageServiceProvider
             $config = Configuration::forAsymmetricSigner(
                 new Sha256(),
                 InMemory::empty(),
-                InMemory::file($this->getJWTPublicKeyPath())
+                InMemory::file(PackageFacade::jwtPublicKeyPath())
             );
 
             $config->setValidationConstraints(
@@ -248,16 +248,6 @@ class AppAccountServiceProvider extends VersionablePackageServiceProvider
         });
 
         return $this;
-    }
-
-    /**
-     * Getting path to public key used to verify tokens.
-     * 
-     * @return string
-     */
-    protected function getJWTPublicKeyPath(): string
-    {
-        return __DIR__ . '/../storage/oauth-public.key';
     }
     
     /**
