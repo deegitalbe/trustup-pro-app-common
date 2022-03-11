@@ -25,22 +25,44 @@ trait MeiliSearchContactRelated
      * 
      * @return bool
      */
-    private $isContactLoaded = false;
+    private $contactLoaded = false;
 
     /**
-     * !! DO NOT CALL IT DIRECTLY !! Contact accessor.
+     * Telling if contact is loaded.
      * 
-     * @internal
+     * @return bool
+     */
+    public function isContactLoaded(): bool
+    {
+        return $this->contactLoaded;
+    }
+
+    /**
+     * Getting contact.
+     * 
+     * @return ContactContract|null
      */
     public function getContact(): ?ContactContract
     {
-        if (!$this->isContactLoaded):
+        if (!$this->contactLoaded):
             /** @var ContactServiceContract */
             $service = app()->make(ContactServiceContract::class);
             $this->setContact($service->getContact($this->{$this->getContactKey()}));
         endif;
 
         return $this->contact;
+    }
+
+    /**
+     * Loading related contact.
+     * 
+     * @return MeiliSearchContactRelatedContract
+     */
+    public function loadContact(): MeiliSearchContactRelatedContract
+    {
+        $this->getContact();
+
+        return $this;
     }
 
     /**
@@ -52,7 +74,7 @@ trait MeiliSearchContactRelated
     protected function setContact(?ContactContract $contact): MeiliSearchContactRelatedContract
     {
         $this->contact = $contact;
-        $this->isContactLoaded = true;
+        $this->contactLoaded = true;
         
         return $this;
     }

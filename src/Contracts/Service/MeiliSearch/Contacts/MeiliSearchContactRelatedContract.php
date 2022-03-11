@@ -25,6 +25,13 @@ interface MeiliSearchContactRelatedContract
     public function setContactFromCollection(Collection $contacts): MeiliSearchContactRelatedContract;
 
     /**
+     * Telling if contact is loaded on model.
+     * 
+     * @return bool
+     */
+    public function isContactLoaded(): bool;
+
+    /**
      * Getting contact key database column name.
      * 
      * @return string

@@ -4,11 +4,12 @@ namespace Deegitalbe\TrustupProAppCommon\Models;
 use Deegitalbe\TrustupProAppCommon\Contracts\Events\HavingAttributesContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Models\ContactContract;
 use Deegitalbe\TrustupProAppCommon\Events\Traits\HavingAttributes;
+use Illuminate\Contracts\Support\Arrayable;
 
 /**
  * Representing a contact retrieved from meilisearch.
  */
-class Contact implements ContactContract, HavingAttributesContract
+class Contact implements ContactContract, HavingAttributesContract, Arrayable
 {
     use HavingAttributes;
 
@@ -28,6 +29,16 @@ class Contact implements ContactContract, HavingAttributesContract
      * @return string
      */
     public function getId(): string
+    {
+        return $this->attributes['id'];
+    }
+
+    /**
+     * Getting model id.
+     * 
+     * @return string
+     */
+    public function getModelId(): string
     {
         return $this->attributes['model_id'];
     }
@@ -72,7 +83,6 @@ class Contact implements ContactContract, HavingAttributesContract
         return $this->attributes['email'];
     }
 
-
     /**
      * Getting types.
      * 
@@ -81,5 +91,15 @@ class Contact implements ContactContract, HavingAttributesContract
     public function getTypes(): array
     {
         return $this->attributes['types'];
+    }
+
+    /**
+     * Get the instance as an array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return $this->attributes;
     }
 }

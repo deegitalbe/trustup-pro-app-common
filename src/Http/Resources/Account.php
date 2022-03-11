@@ -1,3 +1,4 @@
+
 <?php
 namespace Deegitalbe\TrustupProAppCommon\Http\Resources;
 
