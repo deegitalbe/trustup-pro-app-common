@@ -2,11 +2,12 @@
 namespace Deegitalbe\TrustupProAppCommon\Contracts\Models;
 
 use Deegitalbe\TrustupProAppCommon\Events\Traits\HavingAttributes;
+use Illuminate\Contracts\Support\Arrayable;
 
 /**
  * Representing a contact retrieved from meilisearch.
  */
-interface ContactContract
+interface ContactContract extends Arrayable
 {
     /**
      * Getting uuid.
@@ -21,6 +22,13 @@ interface ContactContract
      * @return string
      */
     public function getId(): string;
+
+    /**
+     * Getting model id.
+     * 
+     * @return string
+     */
+    public function getModelId(): string;
 
     /**
      * Getting name.
