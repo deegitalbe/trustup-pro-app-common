@@ -48,11 +48,15 @@ use Deegitalbe\TrustupProAppCommon\Contracts\AuthenticationRelatedContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\Client\AdminClientContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Service\EnvironmentSwitchContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Api\Client\TrustupProClientContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\Models\ContactContract;
+use Deegitalbe\TrustupProAppCommon\Contracts\Service\MeiliSearch\Contacts\ContactServiceContract;
 use Deegitalbe\TrustupVersionedPackage\Contracts\VersionedPackageCheckerContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Service\StoringAccountServiceContract;
 use Deegitalbe\TrustupProAppCommon\Models\Service\MeiliSearch\MeiliSearchIndexService;
 use Henrotaym\LaravelPackageVersioning\Providers\Abstracts\VersionablePackageServiceProvider;
 use Deegitalbe\TrustupProAppCommon\Contracts\Service\MeiliSearch\MeiliSearchIndexServiceContract;
+use Deegitalbe\TrustupProAppCommon\Models\Contact;
+use Deegitalbe\TrustupProAppCommon\Models\Service\MeiliSearch\Contacts\ContactService;
 
 class AppAccountServiceProvider extends VersionablePackageServiceProvider
 {
@@ -171,7 +175,7 @@ class AppAccountServiceProvider extends VersionablePackageServiceProvider
     protected function registerServices(): self
     {
         return $this->registerEnvironmentSwitch()
-            ->registerMeiliSearchIndexService()
+            ->registerMeiliSearchServices()
             ->registerStoringAccountService();
     }
 
@@ -183,6 +187,30 @@ class AppAccountServiceProvider extends VersionablePackageServiceProvider
     protected function registerEnvironmentSwitch(): self
     {
         $this->app->bind(EnvironmentSwitchContract::class, EnvironmentSwitch::class);
+
+        return $this;
+    }
+
+    /**
+     * Registering meilisearch services.
+     * 
+     * @return self
+     */
+    protected function registerMeiliSearchServices(): self
+    {
+        return $this->registerMeilisearchContactService()
+            ->registerMeiliSearchIndexService();
+    }
+
+    /**
+     * Registering meilisearch contact service.
+     * 
+     * @return self
+     */
+    protected function registerMeilisearchContactService(): self
+    {
+        $this->app->bind(ContactServiceContract::class, ContactService::class);
+        $this->app->bind(ContactContract::class, Contact::class);
 
         return $this;
     }
