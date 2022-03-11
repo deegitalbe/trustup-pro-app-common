@@ -57,7 +57,7 @@ class ContactService implements ContactServiceContract
     {
         return join("_", [
             $this->auth->getAccount()->getAuthorizationKey(),
-            $this->auth->getAccount()->getAppKey(),
+            'contact',
             "contacts"
         ]);
     }
