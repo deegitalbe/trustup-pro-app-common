@@ -1,13 +1,14 @@
 <?php
 namespace Deegitalbe\TrustupProAppCommon\Models;
 
+use Deegitalbe\TrustupProAppCommon\Contracts\Events\HavingAttributesContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Models\ContactContract;
 use Deegitalbe\TrustupProAppCommon\Events\Traits\HavingAttributes;
 
 /**
  * Representing a contact retrieved from meilisearch.
  */
-class Contact implements ContactContract
+class Contact implements ContactContract, HavingAttributesContract
 {
     use HavingAttributes;
 
