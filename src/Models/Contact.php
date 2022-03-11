@@ -63,6 +63,17 @@ class Contact implements ContactContract, HavingAttributesContract
     }
 
     /**
+     * Getting vat number.
+     * 
+     * @return string|null
+     */
+    public function getEmail(): ?string
+    {
+        return $this->attributes['email'];
+    }
+
+
+    /**
      * Getting types.
      * 
      * @return array
