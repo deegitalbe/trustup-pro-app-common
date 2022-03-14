@@ -13,7 +13,7 @@ trait MeilisearchContactRelatedResource
     public function addContactWhenLoaded()
     {
         return $this->when($this->isContactLoaded(), function() {
-                return $this->addContact();
+            return $this->addContact();
         });
     }
 

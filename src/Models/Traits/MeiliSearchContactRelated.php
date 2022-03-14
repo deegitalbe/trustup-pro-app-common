@@ -47,7 +47,8 @@ trait MeiliSearchContactRelated
         if (!$this->contactLoaded):
             /** @var ContactServiceContract */
             $service = app()->make(ContactServiceContract::class);
-            $this->setContact($service->getContact($this->{$this->getContactKey()}));
+            $contact_uuid = $this->{$this->getContactKey()};
+            $this->setContact($contact_uuid ? $service->getContact($contact_uuid) : null);
         endif;
 
         return $this->contact;
