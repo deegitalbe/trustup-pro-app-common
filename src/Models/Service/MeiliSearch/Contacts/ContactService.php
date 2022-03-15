@@ -4,6 +4,7 @@ namespace Deegitalbe\TrustupProAppCommon\Models\Service\MeiliSearch\Contacts;
 use Deegitalbe\TrustupProAppCommon\Contracts\AuthenticationRelatedContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\Service\MeiliSearch\Contacts\ContactServiceContract;
 use Deegitalbe\TrustupProAppCommon\Models\Contact;
+use Henrotaym\LaravelHelpers\Contracts\HelpersContract;
 use Illuminate\Support\Collection;
 use Laravel\Scout\Engines\MeiliSearchEngine;
 use MeiliSearch\Client as MeiliSeachClient;
@@ -27,15 +28,22 @@ class ContactService implements ContactServiceContract
     protected $auth;
 
     /**
+     * Helpers.
+     * @var HelpersContract
+     */
+    protected $helpers;
+
+    /**
      * Instanciating dependencies.
      * 
      * @param MeiliSearchEngine $client
      * @return void
      */
-    public function __construct(MeiliSearchEngine $client, AuthenticationRelatedContract $auth)
+    public function __construct(MeiliSearchEngine $client, AuthenticationRelatedContract $auth, HelpersContract $helpers)
     {
         $this->client = $client;
         $this->auth = $auth;
+        $this->helpers = $helpers;
     }
 
     /**
@@ -70,11 +78,25 @@ class ContactService implements ContactServiceContract
      */
     public function getContact(string $uuid): ?Contact
     {
-        if (!$raw = $this->getIndex()->getDocument($uuid)):
+        [$error, $raw] = $this->helpers->try([$this, 'getRawContact'], $uuid);
+        
+        if ($error):
+            report($error);
             return null;
         endif;
 
         return $this->arrayToContact($raw);
+    }
+
+    /**
+     * Getting raw contact from meilisearch server.
+     * 
+     * @param string $uuid Contact uuid.
+     * @return array|null
+     */
+    public function getRawContact(string $uuid): array
+    {
+        return $this->getIndex()->getDocument($uuid);
     }
 
     /**
