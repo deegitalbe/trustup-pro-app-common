@@ -81,19 +81,7 @@ class AuthenticationRelated implements AuthenticationRelatedContract
         
         return $this->user;
     }
-
-    public function decryptJWTToken(): ?array
-    {
-        return rescue(function () {
-            $base64key = env('TRUSTUP_PRO_JWT_KEY');
-
-            $key = base64_decode(Str::after($base64key, 'base64:'));
-            $encrypter = new \Illuminate\Encryption\Encrypter($key, config('app.cipher'));
     
-            return $encrypter->decrypt(request()->header('X-TrustUp-JWT'));
-        });
-    }
-
     /**
      * Transforming raw user attributes to user model.
      * 
