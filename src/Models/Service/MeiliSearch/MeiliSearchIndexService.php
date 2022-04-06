@@ -2,8 +2,7 @@
 namespace Deegitalbe\TrustupProAppCommon\Models\Service\MeiliSearch;
 
 use Deegitalbe\TrustupProAppCommon\Contracts\Service\MeiliSearch\MeiliSearchIndexServiceContract;
-use MeiliSearch\Client as MeiliSeachClient;
-use Laravel\Scout\Engines\MeiliSearchEngine;
+use MeiliSearch\Client as MeiliSearchClient;
 use Deegitalbe\TrustupProAppCommon\Contracts\Service\MeiliSearch\Models\MeiliSearchModelContract;
 
 /**
@@ -13,17 +12,17 @@ class MeiliSearchIndexService implements MeiliSearchIndexServiceContract
 {
     /**
      * Underlying MeiliSearch client.
-     * @var MeiliSeachClient $client
+     * @var MeiliSearchClient $client
      */
     protected $client;
 
     /**
      * Instanciating dependencies.
      * 
-     * @param MeiliSearchEngine $client
+     * @param MeiliSearchClient $client
      * @return void
      */
-    public function __construct(MeiliSearchEngine $client)
+    public function __construct(MeiliSearchClient $client)
     {
         $this->client = $client;
     }

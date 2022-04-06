@@ -57,6 +57,7 @@ use Henrotaym\LaravelPackageVersioning\Providers\Abstracts\VersionablePackageSer
 use Deegitalbe\TrustupProAppCommon\Contracts\Service\MeiliSearch\MeiliSearchIndexServiceContract;
 use Deegitalbe\TrustupProAppCommon\Models\Contact;
 use Deegitalbe\TrustupProAppCommon\Models\Service\MeiliSearch\Contacts\ContactService;
+use MeiliSearch\Client as MeiliSearchClient;
 
 class AppAccountServiceProvider extends VersionablePackageServiceProvider
 {
@@ -198,8 +199,26 @@ class AppAccountServiceProvider extends VersionablePackageServiceProvider
      */
     protected function registerMeiliSearchServices(): self
     {
-        return $this->registerMeilisearchContactService()
+        return $this->registerMeilisearchClient()
+            ->registerMeilisearchContactService()
             ->registerMeiliSearchIndexService();
+    }
+
+    /**
+     * Registering meilisearch client compatible with scout.
+     * 
+     * @return self
+     */
+    protected function registerMeilisearchClient(): self
+    {
+        $this->app->singleton(MeiliSearchClient::class, function ($app) {
+            return new MeiliSearchClient(
+                $app['config']->get('scout.meilisearch.host', ENV('MEILISEARCH_HOST')),
+                $app['config']->get('scout.meilisearch.key', ENV('MEILISEARCH_KEY'))
+            );
+        });
+
+        return $this;
     }
 
     /**

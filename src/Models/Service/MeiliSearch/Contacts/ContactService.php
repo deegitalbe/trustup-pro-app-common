@@ -6,8 +6,7 @@ use Deegitalbe\TrustupProAppCommon\Contracts\Service\MeiliSearch\Contacts\Contac
 use Deegitalbe\TrustupProAppCommon\Models\Contact;
 use Henrotaym\LaravelHelpers\Contracts\HelpersContract;
 use Illuminate\Support\Collection;
-use Laravel\Scout\Engines\MeiliSearchEngine;
-use MeiliSearch\Client as MeiliSeachClient;
+use MeiliSearch\Client as MeiliSearchClient;
 use MeiliSearch\Endpoints\Indexes;
 
 /**
@@ -17,7 +16,7 @@ class ContactService implements ContactServiceContract
 {
     /**
      * Underlying MeiliSearch client.
-     * @var MeiliSeachClient $client
+     * @var MeiliSearchClient $client
      */
     protected $client;
 
@@ -36,10 +35,10 @@ class ContactService implements ContactServiceContract
     /**
      * Instanciating dependencies.
      * 
-     * @param MeiliSearchEngine $client
+     * @param MeiliSearchClient $client
      * @return void
      */
-    public function __construct(MeiliSearchEngine $client, AuthenticationRelatedContract $auth, HelpersContract $helpers)
+    public function __construct(MeiliSearchClient $client, AuthenticationRelatedContract $auth, HelpersContract $helpers)
     {
         $this->client = $client;
         $this->auth = $auth;
