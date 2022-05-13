@@ -69,6 +69,13 @@ class ContactService implements ContactServiceContract
         ]);
     }
 
+    public function clientIsHealthy(): bool
+    {
+        return rescue(function() {
+            return $this->client->isHealthy();
+        }, false);
+    }
+
     /**
      * Getting contact from uuid.
      * 
@@ -77,14 +84,17 @@ class ContactService implements ContactServiceContract
      */
     public function getContact(string $uuid): ?Contact
     {
-        [$error, $raw] = $this->helpers->try([$this, 'getRawContact'], $uuid);
-        
-        if ($error):
-            report($error);
+        if ( ! $this->clientIsHealthy() ) {
             return null;
-        endif;
+        }
 
-        return $this->arrayToContact($raw);
+        $raw = rescue(function() use ($uuid) {
+            return $this->getRawContact($uuid);
+        });
+
+        return $raw
+            ? $this->arrayToContact($raw)
+            : null;
     }
 
     /**
@@ -106,6 +116,10 @@ class ContactService implements ContactServiceContract
      */
     public function getContacts(array $uuids): Collection
     {
+        if ( ! $this->clientIsHealthy() ) {
+            return collect([]);
+        }
+        
         $filter = collect($uuids)->map(function(string $uuid) {
             return "uuid = $uuid";
         })->join(' OR ');
