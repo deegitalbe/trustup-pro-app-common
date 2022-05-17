@@ -1,9 +1,9 @@
 <?php
 namespace Deegitalbe\TrustupProAppCommon\Models\Traits;
 
+use Deegitalbe\TrustupProAppCommon\Contracts\Service\EnvironmentSwitchContract;
 use Laravel\Scout\Searchable;
 use Deegitalbe\TrustupProAppCommon\Facades\Package;
-use Deegitalbe\TrustupProAppCommon\Contracts\AuthenticationRelatedContract;
 
 /** Used for meilisearch models related to specific professional. */
 trait MeiliSearchModel
@@ -19,11 +19,7 @@ trait MeiliSearchModel
      */
     public function searchableAs(): string
     {
-        /** @var AuthenticationRelatedContract */
-        $authentication = app()->make(AuthenticationRelatedContract::class);
-
         return join('_', [
-            $authentication->getAccount()->getAuthorizationKey(),
             Package::appKey(),
             $this->getTable()
         ]);
@@ -62,7 +58,7 @@ trait MeiliSearchModel
      */
     public function getMeiliSearchSearchableAttributes(): array
     {
-        return array_keys($this->toMeiliSearchModel());
+        return array_keys($this->getMeilisearchAllModelAttributes());
     }
 
     /**
@@ -78,13 +74,30 @@ trait MeiliSearchModel
     }
 
     /**
+     * Defining all meiliSearch model attributes.
+     * 
+     * These attributes would be stored to meilisearch server.
+     *
+     * @return array
+     */
+    public function getMeilisearchAllModelAttributes(): array
+    {
+        /** @var EnvironmentSwitchContract */
+        $switch  = app()->make(EnvironmentSwitchContract::class);
+
+        return array_merge($this->toMeiliSearchModel(), [
+            'authorization_key' => $switch->getCurrentEnvironment()->getAuthorizationKey()
+        ]);
+    }
+
+    /**
      * Get the indexable data array for the model.
      *
      * @return array
      */
     public function toSearchableArray()
     {
-        return $this->toMeiliSearchModel();
+        return $this->getMeilisearchAllModelAttributes();
     }
 
     /**
@@ -113,7 +126,7 @@ trait MeiliSearchModel
      * @param callable $callback Callback performing model updates.
      * @return void
      */
-    public static function muteMeiliSearchUntli(callable $callback)
+    public static function muteMeiliSearchUntil(callable $callback)
     {
         static::withoutSyncingToSearch($callback);
     }
