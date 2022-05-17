@@ -57,5 +57,5 @@ interface MeiliSearchModelContract
      * @param callable $callback Callback performing model updates.
      * @return void
      */
-    public static function muteMeiliSearchUntli(callable $callback);
+    public static function muteMeiliSearchUntil(callable $callback);
 }
