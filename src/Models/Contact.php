@@ -74,6 +74,16 @@ class Contact implements ContactContract, HavingAttributesContract, Arrayable
     }
 
     /**
+     * Getting related professional authorization key.
+     * 
+     * @return string
+     */
+    public function getAuthorizationKey(): string
+    {
+        return $this->attributes['authorization_key'];
+    }
+
+    /**
      * Getting vat number.
      * 
      * @return string|null

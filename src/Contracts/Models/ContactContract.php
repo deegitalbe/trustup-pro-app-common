@@ -50,6 +50,14 @@ interface ContactContract extends Arrayable
      * @return string|null
      */
     public function getVatNumber(): ?string;
+
+    /**
+     * Getting related professional authorization key.
+     * 
+     * @return string
+     */
+    public function getAuthorizationKey(): string;
+
     /**
      * Getting types.
      * 
