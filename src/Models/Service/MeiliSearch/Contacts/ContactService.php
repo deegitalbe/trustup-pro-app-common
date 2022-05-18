@@ -63,7 +63,6 @@ class ContactService implements ContactServiceContract
     protected function getIndexName(): string
     {
         return join("_", [
-            $this->auth->getAccount()->getAuthorizationKey(),
             'contact',
             "contacts"
         ]);
