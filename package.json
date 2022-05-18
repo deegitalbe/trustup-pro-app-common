@@ -1,6 +1,6 @@
 {
     "name": "trustup-pro-app-common",
-    "version": "2.5.5-alpha.1",
+    "version": "2.5.5",
     "main": "index.js",
     "repository": "git@github.com:deegitalbe/trustup-pro-app-common.git",
     "author": "Mathieu Henrotay <mathieu.henrotay@gmail.com>",
