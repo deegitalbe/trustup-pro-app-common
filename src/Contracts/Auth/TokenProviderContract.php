@@ -12,4 +12,12 @@ interface TokenProviderContract extends UserProvider
      * @return UserContract
      */
     public function getUser(): ?UserContract;
+
+    /**
+     * Retrieving professional super admin by its authorization key.
+     *
+     * @param string $authorizationKey Professional authorization key
+     * @return UserContract|null
+     */
+    public function retrieveByProfessionalAuthorizationKey(string $authorizationKey): ?UserContract;
 }

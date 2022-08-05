@@ -71,6 +71,29 @@ class TrustupProApi implements TrustupProApiContract
     }
 
     /**
+     * Getting professional super admin matching given professional authorization key.
+     * 
+     * @param string $authorizationKey
+     * @return UserContract|null
+     */
+    public function getSuperAdminByAuthorizationKey(string $authorizationKey): ?UserContract
+    {
+        /** @var RequestContract */
+        $request = app()->make(RequestContract::class);
+        $request->setVerb("GET")
+            ->setUrl("api/professionals/$authorizationKey/users/super-admin");
+
+        $response = $this->client->try($request, "Could not retrieve super admin user matching given authorization key.");
+
+        if ($response->failed()):
+            report($response->error());
+            return null;
+        endif;
+
+        return $this->toUserModel($response->response()->get(true)['data']);
+    }
+
+    /**
      * Transforming raw user attributes to user model.
      * 
      * @param array $attributes
