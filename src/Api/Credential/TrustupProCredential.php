@@ -1,14 +1,14 @@
 <?php
 namespace Deegitalbe\TrustupProAppCommon\Api\Credential;
 
-use Henrotaym\LaravelApiClient\JsonCredential;
+use Deegitalbe\ServerAuthorization\Credential\AuthorizedServerCredential;
 use Deegitalbe\TrustupProAppCommon\Facades\Package;
 use Henrotaym\LaravelApiClient\Contracts\RequestContract;
 
 /**
  * Credential preparing request to communicate with trustup.pro
  */
-class TrustupProCredential extends JsonCredential
+class TrustupProCredential extends AuthorizedServerCredential
 {
     /**
      * Preparing request.

@@ -1,6 +1,7 @@
 <?php
 namespace Deegitalbe\TrustupProAppCommon\Auth;
 
+use Deegitalbe\TrustupProAppCommon\Contracts\Api\TrustupProApiContract;
 use Illuminate\Auth\GuardHelpers;
 use Illuminate\Contracts\Auth\Guard;
 use Deegitalbe\TrustupProAppCommon\Contracts\UserContract;
@@ -39,7 +40,7 @@ class TokenGuard implements Guard
      * @param  TokenProviderContract $provider Token user provider
      * @return void
      */
-    public function __construct(TokenContract $token, TokenProviderContract $provider)
+    public function __construct(TokenContract $token, TokenProviderContract $provider, TrustupProApiContract $api)
     {
         $this->token = $token;
         $this->provider = $provider;
@@ -68,6 +69,17 @@ class TokenGuard implements Guard
     public function validate(array $credentials = [])
     {
         return !!$this->provider->retrieveByCredentials($credentials);
+    }
+
+    /**
+     * Trying to authenticate user based on given professional authorization key.
+     *
+     * @param string $authorizationKey Professional authorization key.
+     * @return UserContract|null
+     */
+    public function authentificateByProfessionalAuthorizationKey(string $authorizationKey): ?UserContract
+    {
+        return $this->user = $this->provider->retrieveByProfessionalAuthorizationKey($authorizationKey);
     }
 
 }

@@ -15,4 +15,12 @@ interface TrustupProApiContract
      * @return UserContract|null
      */
     public function getUser(): ?UserContract;
+
+    /**
+     * Getting professional super admin matching given professional authorization key.
+     * 
+     * @param string $authorizationKey
+     * @return UserContract|null
+     */
+    public function getSuperAdminByAuthorizationKey(string $authorizationKey): ?UserContract;
 }

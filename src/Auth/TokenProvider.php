@@ -119,6 +119,17 @@ class TokenProvider implements TokenProviderContract
     }
 
     /**
+     * Retrieving professional super admin by its authorization key.
+     *
+     * @param string $authorizationKey Professional authorization key
+     * @return UserContract|null
+     */
+    public function retrieveByProfessionalAuthorizationKey(string $authorizationKey): ?UserContract
+    {
+        return $this->api->getSuperAdminByAuthorizationKey($authorizationKey);
+    }
+
+    /**
      * Validate a user against the given credentials.
      *
      * @param  UserContract  $user
