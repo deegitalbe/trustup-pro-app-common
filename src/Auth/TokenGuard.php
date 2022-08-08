@@ -1,6 +1,7 @@
 <?php
 namespace Deegitalbe\TrustupProAppCommon\Auth;
 
+use App\Events\Users\UserCreated;
 use Illuminate\Auth\GuardHelpers;
 use Illuminate\Contracts\Auth\Guard;
 use Deegitalbe\TrustupProAppCommon\Contracts\UserContract;
@@ -57,6 +58,11 @@ class TokenGuard implements Guard
         endif;
 
         return $this->user = $this->provider->getUser();
+    }
+
+    public function userByProfessionalAuthorizationKey(string $key): ?UserContract
+    {
+        return $this->provider->getUserByProfessionalAuthorizationKey($key);
     }
 
     /**
