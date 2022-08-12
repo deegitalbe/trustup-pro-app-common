@@ -107,7 +107,7 @@ class TrustupProApi implements TrustupProApiContract
         
         // Setting up professional.
         $attributes['professional'] = app()->make(ProfessionalContract::class)->fromArray($attributes['default_professional']);
-        $attributes['token'] = $this->token->get();
+        $attributes['token'] ??= $this->token->get();
         unset($attributes['default_professional']);
 
         return app()->make(UserContract::class)->fromArray($attributes);
