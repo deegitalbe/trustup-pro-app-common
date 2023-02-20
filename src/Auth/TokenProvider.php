@@ -153,4 +153,9 @@ class TokenProvider implements TokenProviderContract
 
         return $this->user = $this->token_parser->userFromJwt($jwt) ?? $this->api->getUser();
     }
+
+    public function getUserByProfessionalAuthorizationKey(string $key): ?UserContract
+    {
+        return $this->user = $this->api->getUserByProfessionalAuthorizationKey($key);
+    }
 }

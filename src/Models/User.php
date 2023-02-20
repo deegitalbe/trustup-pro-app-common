@@ -2,6 +2,7 @@
 namespace Deegitalbe\TrustupProAppCommon\Models;
 
 use Deegitalbe\TrustupProAppCommon\Models\Professional;
+use Deegitalbe\TrustupProAppCommon\Contracts\AppContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\UserContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\AccountContract;
 use Deegitalbe\TrustupProAppCommon\Contracts\ProfessionalContract;
@@ -76,6 +77,9 @@ class User implements UserContract
      * @var ProfessionalContract
      */
     protected $professional;
+
+    protected $apps;
+    protected $meilisearch;
 
     /**
      * Getting id.
@@ -267,5 +271,48 @@ class User implements UserContract
     public function getRememberTokenName()
     {
         return 'token';
+    }
+
+    public function setApps(array $apps)
+    {
+        $this->apps = $apps;
+    }
+
+    public function getApps(): ?array
+    {
+        return $this->apps;
+    }
+
+    public function getApp(string $key): ?AppContract
+    {
+        if ( ! $this->getApps() ) {
+            return null;
+        }
+        
+        foreach ( $this->getApps() as $app ) {
+            if ( $app['key'] == $key ) {
+                return app()->make(AppContract::class)->setAttributes($app);
+            }
+        }
+
+        return null;
+    }
+
+    public function getAppAccount(string $key): ?array
+    {
+        $app = $this->getApp($key);
+        return $app
+            ? $app->accounts[0]
+            : null;
+    }
+
+    public function setMeilisearch(array $meilisearch)
+    {
+        $this->meilisearch = $meilisearch;
+    }
+
+    public function getMeilisearch(): ?array
+    {
+        return $this->meilisearch;
     }
 }

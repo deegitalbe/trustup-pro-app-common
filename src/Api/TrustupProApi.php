@@ -70,6 +70,30 @@ class TrustupProApi implements TrustupProApiContract
         return $this->toUserModel($user);
     }
 
+    public function getUserByProfessionalAuthorizationKey(string $authorizationKey): ?UserContract
+    {
+        $request = app()->make(RequestContract::class)
+            ->setVerb('GET')
+            ->setUrl('api/user?authorization-key=' . $authorizationKey)
+            ->addHeaders(['X-Server-Authorization' => env('TRUSTUP_SERVER_AUTHORIZATION')]);
+        
+        $response = $this->client->try($request, new GetUserFailed);
+        if ($response->failed()):
+            report($response->error());
+            return null;
+        endif;
+
+        $body = $response->response()->get(true);
+        $attributes = $body['user'];
+        $attributes['token'] = $body['token']['access_token'];
+
+        $user = $this->toUserModel($attributes);
+        $user->setApps($body['apps']);
+        $user->setMeilisearch($body['meilisearch']);
+
+        return $user;
+    }
+
     /**
      * Transforming raw user attributes to user model.
      * 
@@ -83,7 +107,7 @@ class TrustupProApi implements TrustupProApiContract
         
         // Setting up professional.
         $attributes['professional'] = app()->make(ProfessionalContract::class)->fromArray($attributes['default_professional']);
-        $attributes['token'] = $this->token->get();
+        $attributes['token'] ??= $this->token->get();
         unset($attributes['default_professional']);
 
         return app()->make(UserContract::class)->fromArray($attributes);
