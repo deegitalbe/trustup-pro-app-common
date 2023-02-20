@@ -123,7 +123,7 @@ class ContactService implements ContactServiceContract
             return "uuid = $uuid";
         })->join(' OR ');
 
-        $hits = $this->getIndex()->search('', ['filter' => $filter])->getHits();
+        $hits = $this->getIndex()->search('', ['filter' => $filter, 'limit' => 100])->getHits();
 
         return collect($hits)->map(function(array $raw) {
             return $this->arrayToContact($raw);
